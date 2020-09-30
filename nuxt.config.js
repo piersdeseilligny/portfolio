@@ -12,12 +12,22 @@ export default {
     ]
   },
 
+  env: {
+    strapiBaseUri: process.env.API_URL || "http://localhost:1337"
+  },
+
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [
-  ],
+  css: [],
+
+  server:{
+    port:3000,
+    host:"0.0.0.0"
+  },
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
+    "~plugins/formatDate.js",
+    "~plugins/vue-slick-carousel.js"
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -30,8 +40,12 @@ export default {
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: [
-  ],
+  modules: ['@nuxtjs/strapi'],
+
+  strapi: {
+    entities: ['documents', 'categories'],
+    url: 'http://localhost:1337'
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {

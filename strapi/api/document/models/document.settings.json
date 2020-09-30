@@ -1,0 +1,76 @@
+{
+  "kind": "collectionType",
+  "collectionName": "documents",
+  "info": {
+    "name": "document"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "date": {
+      "type": "date"
+    },
+    "images": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "categories": {
+      "collection": "category",
+      "via": "documents"
+    },
+    "tags": {
+      "collection": "tag",
+      "via": "documents",
+      "dominant": true
+    },
+    "slug": {
+      "type": "string"
+    },
+    "poster": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "backgroundcolor": {
+      "type": "string"
+    },
+    "foregroundcolor": {
+      "type": "string"
+    },
+    "contentblocks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "component.contentblock"
+    },
+    "foregroundcolor2": {
+      "type": "string"
+    },
+    "moreinfo": {
+      "type": "component",
+      "repeatable": true,
+      "component": "component.moreinfo"
+    }
+  }
+}

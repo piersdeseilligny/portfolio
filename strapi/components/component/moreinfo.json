@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_component_moreinfos",
+  "info": {
+    "name": "Moreinfo",
+    "icon": "address-card"
+  },
+  "options": {},
+  "attributes": {
+    "header": {
+      "type": "string"
+    },
+    "subheader": {
+      "type": "string"
+    },
+    "outlink": {
+      "model": "outlink"
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}

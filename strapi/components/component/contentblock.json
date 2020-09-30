@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_component_contentblocks",
+  "info": {
+    "name": "contentblock",
+    "icon": "file-alt"
+  },
+  "options": {},
+  "attributes": {
+    "tag": {
+      "model": "tag"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "beforeafters": {
+      "type": "component",
+      "repeatable": true,
+      "component": "component.beforeafter"
+    },
+    "stills": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    }
+  }
+}

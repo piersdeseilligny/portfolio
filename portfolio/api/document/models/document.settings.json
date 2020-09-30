@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "documents",
+  "info": {
+    "name": "Document"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "Stills": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "Name": {
+      "type": "string"
+    },
+    "Date": {
+      "type": "date"
+    },
+    "Description": {
+      "type": "richtext"
+    }
+  }
+}

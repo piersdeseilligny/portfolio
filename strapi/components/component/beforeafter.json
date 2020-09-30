@@ -1,0 +1,39 @@
+{
+  "collectionName": "components_component_beforeafters",
+  "info": {
+    "name": "beforeafter",
+    "icon": "book-open"
+  },
+  "options": {},
+  "attributes": {
+    "before": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "after": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "caption": {
+      "type": "string"
+    },
+    "offset": {
+      "type": "float",
+      "default": 0.5
+    }
+  }
+}
