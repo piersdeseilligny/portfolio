@@ -1,12 +1,15 @@
 <template>
     <nuxt-link class="document" :to="link">
         <img class="document-bg" v-if="images && images[0]" :src="'http://localhost:1337'+ images[0].formats.medium.url"/>
-        <div class="document-gradient"></div>
-        <div class="document-bottom">
-            <div class="document-year">{{date | formatDate}}</div>
-            <div class="document-title">{{title}}</div>
-            <div class="document-tags">
-                <span v-for="tag in tags" :key="tag.id">{{tag.name}}</span>
+        <div class="document-overlay">
+            <div class="document-gradient"
+                :style="`background: linear-gradient(transparent,${backgroundcolor});`"></div>
+            <div class="document-bottom">
+                <div class="document-year">{{date | formatDate}}</div>
+                <div class="document-title">{{title}}</div>
+                <div class="document-tags">
+                    <span v-for="tag in tags" :key="tag.id">{{tag.name}}</span>
+                </div>
             </div>
         </div>
         <svg v-bind:class="{selected:selected, 'selectIndicator':true}">
@@ -26,6 +29,12 @@
         z-index:1;
         border-bottom: solid 1px rgba(255,255,255,0.25);
     }
+    .document-overlay{
+        opacity:0;
+    }
+    .document-overlay:hover{
+        opacity:1;
+    }
     .document-bg{
         position:absolute;
         width:100%;
@@ -37,7 +46,7 @@
         position:absolute;
         width:100%;
         height:100%;
-        background: linear-gradient(transparent,rgba(0,0,0,0.8));
+        
     }
     .document-bottom{
         position:absolute;
@@ -110,7 +119,7 @@
 </style>
 <script>
 export default {
-    props:["title","date","tags","link","selected", "images"],
+    props:["title","date","tags","link","selected", "images", "backgroundcolor"],
     mounted(){
         if(this.images){
             

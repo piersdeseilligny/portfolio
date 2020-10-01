@@ -11,8 +11,9 @@
       <transition name="slide-right" appear>
         <transition-group name="portfolio-list" class="portfolioList" tag="div" v-on:before-leave="beforeDocumentLeave">
         <Document v-for="document in documents" class="portfolio-list-item" 
-        :key="document.id" :link="'/portfolio/'+selectedCategory+'/'+document.slug" 
+        :key="document.id" :link="'/portfolio/'+selectedCategory+'/'+document.slug+queryString" 
         :title="document.title" 
+        :backgroundcolor="document.backgroundcolor"
         :date="document.date"
         :tags="document.tags"
         :images="document.images"
@@ -155,7 +156,8 @@
         tags:[],
         documents:[],
         selectedCategory:"",
-        selectedDocument:""
+        selectedDocument:"",
+        queryString:""
       }
     },
     watch: {
@@ -167,6 +169,25 @@
               else
                 this.documents[i].selected = false;
             }
+        },
+        '$route.query':function(){
+          let squery = this.$route.query.s;
+          if(squery){
+            this.queryString='?s='+this.$route.query.s;
+            let visibleTags = this.$route.query.s.split(',').map(function(e){ return '"'+e+'"'; });
+            for (let i = 0; i < this.tags.length; i++) {
+                this.tags[i].selected=this.$route.query.s.includes(this.tags[i].id);
+            }
+            this.reloadDocuments(visibleTags)
+          } 
+          else{
+            this.queryString=""
+            this.reloadDocuments([]);
+            for (let i = 0; i < this.tags.length; i++) {
+              this.tags[i].selected=true;
+            }
+          } 
+
         }
     },
     methods:{
@@ -174,16 +195,7 @@
         el.style.top=el.offsetTop+"px";
         el.style.left=el.offsetLeft+"px";
       },
-      tagselectionChange: async function(id){
-        let visibleTags = [];
-        for (let i = 0; i < this.tags.length; i++) {
-          if(this.tags[i].id==id){
-            this.tags[i].selected = !this.tags[i].selected;
-          }
-          if(this.tags[i].selected)
-            visibleTags.push(`"${this.tags[i].id}"`);
-        };
-        if(!visibleTags.length) visibleTags.push("null");
+      async reloadDocuments(visibleTags){
         const data = await this.$strapi.graphql({
           query:`
           query{
@@ -192,6 +204,7 @@
               date,
               id,
               slug,
+              backgroundcolor,
               tags{
                 name,
                 icon
@@ -212,25 +225,60 @@
           documents.push(d);
         }
         this.documents = documents;
+      },
+      tagselectionChange: async function(id){
+        let visibleTags = [];
+        let visibleTagsRawIds = [];
+        for (let i = 0; i < this.tags.length; i++) {
+          if(this.tags[i].id==id){
+            this.tags[i].selected = !this.tags[i].selected;
+          }
+          if(this.tags[i].selected){
+            visibleTags.push(`"${this.tags[i].id}"`);
+            visibleTagsRawIds.push(this.tags[i].id);
+          }
+            
+        };
+        if(visibleTagsRawIds.length != this.tags.length){
+          //less selected tags than there are total, change route to selection
+          this.$router.replace({path: this.$route.path, query: { s: visibleTagsRawIds.join(",") }})
+        }
+        else{
+          this.$router.replace({path: this.$route.path, query: null})
+        }
+        if(!visibleTags.length) visibleTags.push("null");
+        await this.reloadDocuments(visibleTagsRawIds);
       }
     },
     async asyncData (context) {
       try{
         const selectedCategory = context.params.slug;
         const selectedDocument = context.params.document;
-        const data = await context.$strapi.graphql({
-          query:`
+        let queryString = "";
+        let tagQuery = "";
+        let selectedTags = [];
+        if(context.query.s){
+          queryString = "?s="+context.query.s;
+          selectedTags = context.query.s.split(",");
+          let visibleTags = [];
+          if(selectedTags.length){
+            visibleTags = context.query.s.split(',').map(function(e){ return '"'+e+'"'; });
+          }
+          tagQuery=",tags:["+visibleTags.join(',')+"]";
+        }
+        let qstring=`
           query {
             tags(where:{categories:{slug:"${selectedCategory}"}}){
               name,
               id,
               icon
             },
-            documents(where:{categories:{slug:"${selectedCategory}"}}){
+            documents(where:{categories:{slug:"${selectedCategory}"}${tagQuery}}){
               title,
               date,
               id,
               slug,
+              backgroundcolor,
               tags{
                 name,
                 icon
@@ -241,11 +289,19 @@
             }
           }
           `
+          console.log(qstring);
+        const data = await context.$strapi.graphql({
+          query:qstring
         });
         let tags = [];
         for (let i = 0; i < data.tags.length; i++) {
           const t = data.tags[i];
-          t.selected = true;
+          if(selectedTags!= undefined && selectedTags.length){
+            t.selected = selectedTags.includes(t.id);
+          }
+          else{
+            t.selected = true;
+          }
           tags.push(t);
         }
         let documents = [];
@@ -257,7 +313,7 @@
             d.selected = false;
           documents.push(d);
         }
-        return{ tags, documents, selectedCategory, selectedDocument }
+        return{ tags, documents, selectedCategory, selectedDocument, queryString }
       }
       catch(err){
         return {
