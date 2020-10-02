@@ -5,6 +5,11 @@
     v-on:mouseenter="startSlide"
     v-on:mouseleave="endSlide">
 
+    <div
+      :style="`position:relative;width:100%;top:0;left:0;padding-top:calc(${aspectRatio * 100
+      }%);`"
+    ></div>
+
     <img :src="after" alt="after"
       v-on:mousedown.prevent
       v-on:load="setDimensions" />
@@ -18,18 +23,11 @@
       <div v-if="afterLabel" class="twentytwenty-after-label">{{afterLabel}}</div>
     </div>
 
-    <div class="twentytwenty-handle"
-      v-bind:style="handleStyle"
-      tabindex="0"
-      v-on:keydown="handleArrowNavigation">
-        <div class="twentytwenty-arrow-left"></div>
-        <div class="twentytwenty-arrow-right"></div>
-    </div>
   </div>
 </template>
 
 <script>
-
+import { gsap } from "gsap";
 export default {
   data () {
     return {
@@ -43,6 +41,10 @@ export default {
     before: {
       type: String,
       required: true
+    },
+    aspectRatio:{
+      type: Number,
+      required:true
     },
     beforeLabel: {
       type: String
@@ -69,7 +71,7 @@ export default {
     setDimensions () {
       const img = this.$el.querySelector("img")
       this.imgOffset = img.getBoundingClientRect()
-      this.containerStyle = { width: `${this.w}px`, height: `${this.h}px` };
+     // this.containerStyle = { width: `${this.w}px`, height: `${this.h}px` };
     },
     startSlide (event) {
       this.sliding = true
@@ -82,7 +84,17 @@ export default {
       if (this.sliding) {
         var x = (event.touches ? event.touches[0].pageX : event.pageX) - this.imgOffset.left
         x = (x < 0) ? 0 : ((x > this.w) ? this.w : x)
-        return this.slideOffset = (x / this.w)
+        var newoffset = (x / this.w);
+        var offset = Math.abs(this.slideOffset - newoffset);
+        
+        if(offset>0.05){
+          console.log(offset);
+          //more than 10 pixels, animate the offset
+          gsap.to(this, {slideOffset:newoffset, duration:0.2, ease:"power4.inout"});
+        }
+        else{
+          return this.slideOffset = newoffset;
+        }
       }
       if (event.key) {
         switch(event.key) {

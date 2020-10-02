@@ -1,25 +1,14 @@
 <template>
-<div class="portfolioVue">
+<div class="portfolioParent">
     <Categories :categories="categories" :selected="selectedCategory"/>
     <nuxt-child v-if="selectedCategory" :key="$route.name"/>
 </div>
 </template>
 <style>
-    .portfolioVue{
-        height:100%;
+    .portfolioParent{
+        position:absolute;
         width:100%;
-        flex-direction: column;
-        display:flex;
-    }
-    .portfolioContainer{
-        display:flex;
-        height: 100%;
-        align-items:stretch;
-        position: relative;
-    }
-    .portfolioList{
-        width:320px;
-        background-color:rgba(255, 255, 255, 0.05);
+        height:calc(100% - 172px);
     }
 </style>
 <script>

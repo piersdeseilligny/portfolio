@@ -11,17 +11,13 @@
       <transition name="slide-right" appear>
         <transition-group name="portfolio-list" class="portfolioList" tag="div" v-on:before-leave="beforeDocumentLeave">
         <Document v-for="document in documents" class="portfolio-list-item" 
-        :key="document.id" :link="'/portfolio/'+selectedCategory+'/'+document.slug+queryString" 
-        :title="document.title" 
-        :backgroundcolor="document.backgroundcolor"
-        :date="document.date"
-        :tags="document.tags"
-        :images="document.images"
-        :selected="document.selected"
+        :key="document.id" 
+        :link="'/portfolio/'+selectedCategory+'/'+document.slug+queryString" 
+        :doc="document"
         />
         </transition-group>
       </transition>
-      <div class="portfolioContent">
+      <div id="portfolioContent">
         <nuxt :nuxtChildKey="$route.params.document"/>
       </div>
     </div>
@@ -29,19 +25,22 @@
 </template>
 <style>
     .portfolioVue{
-        height:100%;
+        flex-basis: 1;
+        flex-grow:1;
         width:100%;
+        height:100%;
         flex-direction: column;
         display:flex;
     }
     .portfolioContainer{
         display:flex;
         align-items:stretch;
+        height:100%;
     }
-    .portfolioContent{
+    #portfolioContent{
       flex-grow:1;
       min-width:0;
-
+      height:100%;
     }
     .portfolioList{
         width:320px;
@@ -162,7 +161,8 @@
     },
     watch: {
         '$route.path': function(path) {
-            this.selectedDocument = path.split("/")[3];
+            this.selectedDocument = this.$route.params.document;
+            this.selectedCategory = this.$route.params.slug;
             for(let i=0; i<this.documents.length; i++){
               if(this.documents[i].slug==this.selectedDocument)
                 this.documents[i].selected = true;
@@ -205,6 +205,8 @@
               id,
               slug,
               backgroundcolor,
+              foregroundcolor,
+              foregroundcolor2
               tags{
                 name,
                 icon
@@ -279,6 +281,8 @@
               id,
               slug,
               backgroundcolor,
+              foregroundcolor,
+              foregroundcolor2,
               tags{
                 name,
                 icon

@@ -9,20 +9,13 @@
     <TwentyTwenty
      v-for="ba in block.beforeafters"
      :key="ba.id"
-      :before="`//localhost:1337${ba.before.formats.medium.url}`"
+     :aspectRatio="ba.before.formats.large.height/ba.before.formats.large.width"
+      :before="`//localhost:1337${ba.before.formats.large.url}`"
       beforeLabel="Before"
       afterLabel="After"
       :offset="ba.offset"
-      :after="`//localhost:1337${ba.after.formats.medium.url}`"
+      :after="`//localhost:1337${ba.after.formats.large.url}`"
     />
-    <!--<swiper class="swiper gallery-top" :options="swiperOptionTop" v-if="block.beforeafters">
-        <swiper-slide v-for="ba in block.beforeafters" :key="ba.id">
-            <img :src="`//localhost:1337${ba.before.formats.medium.url}`"/>
-            
-        </swiper-slide>
-        <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
-      <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
-    </swiper>-->
   </div>
 </template>
 <style>

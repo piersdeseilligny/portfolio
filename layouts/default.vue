@@ -1,8 +1,8 @@
 <template>
 <div class="maincontent">
 	<nav class="header" style="z-index:3;">
-    <div class="navcontainer">
-	    <nuxt-link to="./" class="clickable" style="line-height:1em;">piers<br>deseilligny</nuxt-link>
+    <div class="navcontainer" >
+	    <nuxt-link to="/" class="clickable" style="line-height:1em;font-weight:600;">piers<br>deseilligny</nuxt-link>
     </div>
 	  <div class="navcontainer">
       <nuxt-link to="/portfolio" class="clickable">portfolio</nuxt-link>
@@ -27,8 +27,6 @@
       height:100%;
       width:100%;
       position:absolute;
-      flex-direction: column;
-      display:flex;
   }
   .header{
     background-color:rgb(35, 37, 41);
@@ -49,7 +47,7 @@
   .header a{
     display:block;
     height: 100%;
-    font-weight: 600;
+    font-weight: 100;
     font-size:1.5em;
     line-height:1em;
     height:48px;

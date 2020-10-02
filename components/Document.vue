@@ -1,18 +1,18 @@
 <template>
     <nuxt-link class="document" :to="link">
-        <img class="document-bg" v-if="images && images[0]" :src="'http://localhost:1337'+ images[0].formats.medium.url"/>
-        <div class="document-overlay">
-            <div class="document-gradient"
-                :style="`background: linear-gradient(transparent,${backgroundcolor});`"></div>
+        <img class="document-bg" v-if="doc.images && doc.images[0]" :src="'http://localhost:1337'+ doc.images[0].formats.medium.url"/>
+        <div class="document-overlay" @mouseenter="hoverShow" @mouseleave="hoverHide">
+            <div ref="docoverlay" class="document-gradient"
+                :style="`background: linear-gradient(transparent,${doc.backgroundcolor});`"></div>
             <div class="document-bottom">
-                <div class="document-year">{{date | formatDate}}</div>
-                <div class="document-title">{{title}}</div>
-                <div class="document-tags">
-                    <span v-for="tag in tags" :key="tag.id">{{tag.name}}</span>
+                <div ref="docyear" :style="'color:'+doc.foregroundcolor2" class="document-year">{{doc.date | formatDate}}</div>
+                <div ref="doctitle" :style="'color:'+doc.foregroundcolor" class="document-title">{{doc.title}}</div>
+                <div ref="doctags" :style="'color:'+doc.foregroundcolor2" class="document-tags">
+                    <span v-for="tag in doc.tags" :key="tag.id">{{tag.name}}</span>
                 </div>
             </div>
         </div>
-        <svg v-bind:class="{selected:selected, 'selectIndicator':true}">
+        <svg v-bind:class="{selected:doc.selected, 'selectIndicator':true}">
           <path d="M 0 0 L 0 38 L 0 76 L 0 114 L 0 152"/>
         </svg>
     </nuxt-link>
@@ -29,12 +29,6 @@
         z-index:1;
         border-bottom: solid 1px rgba(255,255,255,0.25);
     }
-    .document-overlay{
-        opacity:0;
-    }
-    .document-overlay:hover{
-        opacity:1;
-    }
     .document-bg{
         position:absolute;
         width:100%;
@@ -42,11 +36,14 @@
         object-fit: cover;
         z-index: -1;
     }
+    .document-overlay{
+        overflow: hidden;
+    }
     .document-gradient{
         position:absolute;
         width:100%;
         height:100%;
-        
+        opacity: 0;
     }
     .document-bottom{
         position:absolute;
@@ -59,10 +56,12 @@
     }
     .document-title{
         font-size:24px;
-        opacity:0.8;
+        font-weight: 600;
+        opacity:0;
+        transform:translateY(32px);
     }
     .document-tags, .document-year{
-        opacity:0.6;
+        opacity:0;
         font-size:0.8em;
     }
     .document-tags{
@@ -71,7 +70,6 @@
     .document-year{
         margin-bottom:-4px;
         font-weight: 600;
-        opacity:0.4;
     }
     .selectIndicator{
         position:absolute;
@@ -118,8 +116,26 @@
     }
 </style>
 <script>
+import { gsap } from "gsap";
 export default {
-    props:["title","date","tags","link","selected", "images", "backgroundcolor"],
+    props:["doc","link"],
+    methods:{
+        hoverAnimation(end){
+            let tl = gsap.timeline({defaults:{ease:"power4"+end, duration:0.3}});
+            tl.fromTo(this.$refs.docyear, {y:12, opacity:0}, {opacity:1, y:0},0);
+            tl.fromTo(this.$refs.doctitle, {y:24, opacity:0}, {opacity:1, y:0},0);
+            tl.fromTo(this.$refs.doctags, {y:32, opacity:0}, {opacity:1, y:0},0);
+            tl.fromTo(this.$refs.docoverlay, {opacity:0}, {opacity:1},0);
+            return tl;
+        },
+        hoverShow(){
+            console.log("hover");
+            this.hoverAnimation(".out").play();
+        },
+        hoverHide(){
+            this.hoverAnimation(".in").reverse(0);
+        }
+    },
     mounted(){
         if(this.images){
             
