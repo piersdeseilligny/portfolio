@@ -2,7 +2,8 @@
   "collectionName": "components_component_contentblocks",
   "info": {
     "name": "contentblock",
-    "icon": "file-alt"
+    "icon": "file-alt",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -27,6 +28,15 @@
       ],
       "plugin": "upload",
       "required": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "videoembed": {
+      "type": "string"
+    },
+    "videoembedaspect": {
+      "type": "float"
     }
   }
 }

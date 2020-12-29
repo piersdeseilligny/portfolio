@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/contact-image",
+      "handler": "contact-image.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/contact-image",
+      "handler": "contact-image.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/contact-image",
+      "handler": "contact-image.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

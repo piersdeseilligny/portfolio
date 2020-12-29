@@ -13,8 +13,8 @@
       "type": "string"
     },
     "categories": {
-      "collection": "category",
       "via": "tags",
+      "collection": "category",
       "dominant": true
     },
     "documents": {

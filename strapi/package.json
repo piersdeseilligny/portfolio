@@ -7,23 +7,24 @@
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "strapi": "strapi"
+    "strapi": "strapi",
+    "update:packages": "node wipe-dependencies.js && rm -rf node_modules && npm update --save-dev && npm update --save"
   },
   "devDependencies": {},
   "dependencies": {
-    "knex": "<0.20.0",
-    "slugify": "^1.4.5",
-    "sqlite3": "latest",
-    "strapi": "3.1.5",
-    "strapi-admin": "3.1.5",
-    "strapi-connector-bookshelf": "3.1.5",
-    "strapi-plugin-content-manager": "3.1.5",
-    "strapi-plugin-content-type-builder": "3.1.5",
-    "strapi-plugin-email": "3.1.5",
-    "strapi-plugin-graphql": "3.1.5",
-    "strapi-plugin-upload": "3.1.5",
-    "strapi-plugin-users-permissions": "3.1.5",
-    "strapi-utils": "3.1.5"
+    "knex": "*",
+    "slugify": "*",
+    "sqlite3": "*",
+    "strapi": "*",
+    "strapi-admin": "*",
+    "strapi-connector-bookshelf": "*",
+    "strapi-plugin-content-manager": "*",
+    "strapi-plugin-content-type-builder": "*",
+    "strapi-plugin-email": "*",
+    "strapi-plugin-graphql": "*",
+    "strapi-plugin-upload": "*",
+    "strapi-plugin-users-permissions": "*",
+    "strapi-utils": "*"
   },
   "author": {
     "name": "A Strapi developer"

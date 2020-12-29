@@ -1,0 +1,54 @@
+<template>
+<div class="portfolioParent">
+    <Categories :categories="categories" :selected="selectedCategory" @select="function(e){ selectedCategory=e }"/>
+    <nuxt-child :key="$route.name"/>
+</div>
+</template>
+<style>
+    .portfolioParent{
+        width:100%;
+        position:absolute;
+        height: 100%;
+        top: 0;
+    }
+</style>
+<script>
+  export default {
+    data(){
+        return{
+            categories:[{name:"test"}],
+            selectedCategory:"",
+            error:{}
+        }
+    },
+    watch: {
+        '$route.path': function(path) {
+            console.log(path);
+            this.selectedCategory = path.split("/")[2];
+        }
+    },
+    async asyncData (context) {
+      try{
+        const data = await context.$strapi.graphql({
+          query:`
+          query {
+              categories{
+                name,
+                id,
+                slug
+              }
+          }
+          `
+        });
+        const categories = data.categories;
+        const selectedCategory = context.params.slug; // When calling /abc the slug will be "abc"
+        return{ categories, selectedCategory }
+      }
+      catch(err){
+        return {
+          error: err
+        }
+      }
+    },
+  }
+</script>

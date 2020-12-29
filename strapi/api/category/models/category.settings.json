@@ -2,11 +2,13 @@
   "kind": "collectionType",
   "collectionName": "categories",
   "info": {
-    "name": "category"
+    "name": "category",
+    "description": ""
   },
   "options": {
     "increments": true,
-    "timestamps": true
+    "timestamps": true,
+    "draftAndPublish": false
   },
   "attributes": {
     "name": {
@@ -15,16 +17,34 @@
       "unique": true
     },
     "documents": {
-      "via": "categories",
       "collection": "document",
+      "via": "categories",
       "dominant": true
     },
     "slug": {
       "type": "string"
     },
     "tags": {
-      "via": "categories",
-      "collection": "tag"
+      "collection": "tag",
+      "via": "categories"
+    },
+    "thumbnailvideo": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "thumbnailimage": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false
     }
   }
 }

@@ -1,0 +1,487 @@
+<template>
+  <div class="portfolioVue">
+    <transition name="slide-down" appear v-on:enter="tagsAppear" v-on:before-leave="tagsHideBefore" v-on:after-leave="tagsHideAfter">
+      <div ref="tagContainer" class="tagscontainer"  v-if="tags && tags.length" v-resize="resizeTagContainer">
+      <transition-group
+        name="tag-list"
+        :class="'tags'"
+        tag="div"
+        style="z-index:1"
+        v-on:before-leave="beforeDocumentLeave"
+      >
+        <div key="all" class="tag-list-item">
+          <Tag
+            key="all"
+            name="All"
+            :selected="selectedall"
+            id="all"
+            v-on:selectionchange="toggleSelectedAll"
+          />
+        </div>
+        <div v-for="tag in tags" :key="tag.id" class="tag-list-item">
+          <Tag
+            :key="tag.id"
+            :name="tag.name"
+            :icon="tag.icon"
+            :selected="selectedall ? false : tag.selected"
+            :id="tag.id"
+            v-on:selectionchange="tagselectionChange"
+          />
+        </div>
+      </transition-group>
+      </div>
+    </transition>
+    <div :class="{'portfolioContainer':true,'fullscreenlist':($route.params.document==undefined)}">
+        <transition-group
+          :style="`margin-top:${tagContainerHeight}px`"
+          name="portfolio-list"
+          class="portfolioList"
+          tag="div"
+          v-on:before-leave="beforeDocumentLeave"
+        >
+          <Document
+            v-for="document in documents"
+            class="portfolio-list-item"
+            :key="document.id"
+            :link="'/work/' + document.category.slug + '/' + document.slug + queryString"
+            :doc="document"
+          />
+        </transition-group>
+      <div id="portfolioContent">
+        <nuxt :nuxtChildKey="$route.params.document" />
+      </div>
+    </div>
+  </div>
+</template>
+<style>
+.portfolioVue {
+  flex-basis: 1;
+  flex-grow: 1;
+  width: 100%;
+  height: calc(100% - 46px);
+  flex-direction: column;
+  display: flex;
+}
+.portfolioContainer {
+  display: flex;
+  align-items: stretch;
+  max-width: var(--maxwidth);
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width:100%;
+  margin: 0 auto;
+  background: var(--background1);
+}
+#portfolioContent {
+  flex-grow: 1;
+  min-width: 0;
+}
+.fullscreenlist #portfolioContent{
+  display:none;
+}
+.portfolioList {
+  flex-basis: 368px;
+  flex-shrink: 0;
+  height: fit-content;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition:all 0.2s;
+  align-content: flex-start;
+  padding:24px;
+  overflow-y:overlay;
+  overflow-x:hidden;
+  box-sizing: border-box;
+  top: calc(var(--headerheight) + var(--subheaderheight));
+}
+
+.fullscreenlist .portfolioList{
+  width:100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis:auto;
+  align-content: center;
+  padding:24px;
+  background-color:transparent;
+}
+
+.fullscreenlist .document:last-child{
+  margin-right:0px;
+}
+
+.fullscreenlist .portfolioList::after{
+  display: none;
+}
+.tagscontainer{
+    transform: translateY(-1px);
+    padding: 0px 12px;
+    background: var( --background2);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 1);
+    border: rgba(255, 255, 255, 0.1) solid 1px;
+    position: relative;
+    top: calc(var( --headerheight));
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width:400px;
+    z-index: 1;
+    transform: width 0.2s ease;
+}
+.tags {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  max-width: var(--maxwidth);
+  margin: 0 auto;
+}
+.portfolio-list {
+  position: relative;
+}
+.portfolio-list-item {
+  -webkit-transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+
+}
+.portfolio-list-enter-active {
+  opacity: 0;
+  transform: translateX(-32px);
+}
+.portfolio-list-enter-to {
+  opacity: 1;
+  transform: translateX(0px);
+}
+.portfolio-list-leave-to {
+  opacity: 0;
+  transform: translateX(-32px);
+}
+.portfolio-list-leave-active {
+  position: absolute !important;
+}
+
+.tag-list {
+  position: relative;
+  overflow: hidden;
+}
+.tag-list-item {
+  -webkit-transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  display: inline-block;
+}
+.tag-list-enter-active {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+.tag-list-enter-to {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.tag-list-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+.tag-list-leave-active {
+  position: absolute !important;
+}
+
+.slide-down-enter-active,
+.slide-right-enter-active {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.slide-down-leave-active,
+.slide-right-leave-active {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.slide-down-enter,
+.slide-down-leave-to,
+.slide-down-leave-active {
+  transform: translateY(-32px);
+  opacity: 0;
+}
+.slide-right-enter,
+.slide-right-leave-to,
+.slide-right-leave-active {
+  transform: translateX(-320px);
+  opacity: 0;
+}
+
+@media screen and (max-width: 800px) {
+  .portfolioContainer:not(.fullscreenlist) {
+    flex-direction: column;
+    top:72px;
+  }
+  #portfolioContent{
+    margin-top:32px;
+  }
+  .portfolioContainer:not(.fullscreenlist) .portfolioList {
+    width: 100%;
+    flex-direction: row;
+    flex-basis:128px;
+    overflow-x: overlay;
+    top:32px;
+    flex-wrap: nowrap;
+  }
+  .fullscreenlist .portfolioList{
+    justify-content: center;
+  }
+  .portfolioList{
+    padding:0px 24px;
+  }
+  .portfolioList .document {
+    flex-shrink: 0;
+    width: 320px;
+
+  }
+  .portfolioList .document.selected {
+    transform:translate(0, 12px);
+  }
+}
+
+</style>
+<script>
+import { gsap } from "gsap";
+let cntrlIsPressed = false;
+export default {
+  data() {
+    return {
+      tags: [],
+      documents: [],
+      selectedCategory: "",
+      selectedDocument: "",
+      selectedall: true,
+      queryString: "",
+      tagContainerHeight:0
+    };
+  },
+  watch: {
+    "$route.path": function (path) {
+      this.selectedDocument = this.$route.params.document;
+      this.selectedCategory = this.$route.params.slug;
+      for (let i = 0; i < this.documents.length; i++) {
+        if (this.documents[i].slug == this.selectedDocument)
+          this.documents[i].selected = true;
+        else this.documents[i].selected = false;
+      }
+    },
+    "$route.params.document":function(){
+      //animate transition from column to row
+    },
+    "$route.query": function () {
+      let squery = this.$route.query.s;
+      if (squery) {
+        this.queryString = "?s=" + this.$route.query.s;
+        let visibleTags = this.$route.query.s.split(",").map(function (e) {
+          return '"' + e + '"';
+        });
+        for (let i = 0; i < this.tags.length; i++) {
+          this.tags[i].selected = this.$route.query.s.includes(this.tags[i].id);
+        }
+        this.reloadDocuments(visibleTags);
+
+      } else {
+        this.queryString = "";
+        this.reloadDocuments([]);
+        for (let i = 0; i < this.tags.length; i++) {
+          this.tags[i].selected = true;
+        }
+      }
+    },
+  },
+  methods: {
+    tagsAppear: function(){
+      this.tagContainerHeight = this.$refs.tagContainer ? this.$refs.tagContainer.clientHeight : 0;
+    },
+    tagsHideBefore: function(){
+     // gsap.to(".portfolioContainer", {duration: 2, y:-32})
+    },
+    tagsHideAfter: function(){
+     // gsap.to(".portfolioContainer", {duration: 0, y:0})
+    },
+    toggleSelectedAll: function () {
+      this.selectedall = !this.selectedall;
+      if(this.selectedall){
+        this.$router.replace({ path: this.$route.path, query: null });
+        this.reloadDocuments(this.tags.map(e => e.id), this.selectedall);
+      }
+    },
+    beforeDocumentLeave: function (el, done) {
+      el.style.top = el.offsetTop + "px";
+      el.style.left = el.offsetLeft + "px";
+    },
+    async reloadDocuments(visibleTags, selectedall) {
+      let tagQuery = `,tags:[${visibleTags.join(",")}]`;
+      let documentselector = "";
+      if(this.selectedCategory){
+        documentselector=`(where:{categories:{slug:"${this.selectedCategory}"}${tagQuery}})`;
+      }
+      if (selectedall) tagQuery = "";
+      const data = await this.$strapi.graphql({
+        query: `
+          query{
+            documents${documentselector}{
+              title,
+              categories{
+                slug
+              },
+              category{
+                slug
+              },
+              date,
+              id,
+              slug,
+              backgroundcolor,
+              foregroundcolor,
+              foregroundcolor2
+              tags{
+                name,
+                icon
+              },
+              images{
+                formats
+              }
+            }
+          }`,
+      });
+      let documents = [];
+      for (let i = 0; i < data.documents.length; i++) {
+        const d = data.documents[i];
+        if (d.slug == this.selectedDocument) d.selected = true;
+        else d.selected = false;
+        documents.push(d);
+      }
+      this.documents = documents;
+    },
+    tagselectionChange: async function (id, ctrlclick) {
+      let visibleTags = [];
+      let visibleTagsRawIds = [];
+      for (let i = 0; i < this.tags.length; i++) {
+        if (this.selectedall || !ctrlclick) {
+          if (this.tags[i].id == id) {
+            this.tags[i].selected = true;
+          } else {
+            this.tags[i].selected = false;
+          }
+        } else if (this.tags[i].id == id) {
+          this.tags[i].selected = !this.tags[i].selected;
+        }
+        if (this.tags[i].selected) {
+          visibleTags.push(`"${this.tags[i].id}"`);
+          visibleTagsRawIds.push(this.tags[i].id);
+        }
+      }
+      if (visibleTagsRawIds.length != this.tags.length && visibleTagsRawIds.length>0) {
+        //less selected tags than there are total, change route to selection
+        this.$router.replace({
+          path: this.$route.path,
+          query: { s: visibleTagsRawIds.join(",") },
+        });
+        if (this.selectedall) this.selectedall = false;
+      } else {
+        this.$router.replace({ path: this.$route.path, query: null });
+        this.selectedall = true;
+      }
+      if (!visibleTags.length) visibleTags.push("null");
+      if (visibleTags.length == this.tags.length) this.selectedall = true;
+      await this.reloadDocuments(visibleTagsRawIds, this.selectedall);
+    },
+    resizeTagContainer: function({width, height}){
+     this.tagContainerHeight = height;
+    }
+  },
+  mounted(){
+    this.tagContainerHeight = this.$refs.tagContainer ? this.$refs.tagContainer.clientHeight : 0;
+  },
+  async asyncData(context) {
+    try {
+      const selectedCategory = context.params.slug;
+      const selectedDocument = context.params.document;
+      let queryString = "";
+      let tagQuery = "";
+      let selectedTags = [];
+      if (context.query.s) {
+        queryString = "?s=" + context.query.s;
+        selectedTags = context.query.s.split(",");
+        let visibleTags = [];
+        if (selectedTags.length) {
+          visibleTags = context.query.s.split(",").map(function (e) {
+            return '"' + e + '"';
+          });
+        }
+        tagQuery = ",tags:[" + visibleTags.join(",") + "]";
+      }
+      let documentselector = "";
+      let tagselector = "";
+      if(selectedCategory){
+        documentselector=`(where:{categories:{slug:"${selectedCategory}"}${tagQuery}})`;
+        tagselector=`(where:{categories:{slug:"${selectedCategory}"}})`;
+      }
+      let qstring = `
+          query{
+            tags${tagselector}{
+              name,
+              id,
+              icon
+            },
+            documents${documentselector}{
+              title,
+              categories{
+                slug
+              },
+              category{
+                slug
+              },
+              date,
+              id,
+              slug,
+              backgroundcolor,
+              foregroundcolor,
+              foregroundcolor2,
+              tags{
+                name,
+                icon
+              },
+              images{
+                formats
+              }
+            }
+          }
+          `;
+      console.log(qstring);
+      const data = await context.$strapi.graphql({
+        query: qstring,
+      });
+      let tags = [];
+      if(selectedCategory){
+        for (let i = 0; i < data.tags.length; i++) {
+          const t = data.tags[i];
+          if (selectedTags != undefined && selectedTags.length) {
+            t.selected = selectedTags.includes(t.id);
+          } else {
+            t.selected = false;
+          }
+          tags.push(t);
+        }
+      }
+      let documents = [];
+      for (let i = 0; i < data.documents.length; i++) {
+        const d = data.documents[i];
+        if (d.slug == selectedDocument) d.selected = true;
+        else d.selected = false;
+        documents.push(d);
+      }
+      return {
+        tags,
+        documents,
+        selectedCategory,
+        selectedDocument,
+        queryString,
+        selectedall:(selectedTags==undefined || !selectedTags.length)
+      };
+    } catch (err) {
+      return {
+        error: err,
+      };
+    }
+  },
+};
+</script>

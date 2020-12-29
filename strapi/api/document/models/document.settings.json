@@ -2,11 +2,13 @@
   "kind": "collectionType",
   "collectionName": "documents",
   "info": {
-    "name": "document"
+    "name": "document",
+    "description": ""
   },
   "options": {
     "increments": true,
-    "timestamps": true
+    "timestamps": true,
+    "draftAndPublish": false
   },
   "attributes": {
     "title": {
@@ -31,8 +33,8 @@
       "required": false
     },
     "categories": {
-      "collection": "category",
-      "via": "documents"
+      "via": "documents",
+      "collection": "category"
     },
     "tags": {
       "collection": "tag",
@@ -71,6 +73,18 @@
       "type": "component",
       "repeatable": true,
       "component": "component.moreinfo"
+    },
+    "video": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "category": {
+      "model": "category"
     }
   }
 }
