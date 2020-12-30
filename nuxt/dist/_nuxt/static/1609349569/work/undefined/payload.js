@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/work/undefined", (function(a,b,c){return {data:[{categories:[{name:"Film",id:"1",slug:"film"},{name:"Design",id:"2",slug:"design"},{name:"Software",id:"3",slug:"software"}],selectedCategory:a},{tags:[],documents:[],selectedCategory:a,selectedDocument:b,queryString:c,selectedall:true},{document:{title:c}}],fetch:[],mutations:b}}("undefined",void 0,"")));

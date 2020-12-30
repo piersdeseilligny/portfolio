@@ -1,0 +1,106 @@
+/*!
+	 * ScrollTrigger 3.5.1
+	 * https://greensock.com
+	 *
+	 * @license Copyright 2008-2020, GreenSock. All rights reserved.
+	 * Subject to the terms at https://greensock.com/standard-license or for
+	 * Club GreenSock members, the agreement issued with that membership.
+	 * @author: Jack Doyle, jack@greensock.com
+	*/
+
+/*!
+  * vue-router v3.4.3
+  * (c) 2020 Evan You
+  * @license MIT
+  */
+
+/*!
+ * CSSPlugin 3.5.1
+ * https://greensock.com
+ *
+ * Copyright 2008-2020, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/*!
+ * GSAP 3.5.1
+ * https://greensock.com
+ *
+ * @license Copyright 2008-2020, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/*!
+ * Vue.js v2.6.12
+ * (c) 2014-2020 Evan You
+ * Released under the MIT License.
+ */
+
+/*!
+ * cookie
+ * Copyright(c) 2012-2014 Roman Shtylman
+ * Copyright(c) 2015 Douglas Christopher Wilson
+ * MIT Licensed
+ */
+
+/*!
+ * vue-client-only v2.0.0
+ * (c) 2019-present egoist <0x142857@gmail.com>
+ * Released under the MIT License.
+ */
+
+/*!
+ * vue-no-ssr v1.1.1
+ * (c) 2018-present egoist <0x142857@gmail.com>
+ * Released under the MIT License.
+ */
+
+/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=script&lang=js& */
+
+/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=template&id=058b7650& */
+
+/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */
+
+/*! ./embed.vue */
+
+/*! ./embed.vue?vue&type=script&lang=js& */
+
+/*! ./embed.vue?vue&type=template&id=058b7650& */
+
+/*! MIT License © Sindre Sorhus */
+
+/*! exports provided: default */
+
+/*! exports provided: render, staticRenderFns */
+
+/*!**********************!*\
+        !*** ./src/index.js ***!
+        \**********************/
+
+/*!***********************!*\
+        !*** ./src/embed.vue ***!
+        \***********************/
+
+/*!************************************************!*\
+        !*** ./src/embed.vue?vue&type=script&lang=js& ***!
+        \************************************************/
+
+/*!******************************************************!*\
+        !*** ./src/embed.vue?vue&type=template&id=058b7650& ***!
+        \******************************************************/
+
+/*!********************************************************************!*\
+        !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
+        \********************************************************************/
+
+/*!**********************************************************************************************************************************!*\
+        !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=script&lang=js& ***!
+        \**********************************************************************************************************************************/
+
+/*!************************************************************************************************************************************************************************************!*\
+        !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=template&id=058b7650& ***!
+        \************************************************************************************************************************************************************************************/
