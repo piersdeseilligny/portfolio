@@ -539,6 +539,14 @@ export default {
       },
     });
   },
+  metaInfo() {
+    return {
+      title: this.document.title,
+      meta:[
+        { property:'og:title', content:this.document.title}
+      ]
+    }
+  },
   async asyncData(context) {
     try {
       if (!context.params.document) {
