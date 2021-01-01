@@ -458,6 +458,7 @@ export default {
       document: {
         title: "hello",
         tags: [{ name: "", id: "" }],
+        description:"",
       },
       lightboxindex:null,
       lightboxitems:[]
@@ -539,13 +540,35 @@ export default {
       },
     });
   },
-  metaInfo() {
-    return {
-      title: this.document.title,
-      meta:[
-        { property:'og:title', content:this.document.title}
-      ]
+  head() {
+    if(this.document && this.document.title){
+      let image = undefined;
+      let type = "website";
+      if(this.document.poster){
+        image = this.$staticAsset(this.$config.strapiBaseUri + this.document.poster.formats.medium.url);
+      }
+      if(this.document.typeoverride) type = this.document.typeoverride
+      else{
+        switch (this.$route.params.slug) {
+          case 'film': type = "video.movie"; break;
+          case 'software': type = "softwareapplication";
+          default:
+            break;
+        }
+      }
+      return {
+        title: this.document.title + " - Piers Deseilligny",
+        description:this.document.description,
+        meta:[
+          { hid:'og-title', property:'og:title', content:this.document.title},
+          { hid:'og-description', property:'og:description', content:this.document.description},
+          { hid:'og-image', property:'og:image', content:image },
+          { hid:'og-type', property:'og:type', content:type},
+          { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/"+this.$route.params.slug+"/"+this.$route.params.document }
+        ]
+      }
     }
+    else return null;
   },
   async asyncData(context) {
     try {
@@ -555,7 +578,8 @@ export default {
       let q = `
 		  query {
 			documents(where:{categories:{slug:"${context.params.slug}"}, slug:"${context.params.document}"}){
-			  title,
+        title,
+        typeoverride,
 			  description,
 			  contentblocks{
 				tag{

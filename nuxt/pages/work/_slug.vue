@@ -402,6 +402,19 @@ export default {
     this.tagContainerHeight = this.$refs.tagContainer ? this.$refs.tagContainer.clientHeight : 0;
     this.filterDocuments();
   },
+  head() {
+    let title="";
+    if(this.selectedCategory) title = this.$parent.$data.selectedCategoryName;
+    if(!title) title="All work";
+      return {
+        title: `${title} - Piers Deseilligny`,
+        meta:[
+          { hid:'og-title', property:'og:title', content:title },
+          { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/work/"+(this.selectedCategory ? this.selectedCategory : "")},
+          { hid:'og-description', property:'og:description', content:""}
+        ]
+    }
+  },
   async asyncData(context) {
     try {
       const selectedCategory = context.params.slug;

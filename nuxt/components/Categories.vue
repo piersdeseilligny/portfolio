@@ -5,13 +5,13 @@
             <nuxt-link
             to="/work/"
             :class="`clickable ${!selected ? 'selected' : ''}`"
-            v-on:click.native="$emit('select', undefined)">All</nuxt-link>
+            v-on:click.native="$emit('select', {slug:undefined, name:undefined})">All</nuxt-link>
         </div>
         <div class="navcontainer" v-for="category in categories" :key="category.id">
             <nuxt-link
             :to="'/work/' + category.slug"
             :class="`clickable ${category.slug == selected ? 'selected' : ''}`"
-            v-on:click.native="$emit('select', category.slug)">{{ category.name }}</nuxt-link>
+            v-on:click.native="$emit('select', category)">{{ category.name }}</nuxt-link>
         </div>
     </nav>
 </div>

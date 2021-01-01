@@ -1,6 +1,6 @@
 <template>
 <div class="portfolioParent">
-    <Categories :categories="categories" :selected="selectedCategory" @select="function(e){ selectedCategory=e }"/>
+    <Categories :categories="categories" :selected="selectedCategory" @select="function(e){ selectedCategory=e.slug; selectedCategoryName=e.name }"/>
     <nuxt-child :key="$route.name"/>
 </div>
 </template>
@@ -18,6 +18,7 @@
         return{
             categories:[{name:"test"}],
             selectedCategory:"",
+            selectedCategoryName:"",
             error:{}
         }
     },

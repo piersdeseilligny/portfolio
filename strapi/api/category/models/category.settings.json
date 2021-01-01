@@ -17,8 +17,8 @@
       "unique": true
     },
     "documents": {
-      "collection": "document",
       "via": "categories",
+      "collection": "document",
       "dominant": true
     },
     "slug": {

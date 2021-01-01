@@ -10,7 +10,10 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'msapplication-TileColor', content:"#da532c" },
       { name: 'theme-color', content:"#ffffff" },
-      { hid: 'description', name: 'description', content: '' }
+      { hid: 'description', name: 'description', content: '' },
+      { hid: 'og-title', property: 'og:title', content: 'Piers Deseilligny' },
+      { hid: 'og-sitename', property: 'og:sitename', content: 'Piers Deseilligny' },
+      { hid:'og-type', property:'og:type', content:"website"},
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
