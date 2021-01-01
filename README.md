@@ -9,9 +9,10 @@ The website is deployed statically, for simplicity, speed, cost, and security re
 * This will statically generate the project in `/nuxt/dist`
     * During generation, the custom `staticAsset` plugin will copy every asset requested from the strapi server to `dist/assets`
     * The custom `staticAPI` plugin will save every request made to strapi API as a JSON file in `/dist/api`
-    * Any request to the strapi API or Assets will therefore become part of the static Nuxt.JS application: for example a request to `http://localhost:1337/graphql` in development becomes `https://piersdeseilligny.com/4ac931e11a8ce8fa09b793f6b5acf6141eff2eb4.json` in production (the filename is a hash of the original GraphQL query made to the strapi server).
-* This dist folder can then be uploaded to the website through Git, a script, the hosting provider's web interface, etc...
+    * Any request to the strapi API or Assets will therefore become part of the static Nuxt.JS application: for example a request to `http://localhost:1337/graphql` in development becomes `https://piersdeseilligny.com/api/4ac931e11a8ce8fa09b793f6b5acf6141eff2eb4.json` in production (the filename is a hash of the original GraphQL query made to the strapi server).
+* This dist folder can then be uploaded to the website through the `nuxt/updatewebsite.js` script, which simply connects to the web server through SSH and performs a git pull
 
+*All of these steps can be run at once with `npm run updatecontent`, which will generate the website, push a commit to GitHub, and run the updatewebsite script*
 
 This method allows for fast and efficient development, while simultaneously keeping hosting extremely fast and cheap: the web server simply needs to be capable of serving static files, instead of running two fairly heavy node.js applications + a database. One gets the benefits of a sophisticated CMS, without needing to actually run it 24/7 in production - which also has the security benefit of severely reducing the attack surface.
 
