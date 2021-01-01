@@ -23,13 +23,12 @@
     },
     watch: {
         '$route.path': function(path) {
-            console.log(path);
             this.selectedCategory = path.split("/")[2];
         }
     },
     async asyncData (context) {
       try{
-        const data = await context.$strapi.graphql({
+        const data = await context.$staticAPI({
           query:`
           query {
               categories{

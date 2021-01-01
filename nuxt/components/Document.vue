@@ -1,6 +1,6 @@
 <template>
     <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true}" :to="link">
-        <img class="document-bg" alt="" v-if="doc.images && doc.images[0]" :src="$config.strapiBaseUri+doc.images[0].formats.medium.url"/>
+        <img class="document-bg" alt="" v-if="doc.images && doc.images[0]" :src="$staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url)"/>
         <div class="document-overlay" @touchstart="hoverShow" @touchend="hoverHide" @mouseenter="hoverShow" @mouseleave="hoverHide">
             <div ref="docoverlay" class="document-gradient"
                 :style="`background: linear-gradient(transparent,${doc.backgroundcolor});`"></div>
@@ -175,7 +175,6 @@ export default {
             return tl;
         },
         hoverShow(){
-            console.log("hover");
             this.hoverAnimation(".out").play();
         },
         hoverHide(){

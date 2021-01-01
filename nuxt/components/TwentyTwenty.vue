@@ -88,7 +88,6 @@ export default {
         var offset = Math.abs(this.slideOffset - newoffset);
 
         if(offset>0.05){
-          console.log(offset);
           //more than 10 pixels, animate the offset
           gsap.to(this, {slideOffset:newoffset, duration:0.2, ease:"power4.inout"});
         }

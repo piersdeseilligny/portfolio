@@ -57,7 +57,7 @@
             <img
               class="doccont-content-poster"
               alt="Poster"
-              :src="$config.strapiBaseUri + document.poster.formats.medium.url"
+              :src="$staticAsset($config.strapiBaseUri + document.poster.formats.medium.url)"
             />
           </div>
           </div>
@@ -439,7 +439,6 @@ export default {
       });
     },
     slidesClick:function(){
-      console.log(this.$refs.doccontStory);
       this.lightboxindex = this.$refs.doccontStory.activeslide;
     },
     slidesEnter:function(){
@@ -565,8 +564,11 @@ export default {
 			  }
 			}
 		  }
-		  `;
-      const data = await context.$strapi.graphql({
+      `;
+      let name = "work";
+      if(context.params.slug) name+="_"+context.params.slug;
+      if(context.params.document) name+="_"+context.params.document;
+      const data = await context.$staticAPI({
         query: q,
       });
       if (data && data.documents && data.documents.length) {
@@ -575,9 +577,9 @@ export default {
           for (let i = 0; i < data.documents[0].images.length; i++) {
             const item = data.documents[0].images[i];
             images.push({
-              src:context.$config.strapiBaseUri + item.url,
+              src:context.$staticAsset(context.$config.strapiBaseUri + item.url),
               description:item.caption,
-              thumb:context.$config.strapiBaseUri + item.formats.thumbnail.url
+              thumb:context.$staticAsset(context.$config.strapiBaseUri + item.formats.thumbnail.url)
             });
           }
         }

@@ -3,7 +3,7 @@
     <div class="top">
       <Contact/>
     </div>
-    <div v-if="backgroundImage" class="bottom" :style="`background-image:url(${$config.strapiBaseUri + backgroundImage.url})`">
+    <div v-if="backgroundImage" class="bottom" :style="`background-image:url(${$staticAsset($config.strapiBaseUri + backgroundImage.url)})`">
     </div>
   </div>
 </template>
@@ -40,8 +40,7 @@ export default {
     },
     async asyncData (context) {
       try{
-        console.log("async data attsempt");
-        const data = await context.$strapi.graphql({
+        const data = await context.$staticAPI({
           query:`
           query{
   contactImage{

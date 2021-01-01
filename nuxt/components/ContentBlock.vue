@@ -13,11 +13,11 @@
      v-for="ba in block.beforeafters"
      :key="ba.id"
      :aspectRatio="ba.before.formats.large.height/ba.before.formats.large.width"
-      :before="$config.strapiBaseUri+ba.before.formats.large.url"
+      :before="$staticAsset($config.strapiBaseUri+ba.before.formats.large.url)"
       beforeLabel="Before"
       afterLabel="After"
       :offset="ba.offset"
-      :after="$config.strapiBaseUri+ba.after.formats.large.url"
+      :after="$staticAsset($config.strapiBaseUri+ba.after.formats.large.url)"
     />
     <div class="embed-container" :style="`padding-bottom: ${(1/(block.videoembedaspect ? block.videoembedaspect : 1.77))*100}%`" v-if="block.videoembed">
       <video-embed :src="block.videoembed"></video-embed>

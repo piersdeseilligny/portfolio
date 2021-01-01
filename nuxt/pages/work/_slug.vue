@@ -41,7 +41,7 @@
         >
           <Document
             v-for="document in documents"
-            class="portfolio-list-item"
+            :class="{'portfolio-list-item':true, 'filteredout':document.hidden}"
             :key="document.id"
             :link="'/work/' + document.category.slug + '/' + document.slug + queryString"
             :doc="document"
@@ -141,7 +141,9 @@
 .portfolio-list-item {
   -webkit-transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-
+}
+.portfolio-list-item.filteredout{
+  display:none;
 }
 .portfolio-list-enter-active {
   opacity: 0;
@@ -244,7 +246,7 @@ let cntrlIsPressed = false;
 export default {
   data() {
     return {
-      tags: [],
+      tags: [{name:"hello", id:0}],
       documents: [],
       selectedCategory: "",
       selectedDocument: "",
@@ -267,24 +269,7 @@ export default {
       //animate transition from column to row
     },
     "$route.query": function () {
-      let squery = this.$route.query.s;
-      if (squery) {
-        this.queryString = "?s=" + this.$route.query.s;
-        let visibleTags = this.$route.query.s.split(",").map(function (e) {
-          return '"' + e + '"';
-        });
-        for (let i = 0; i < this.tags.length; i++) {
-          this.tags[i].selected = this.$route.query.s.includes(this.tags[i].id);
-        }
-        this.reloadDocuments(visibleTags);
-
-      } else {
-        this.queryString = "";
-        this.reloadDocuments([]);
-        for (let i = 0; i < this.tags.length; i++) {
-          this.tags[i].selected = true;
-        }
-      }
+      this.filterDocuments();
     },
   },
   methods: {
@@ -301,14 +286,39 @@ export default {
       this.selectedall = !this.selectedall;
       if(this.selectedall){
         this.$router.replace({ path: this.$route.path, query: null });
-        this.reloadDocuments(this.tags.map(e => e.id), this.selectedall);
+        this.filterDocuments();
       }
     },
     beforeDocumentLeave: function (el, done) {
       el.style.top = el.offsetTop + "px";
       el.style.left = el.offsetLeft + "px";
     },
-    async reloadDocuments(visibleTags, selectedall) {
+    async filterDocuments() {
+      let visibleTags = [];
+      if(this.$route.query.s){
+        visibleTags = this.$route.query.s.split(",");
+        for (let i = 0; i < this.tags.length; i++) {
+          this.tags[i].selected = visibleTags.includes(this.tags[i].id.toString());
+        }
+      }
+
+      for (let i = 0; i < this.documents.length; i++) {
+        let hidden = true;
+        if(visibleTags && visibleTags.length && visibleTags.length>0){
+          for (let j = 0; j < this.documents[i].tags.length; j++) {
+            console.log("id="+this.documents[i].tags[j].id.toString());
+            console.log(visibleTags);
+            if(visibleTags.includes(this.documents[i].tags[j].id.toString())){
+              hidden = false;
+            }
+          }
+        }
+        else{
+          hidden = false;
+        }
+        this.documents[i].hidden = hidden;
+      }
+      /*
       let tagQuery = `,tags:[${visibleTags.join(",")}]`;
       let documentselector = "";
       if(this.selectedCategory){
@@ -349,7 +359,7 @@ export default {
         else d.selected = false;
         documents.push(d);
       }
-      this.documents = documents;
+      this.documents = documents;*/
     },
     tagselectionChange: async function (id, ctrlclick) {
       let visibleTags = [];
@@ -382,7 +392,7 @@ export default {
       }
       if (!visibleTags.length) visibleTags.push("null");
       if (visibleTags.length == this.tags.length) this.selectedall = true;
-      await this.reloadDocuments(visibleTagsRawIds, this.selectedall);
+      await this.filterDocuments();
     },
     resizeTagContainer: function({width, height}){
      this.tagContainerHeight = height;
@@ -390,6 +400,7 @@ export default {
   },
   mounted(){
     this.tagContainerHeight = this.$refs.tagContainer ? this.$refs.tagContainer.clientHeight : 0;
+    this.filterDocuments();
   },
   async asyncData(context) {
     try {
@@ -438,6 +449,7 @@ export default {
               foregroundcolor2,
               tags{
                 name,
+                id,
                 icon
               },
               images{
@@ -446,8 +458,9 @@ export default {
             }
           }
           `;
+
       console.log(qstring);
-      const data = await context.$strapi.graphql({
+      const data = await context.$staticAPI({
         query: qstring,
       });
       let tags = [];

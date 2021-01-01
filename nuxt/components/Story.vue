@@ -8,7 +8,7 @@
         class="story-slide"
         v-for="(slide, slideindex) in slides"
         :key="slide.id"
-        :src="slideindex == 0 ? $config.strapiBaseUri + slide.url : undefined"
+        :src="slideindex == 0 ? $staticAsset($config.strapiBaseUri + slide.url) : undefined"
         :data-slideindex="slideindex"
         :ref="'slide' + slideindex"
         alt=""
@@ -98,7 +98,6 @@ export default {
   },
   methods: {
     loadSlide(slideindex, iserror) {
-      console.log("Load slide");
       if (iserror)
         console.error(
           "Failed to load previous image!! loading " + slideindex + " instead"
@@ -108,7 +107,7 @@ export default {
       if (slidetoLoad && slidetoLoad[0] && this.slides[slideindex]) {
         slidetoLoad[0].setAttribute(
           "src",
-          this.$config.strapiBaseUri + this.slides[slideindex].url
+          this.$staticAsset(this.$config.strapiBaseUri + this.slides[slideindex].url)
         );
       } else {
         console.error("Slide " + slideindex + " doesn't exist!!");
@@ -187,7 +186,6 @@ export default {
       this.timeline.to(blocks[i], {
         width: "100%",
         onStart: () => {
-          console.log("started for " + i);
           this.showSlide(i);
         },
       });
@@ -195,8 +193,16 @@ export default {
     this.timeline.play();
   },
   beforeDestroy: function () {
-    console.log("Gonna destroy component");
     this.timeline.kill();
   },
+  fetch: function(){
+    console.log("fetch story");
+    if(process.server){
+      console.log("slides");
+      this.slides.forEach((slide, index) => {
+         this.$staticAsset(this.$config.strapiBaseUri + slide.url);
+      });
+    }
+  }
 };
 </script>

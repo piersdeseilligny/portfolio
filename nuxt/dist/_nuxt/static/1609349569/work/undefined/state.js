@@ -1,1 +1,0 @@
-window.__NUXT__=(function(a){return {staticAssetsBase:"\u002F_nuxt\u002Fstatic\u002F1609349569",layout:"default",error:null,serverRendered:true,routePath:"\u002Fwork\u002Fundefined",config:{strapiBaseUri:a,strapi:{url:a},http:{browserBaseURL:"\u002F"}}}}("http:\u002F\u002F192.168.1.45:1337"));

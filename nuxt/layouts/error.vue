@@ -1,19 +1,7 @@
 <template>
-  <div class="container">
-    <div v-if="error.statusCode === 404">
-      <h1>Page not found</h1>
+  <div class="home">
+      <h1 class="emphasis">Error {{error.statusCode}}</h1>
       <p>{{ error.message }}</p>
-    </div>
-    <div v-else>
-      <h1>An error occurred</h1>
-    </div>
-    <div>
-      {{error.message}}
-    </div>
-    <div style="opacity:0.5;font-family:monospace;">
-      {{error}}
-    </div>
-    <n-link to="/">Home page</n-link>
   </div>
 </template>
 

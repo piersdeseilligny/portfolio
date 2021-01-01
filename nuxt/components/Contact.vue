@@ -1,7 +1,7 @@
 <template>
   <div class="home">
       <h1 class="emphasis">Get in touch</h1>
-      <p class="email">If you would like to get in touch to discuss my work or a potential collaboration, please reach out to me at&nbsp;<a href="mailto:piers.deseilligny@outlook.com">hello@piersdeseilligny.com</a></p>
+      <p class="email">If you would like to get in touch to discuss my work or a potential collaboration, please reach out to me at&nbsp;<a href="mailto:contact@piersdeseilligny.com">contact@piersdeseilligny.com</a></p>
       <Links/>
 
 

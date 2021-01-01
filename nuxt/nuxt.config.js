@@ -33,7 +33,7 @@ export default {
     port:3000,
     host:"0.0.0.0"
   },
-  target: "static",
+  //target: "static",
 
     loading: {
       color: 'white',
@@ -44,6 +44,10 @@ export default {
   plugins: [
     "~plugins/formatDate.js",
     "~plugins/vue-slick-carousel.js",
+    "~plugins/staticAPI.client.js",
+    "~plugins/staticAPI.server.js",
+    "~plugins/staticAsset.client.js",
+    "~plugins/staticAsset.server.js",
     {src:"~plugins/vue-embed.js", mode:"client"},
     {src:"~plugins/vue-cool-lightbox.js", mode:"client"},
     {src:"~plugins/vue-resize-observer.js", mode:"client"}

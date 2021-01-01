@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/contact", {data:[{backgroundImage:{url:"\u002Fuploads\u002Fvlcsnap_2020_12_29_00h56m42s452_c532d35a93.png"}}],fetch:[],mutations:void 0});

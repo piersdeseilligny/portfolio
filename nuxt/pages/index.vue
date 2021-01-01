@@ -130,7 +130,7 @@ export default {
     },
     async asyncData (context) {
       try{
-        const data = await context.$strapi.graphql({
+        const data = await context.$staticAPI({
           query:`
           query {
               categories{
