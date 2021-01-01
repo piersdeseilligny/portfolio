@@ -92,6 +92,7 @@
             {{ document.title }}
           </h1>
           <div class="doccont-content-description fgcolor2">
+            <div class="doccont-content-tags"><span v-for="tag in document.tags" :key="tag.id"><i v-html="tag.icon"></i>{{tag.name}}&nbsp;&nbsp;&nbsp;</span></div>
             {{ document.description }}
           </div>
           <div class="doccont-contentblocks">
@@ -245,6 +246,8 @@
   box-sizing: border-box;
 }
 
+
+
 .doccont-content-col1 {
   flex-basis: 128px;
   margin-right: 24px;
@@ -303,9 +306,30 @@
   font-family: var(--font-secondary);
   font-weight: 200;
 }
+.doccont-content-tags{
+  line-height: 14px;
+  font-size:12px;
+  color:var(--fgcolor);
+  margin-bottom:12px;
+}
+.doccont-content-tags>span{
+  display:inline-block;
+  opacity:0.6;
+}
+.doccont-content-tags i{
+  break-after: avoid;
+}
+.doccont-content-tags svg {
+  fill:var(--fgcolor);
+  max-height:14px;
+  width:14px;
+  margin-right:4px;
+  margin-bottom:-2px;
+  display:inline-block;
+}
 .doccont-content-description {
   font-size: 13px;
-  margin-top: 12px;
+  margin-top: 0px;
   z-index: 1;
   text-align: justify;
 }
@@ -366,6 +390,11 @@ function timelineFrom(el, done) {
     { y: -64, opacity: 0, duration: 0.3 },
     0
   );
+    tl.from(
+    el.querySelector(".doccont-contentblocks"),
+    { y: -64, opacity: 0, duration: 0.3 },
+    0.05
+  );
   tl.from(
     el.querySelector(".doccont-content-tags"),
     { y: -64, opacity: 0, duration: 0.3 },
@@ -404,6 +433,11 @@ function timelineTo(el, done) {
   );
   tl.to(
     el.querySelector(".doccont-content-tags"),
+    { y: 64, opacity: 0, duration: 0.3 },
+    0.05
+  );
+  tl.to(
+    el.querySelector(".doccont-contentblocks"),
     { y: 64, opacity: 0, duration: 0.3 },
     0.05
   );
