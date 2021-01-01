@@ -6,6 +6,7 @@
         <h1 class="emphasis">About me</h1>
         <div class="highlighted">Cinematography • Color grading • Software development</div>
           <p>
+            About hello
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque egestas non dui vel iaculis. Nulla vehicula luctus porttitor. Etiam feugiat finibus eros et pulvinar. Maecenas pellentesque condimentum magna sit amet malesuada. Morbi sed molestie ex. Fusce cursus gravida eleifend. Nulla sed scelerisque justo. Mauris facilisis arcu id elit imperdiet, sed sollicitudin nibh commodo. Donec auctor, nisi vulputate varius fermentum, sapien neque placerat sem, eget interdum orci lectus quis est.
         </p>
 
