@@ -1,4 +1,4 @@
-My personal portfolio website: Built using [Nuxt.JS]() and [Strapi](), deployed statically.
+My personal portfolio website: Built using [Nuxt.JS](https://nuxtjs.org/) and [Strapi](https://strapi.io/), deployed statically.
 
 
 ## Deployment
