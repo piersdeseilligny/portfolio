@@ -3,6 +3,8 @@
   <div class="home">
     <div class="indexcontainer">
       <div class="indexcontainer-about">
+        <h1>Website currently under construction</h1>
+        <p>I'm still finalizing the design and content of my personal website, but please don't hesitate to come back and check it out in a couple weeks :)</p>
         <h1 class="emphasis">About me</h1>
         <div class="highlighted">Cinematography • Color grading • Software development</div>
           <p>

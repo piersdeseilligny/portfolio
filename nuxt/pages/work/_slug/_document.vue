@@ -545,7 +545,10 @@ export default {
       let image = undefined;
       let type = "website";
       if(this.document.poster){
-        image = this.$staticAsset(this.$config.strapiBaseUri + this.document.poster.formats.medium.url);
+        image = this.$staticAsset(this.$config.strapiBaseUri + this.document.formats.medium.url);
+        if(this.$route.params.slug == "software" && this.document.images && this.document.images[0] && this.document.images[0].formats.medium.url){
+            image = this.$staticAsset(this.$config.strapiBaseUri + this.document.images[0].formats.medium.url);
+        }
       }
       if(this.document.typeoverride) type = this.document.typeoverride
       else{
@@ -621,7 +624,7 @@ export default {
 				  url
 			  },
 			  poster{
-				  formats
+          formats
 			  },
 			  tags{
 				  id,
