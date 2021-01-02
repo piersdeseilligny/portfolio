@@ -552,7 +552,7 @@ export default {
         switch (this.$route.params.slug) {
           case 'film': type = "video.movie"; break;
           case 'software': type = "softwareapplication";
-          default:
+          default: type = 'website'
             break;
         }
       }
@@ -564,7 +564,7 @@ export default {
           { hid:'og-description', property:'og:description', content:this.document.description},
           { hid:'og-image', property:'og:image', content:image },
           { hid:'og-type', property:'og:type', content:type},
-          { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/"+this.$route.params.slug+"/"+this.$route.params.document }
+          { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/work/"+this.$route.params.slug+"/"+this.$route.params.document }
         ]
       }
     }
