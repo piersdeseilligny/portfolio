@@ -8,7 +8,8 @@
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
     "updatecontent":"nuxt-ts generate && git add -A && git commit -m \"Update content\" && git push && node scripts/updatewebsite.js",
-    "update": "node scripts/updatewebsite.js"
+    "update": "node scripts/updatewebsite.js",
+    "strapi": "cd ../strapi && npm run develop"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
