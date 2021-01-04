@@ -106,10 +106,6 @@
   background-color:transparent;
 }
 
-.fullscreenlist .document:last-child{
-  margin-right:0px;
-}
-
 .fullscreenlist .portfolioList::after{
   display: none;
 }
@@ -206,7 +202,11 @@
   transform: translateX(-320px);
   opacity: 0;
 }
-
+@media screen and (max-width: 498px) {
+  .portfolioContainer.fullscreenlist .document{
+    width:100% !important;
+  }
+}
 @media screen and (max-width: 800px) {
   .portfolioContainer:not(.fullscreenlist) {
     flex-direction: column;
