@@ -7,7 +7,7 @@ var needle = require('needle');
 export default(context, inject) =>
 {
   //Inject $staticAsset
-  inject('staticAsset', function(url, customname=undefined){
+  inject('staticAsset', function(url, fullurl=false){
     if(context.isStatic){
       console.log("static asset server " + url);
       //The current target is static, so download any image into dist and return that path
@@ -15,7 +15,9 @@ export default(context, inject) =>
       if(customname) filename=customname;
       mkdirp.sync('./dist/assets');
       needle('get', url, { output: "./dist/assets/"+filename });
-      return "/assets/"+filename;
+      let urlprefix = "";
+      if(fullurl) urlprefix = "https://piersdeseilligny.com"
+      return urlprefix+"/assets/"+filename;
     }
     else{
       //The current target is not static, just return the same URL
