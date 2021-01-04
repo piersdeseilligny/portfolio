@@ -5,7 +5,6 @@ export default(context, inject) =>
     if(context.isStatic){
       //The current target is static, so return the static version from /assets
       let filename = url.substring(url.lastIndexOf('/')+1);
-      if(customname) filename=customname;
       let urlprefix = "";
       if(fullurl) urlprefix = "https://piersdeseilligny.com"
       return urlprefix+"/assets/"+filename;

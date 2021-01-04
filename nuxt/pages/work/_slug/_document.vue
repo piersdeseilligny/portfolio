@@ -392,17 +392,17 @@ function timelineFrom(el, done) {
   );
     tl.from(
     el.querySelector(".doccont-contentblocks"),
-    { y: -64, opacity: 0, duration: 0.3 },
+    { y: -32, opacity: 0, duration: 0.3 },
     0.05
   );
   tl.from(
     el.querySelector(".doccont-content-tags"),
-    { y: -64, opacity: 0, duration: 0.3 },
+    { y: -48, opacity: 0, duration: 0.3 },
     0.05
   );
   tl.from(
     el.querySelector(".doccont-content-description"),
-    { y: -64, opacity: 0, duration: 0.3 },
+    { y: -48, opacity: 0, duration: 0.3 },
     0.1
   );
   tl.from(
@@ -428,23 +428,23 @@ function timelineTo(el, done) {
   );
   tl.to(
     el.querySelector(".doccont-content-title"),
-    { y: 64, opacity: 0, duration: 0.3 },
+    { y: 32, opacity: 0, duration: 0.3 },
     0
   );
   tl.to(
     el.querySelector(".doccont-content-tags"),
-    { y: 64, opacity: 0, duration: 0.3 },
-    0.05
+    { y: 48, opacity: 0, duration: 0.3 },
+    0
   );
   tl.to(
     el.querySelector(".doccont-contentblocks"),
-    { y: 64, opacity: 0, duration: 0.3 },
-    0.05
+    { y: 64, opacity: 0, duration: 0.4 },
+    0
   );
   tl.to(
     el.querySelector(".doccont-content-description"),
-    { y: 64, opacity: 0, duration: 0.3 },
-    0.1
+    { y: 48, opacity: 0, duration: 0.3 },
+    0
   );
   tl.to(
     el.querySelector(".doccont-content-col1"),
@@ -493,11 +493,9 @@ export default {
   },
   transition: {
     leave(el, done) {
-      console.log("LEAVE ANIMATION");
       timelineTo(el, done);
     },
     enter(el, done) {
-      console.log("ENTER ANIMATION");
       timelineFrom(el, done);
     },
     mode: "out-in",

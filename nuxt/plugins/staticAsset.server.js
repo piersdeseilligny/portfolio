@@ -12,7 +12,6 @@ export default(context, inject) =>
       console.log("static asset server " + url);
       //The current target is static, so download any image into dist and return that path
       let filename = url.substring(url.lastIndexOf('/')+1);
-      if(customname) filename=customname;
       mkdirp.sync('./dist/assets');
       needle('get', url, { output: "./dist/assets/"+filename });
       let urlprefix = "";

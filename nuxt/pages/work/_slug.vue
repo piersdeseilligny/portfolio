@@ -300,7 +300,12 @@ export default {
         for (let i = 0; i < this.tags.length; i++) {
           this.tags[i].selected = visibleTags.includes(this.tags[i].id.toString());
         }
+        this.queryString = "?s="+this.$route.query.s;
       }
+      else{
+        this.queryString = "";
+      }
+
 
       for (let i = 0; i < this.documents.length; i++) {
         let hidden = true;
@@ -317,6 +322,7 @@ export default {
           hidden = false;
         }
         this.documents[i].hidden = hidden;
+
       }
       /*
       let tagQuery = `,tags:[${visibleTags.join(",")}]`;
