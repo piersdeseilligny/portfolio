@@ -18,7 +18,9 @@
         return{
             categories:[{name:"test"}],
             selectedCategory:"",
+            categoryStore:{},
             selectedCategoryName:"",
+            selectedCategoryDescription:"",
             error:{}
         }
     },
@@ -32,17 +34,22 @@
         const data = await context.$staticAPI({
           query:`
           query {
-              categories{
+              categories(sort:"order"){
                 name,
                 id,
-                slug
+                slug,
+                description
               }
           }
           `
         });
         const categories = data.categories;
+        let categoryStore = {}
+        for (let i = 0; i < data.categories.length; i++) {
+          categoryStore[data.categories[i].slug] = data.categories[i];
+        }
         const selectedCategory = context.params.slug; // When calling /abc the slug will be "abc"
-        return{ categories, selectedCategory }
+        return{ categories, selectedCategory, categoryStore }
       }
       catch(err){
         return {

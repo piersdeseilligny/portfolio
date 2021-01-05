@@ -39,13 +39,21 @@
           tag="div"
           v-on:before-leave="beforeDocumentLeave"
         >
-          <Document
-            v-for="document in documents"
+        <template v-for="document in documents">
+          <template v-if="document.first">
+            <h2 v-if="!selectedCategory" :key="document.category.slug" >{{$parent.$data.categoryStore[document.category.slug].name}}</h2>
+            <div class="pContainer" :key="document.category.slug + '_d'">
+              <p>{{$parent.$data.categoryStore[document.category.slug].description}}</p>
+            </div>
+          </template>
+          <!--<h2 :key="document.id+'_h2'" v-if="document.category.name != documentLoopCategory && (documentLoopCategory = document.category.name)">document.category.name</h2>
+          --><Document
             :class="{'portfolio-list-item':true, 'filteredout':document.hidden}"
             :key="document.id"
             :link="'/work/' + document.category.slug + '/' + document.slug + queryString"
             :doc="document"
           />
+          </template>
         </transition-group>
       <div id="portfolioContent">
         <nuxt :nuxtChildKey="$route.params.document" />
@@ -83,7 +91,7 @@
 .portfolioList {
   flex-basis: 368px;
   flex-shrink: 0;
-  height: fit-content;
+  height: calc(100% - var(--headerheight) - var(--subheaderheight));
   position: relative;
   display: flex;
   flex-direction: column;
@@ -95,14 +103,36 @@
   box-sizing: border-box;
   top: calc(var(--headerheight) + var(--subheaderheight));
 }
-
+.portfolioList > *{
+  flex-shrink: 0;
+}
+.portfolioList h2{
+    margin-top: 12px;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--foreground2);
+}
+.fullscreenlist .portfolioList h2{
+  flex-basis:100%;
+}
+.portfolioList h2:first-child{
+  margin-top:0px;
+}
+.fullscreenlist .portfolioList .pContainer{
+  flex-basis:100%;
+}
+.portfolioList .pContainer p{
+  max-width:512px;
+  color:var(--foreground);
+  font-size:13px;
+  margin-top:0;
+  margin-bottom:0;
+}
 .fullscreenlist .portfolioList{
   width:100%;
   flex-direction: row;
   flex-wrap: wrap;
   flex-basis:auto;
-  align-content: center;
-  padding:24px;
   background-color:transparent;
 }
 
@@ -206,6 +236,9 @@
   .portfolioContainer.fullscreenlist .document{
     width:100% !important;
   }
+  .portfolioList {
+    padding: 12px;
+  }
 }
 @media screen and (max-width: 800px) {
   .portfolioContainer:not(.fullscreenlist) {
@@ -221,13 +254,14 @@
     flex-basis:128px;
     overflow-x: overlay;
     top:32px;
+    padding:0px 12px;
     flex-wrap: nowrap;
   }
-  .fullscreenlist .portfolioList{
-    justify-content: center;
+  .portfolioContainer:not(.fullscreenlist) .portfolioList h2{
+    display:none;
   }
-  .portfolioList{
-    padding:0px 24px;
+  .portfolioContainer:not(.fullscreenlist) .portfolioList p{
+    display:none;
   }
   .portfolioList .document {
     flex-shrink: 0;
@@ -410,14 +444,22 @@ export default {
   },
   head() {
     let title="";
-    if(this.selectedCategory) title = this.$parent.$data.selectedCategoryName;
-    if(!title) title="All work";
+    let description="";
+    if(this.selectedCategory){
+      title = this.$parent.$data.categoryStore[this.selectedCategory].name;
+      description = this.$parent.$data.categoryStore[this.selectedCategory].description;
+    }
+    if(!title){
+      title="All work";
+      description=`All my work in ${this.$parent.$data.categories.map((v)=>{ return v.name; }).join(', ')}`;
+    }
       return {
         title: `${title} - Piers Deseilligny`,
         meta:[
           { hid:'og-title', property:'og:title', content:title },
           { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/work/"+(this.selectedCategory ? this.selectedCategory : "")},
-          { hid:'og-description', property:'og:description', content:""}
+          { hid:'og-description', property:'og:description', content:description },
+          { hid:'description', property:'description', content:description }
         ]
     }
   },
@@ -439,10 +481,10 @@ export default {
         }
         tagQuery = ",tags:[" + visibleTags.join(",") + "]";
       }
-      let documentselector = "";
+      let documentselector = `(sort:"order")`;
       let tagselector = "";
       if(selectedCategory){
-        documentselector=`(where:{categories:{slug:"${selectedCategory}"}${tagQuery}})`;
+        documentselector=`(sort:"order", where:{categories:{slug:"${selectedCategory}"}${tagQuery}})`;
         tagselector=`(where:{categories:{slug:"${selectedCategory}"}})`;
       }
       let qstring = `
@@ -458,7 +500,8 @@ export default {
                 slug
               },
               category{
-                slug
+                slug,
+                order
               },
               date,
               id,
@@ -495,10 +538,21 @@ export default {
         }
       }
       let documents = [];
+      let firstOfCategory = true;
+      let previousCategory = "";
+      data.documents.sort((a,b)=>{
+        /*if (a.category === b.city) {
+         // Price is only important when cities are the same
+          return b. - a.price;
+        }*/
+        return a.category.order > b.category.order ? 1 : -1;
+      })
       for (let i = 0; i < data.documents.length; i++) {
         const d = data.documents[i];
         if (d.slug == selectedDocument) d.selected = true;
         else d.selected = false;
+        d.first = (d.category.slug != previousCategory);
+        previousCategory = d.category.slug;
         documents.push(d);
       }
       return {

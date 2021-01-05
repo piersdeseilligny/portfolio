@@ -136,7 +136,7 @@ export default {
         const data = await context.$staticAPI({
           query:`
           query {
-              categories{
+              categories(sort:"order"){
                 name,
                 id,
                 slug,

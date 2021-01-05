@@ -17,8 +17,8 @@
       "unique": true
     },
     "documents": {
-      "via": "categories",
       "collection": "document",
+      "via": "categories",
       "dominant": true
     },
     "slug": {
@@ -45,6 +45,12 @@
       ],
       "plugin": "upload",
       "required": false
+    },
+    "description": {
+      "type": "text"
+    },
+    "order": {
+      "type": "integer"
     }
   }
 }

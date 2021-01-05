@@ -562,6 +562,7 @@ export default {
         description:this.document.description,
         meta:[
           { hid:'og-title', property:'og:title', content:this.document.title},
+          { hid:'description', name:'description', content:this.document.description},
           { hid:'og-description', property:'og:description', content:this.document.description},
           { hid:'og-image', property:'og:image', content:image },
           { hid:'og-type', property:'og:type', content:type},

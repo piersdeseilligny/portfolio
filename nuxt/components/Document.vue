@@ -1,5 +1,6 @@
 <template>
     <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true}" :to="link">
+    <div class="document-container" v-tilt>
         <img class="document-bg" alt="" v-if="doc.images && doc.images[0]" :src="$staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url)"/>
         <div class="document-overlay" @touchstart="hoverShow" @touchend="hoverHide" @mouseenter="hoverShow" @mouseleave="hoverHide">
             <div ref="docoverlay" class="document-gradient"
@@ -15,6 +16,7 @@
         <svg v-bind:class="{selected:doc.selected, 'selectIndicator':true}">
           <path d="M 0 0 L 0 38 L 0 76 L 0 114 L 0 152"/>
         </svg>
+        </div>
     </nuxt-link>
 </template>
 <style>
@@ -29,8 +31,7 @@
         z-index:1;
         margin-right: 12px;
         margin-top:12px;
-        overflow:hidden;
-        transition: all 0.3s;
+        transition: all 0.2s;
     }
 
 @media screen and (max-width: 800px) {
@@ -39,7 +40,7 @@
     height: 101px !important;
   }
 }
-    .document::after{
+    .document .document-container::after{
       position:absolute;
       width:100%;
       height:100%;
@@ -49,19 +50,28 @@
       pointer-events: none;
       transition: border 0.3s;
     }
-    .document:hover::after{
+    .document:hover .document-container::after{
       border: solid 1px rgba(255,255,255,0.4);
     }
-    .document:active::after{
+    .document:active .document-container::after{
       border: solid 1px rgba(255,255,255,0.6);
     }
-    .document.selected::after{
+    .document.selected .document-container::after{
       border: solid 1px rgba(255,255,255,0.6);
     }
     .document.selected{
       transform:translateX(25px);
+      pointer-events:none;
     }
 
+.document-container{
+  position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    overflow:hidden;
+}
 
     .document-bg{
         position:absolute;
@@ -69,6 +79,7 @@
         height:100%;
         object-fit: cover;
         z-index: -1;
+
     }
     .document.selected .document-bg{
       transform:translateX(1px);
@@ -84,6 +95,7 @@
         margin-left:12px;
         bottom:8px;
         width:100%;
+        transform: translateZ(40px);
     }
     .document:visited{
         color:rgba(255,255,255,0.5);

@@ -47,6 +47,7 @@ export default {
   plugins: [
     "~plugins/formatDate.js",
     "~plugins/vue-slick-carousel.js",
+    "~plugins/vue-tilt.client.js",
     "~plugins/staticAPI.client.js",
     "~plugins/staticAPI.server.js",
     "~plugins/staticAsset.client.js",

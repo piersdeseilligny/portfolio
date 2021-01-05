@@ -33,8 +33,8 @@
       "required": false
     },
     "categories": {
-      "collection": "category",
-      "via": "documents"
+      "via": "documents",
+      "collection": "category"
     },
     "tags": {
       "collection": "tag",
@@ -88,6 +88,9 @@
     },
     "typeoverride": {
       "type": "string"
+    },
+    "order": {
+      "type": "integer"
     }
   }
 }

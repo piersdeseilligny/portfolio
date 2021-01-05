@@ -1,6 +1,7 @@
 <template>
 <div class="category-hero-container" >
             <nuxt-link
+            v-tilt
              class="category-hero fx-hovershadow" v-for="category in categories" :key="category.id"
             :to="'/work/' + category.slug">
             <div class="mask"></div>
@@ -18,7 +19,6 @@
   margin-top:24px;
   padding-right:var(--rightmargin);
   margin-right:-4px;
-
 }
 .category-hero{
   background:var(--backgroundclick);
@@ -28,7 +28,7 @@
   position: relative;
   margin-right:4px;
   font-size:20px;
-  transition: all 0.3s;
+
 }
 
 .category-hero .mask{
