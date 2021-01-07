@@ -11,29 +11,30 @@
 <style>
     .tag{
         display:inline-block;
-        color:rgba(255,255,255,0.5);
+        color:var(--foregroundsubtle);
         user-select: none;
         -moz-user-select: none;
         -webkit-user-select: none;
         cursor: pointer;
-        padding: 6px 12px;
+        padding: 0px 8px;
         font-size:0.7em;
         transition: background-color 0.2s, color 0.1s;
         white-space: normal;
+        position:relative;
     }
 .tag-icon{
   width: 14px;
-  margin-right:4px;
+  margin-right:2px;
 }
 .tag-icon svg{
   max-width: 14px;
   max-height: 14px;
 }
     .tag:hover{
-        background-color:rgba(255,255,255,0.05);
+        color:var(--foreground)
     }
     .tag.selected{
-        color:white;
+        color:var(--foregroundlink);
     }
     .tags-selectedall .tag{
         color:darkred;
@@ -41,10 +42,10 @@
 </style>
 <script>
 export default {
-    props:["id","name","icon","selected"],
+    props:["id","name","icon","selected","category"],
     methods:{
         toggleselect: function(ctrl){
-            this.$emit("selectionchange", this.id, ctrl);
+            this.$emit("selectionchange", this.category, this.name, ctrl);
             console.log(ctrl);
         }
     }

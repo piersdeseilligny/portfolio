@@ -1,6 +1,6 @@
 <template>
 <div class="portfolioParent">
-    <Categories :categories="categories" :selected="selectedCategory" @select="function(e){ selectedCategory=e.slug; selectedCategoryName=e.name }"/>
+    <!--<Categories :categories="categories" :selected="selectedCategory" @select="function(e){ selectedCategory=e.slug; selectedCategoryName=e.name }"/>-->
     <nuxt-child :key="$route.name"/>
 </div>
 </template>
@@ -18,7 +18,6 @@
         return{
             categories:[{name:"test"}],
             selectedCategory:"",
-            categoryStore:{},
             selectedCategoryName:"",
             selectedCategoryDescription:"",
             error:{}
@@ -38,18 +37,25 @@
                 name,
                 id,
                 slug,
-                description
+                description,
+                tags{
+                  name
+                }
+              },
+              tags{
+                id,
+                name,
+                icon
               }
           }
           `
         });
         const categories = data.categories;
-        let categoryStore = {}
-        for (let i = 0; i < data.categories.length; i++) {
-          categoryStore[data.categories[i].slug] = data.categories[i];
-        }
+
+        context.store.commit('updateCategoriesAndTags', {categories: data.categories, tags:data.tags});
+        console.log(context.store.getters);
         const selectedCategory = context.params.slug; // When calling /abc the slug will be "abc"
-        return{ categories, selectedCategory, categoryStore }
+        return{ categories, selectedCategory }
       }
       catch(err){
         return {

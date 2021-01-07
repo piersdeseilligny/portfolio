@@ -46,6 +46,7 @@ body{
     --backgroundhigh: hsl(220,10%,12%);
 
     --foreground:hsla(207, 100%, 92%, 0.5);
+    --foregroundsubtle:hsla(207, 100%, 92%, 0.35);
     --foregroundlink:hsla(207, 100%, 92%, 0.75);
 
     --font-primary: 'Poppins', sans-serif;
