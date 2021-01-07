@@ -11,7 +11,7 @@
           v-on:before-leave="beforeDocumentLeave"
         >
         <template v-for="document in documents">
-          <div class="category-header" v-if="document.first" :key="document.category.slug">
+          <div class="category-header" v-if="document.first" :id="document.category.slug" :key="document.category.slug">
             <nuxt-link v-if="selectedCategory" class="animatelink goback" :to="{
           path: '/work',
           query: query,

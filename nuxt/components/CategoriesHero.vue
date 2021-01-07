@@ -3,7 +3,7 @@
             <nuxt-link
             v-tilt
              class="category-hero fx-hovershadow" v-for="category in categories" :key="category.id"
-            :to="'/work/' + category.slug">
+            :to="'/work#' + category.slug">
             <div class="mask"></div>
             <img v-if="category.thumbnailimage" alt="" :class="{'thumbnail': true, 'novideo':!category.thumbnailvideo}" :src="$staticAsset($config.strapiBaseUri + category.thumbnailimage.formats.small.url)">
             <video ref="vid" alt="" loop muted autoplay v-if="category.thumbnailvideo" :src="$staticAsset($config.strapiBaseUri + category.thumbnailvideo.url)"></video>
