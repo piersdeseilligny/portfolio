@@ -16,7 +16,6 @@
   export default {
     data(){
         return{
-            categories:[{name:"test"}],
             selectedCategory:"",
             selectedCategoryName:"",
             selectedCategoryDescription:"",
@@ -30,30 +29,7 @@
     },
     async asyncData (context) {
       try{
-        const data = await context.$staticAPI({
-          query:`
-          query {
-              categories(sort:"order"){
-                name,
-                id,
-                slug,
-                description,
-                tags{
-                  name
-                }
-              },
-              tags{
-                id,
-                name,
-                icon
-              }
-          }
-          `
-        });
-        const categories = data.categories;
-
-        context.store.commit('updateCategoriesAndTags', {categories: data.categories, tags:data.tags});
-        console.log(context.store.getters);
+        let categories = context.store.categoriesArray;
         const selectedCategory = context.params.slug; // When calling /abc the slug will be "abc"
         return{ categories, selectedCategory }
       }

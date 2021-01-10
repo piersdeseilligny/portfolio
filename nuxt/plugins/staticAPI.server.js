@@ -20,7 +20,7 @@ export default(context, inject) =>
     }
     else{
       //The current target is not static, just return the same URL
-      return promise;
+      return await context.$strapi.graphql(args);
     }
   })
 }

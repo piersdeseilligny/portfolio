@@ -15,7 +15,7 @@ export default(context, inject) =>
       mkdirp.sync('./dist/assets');
       needle('get', url, { output: "./dist/assets/"+filename });
       let urlprefix = "";
-      if(fullurl) urlprefix = "https://piersdeseilligny.com"
+      if(fullurl) urlprefix = "https://piersdeseilligny.com";
       return urlprefix+"/assets/"+filename;
     }
     else{

@@ -97,9 +97,9 @@ body{
     background:var(--background4);
     box-shadow:0 0 24px rgba(0,0,0,0.5);
     border-bottom:rgba(255, 255, 255, 0.1) solid 1px;
-    z-index:3;
+    z-index:1;
     position:relative;
-    width:fit-content;
+    width:100%;
   }
   .subheader1container{
     background:var(--background3);

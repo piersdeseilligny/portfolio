@@ -26,7 +26,7 @@ export default {
     ]
   },
   publicRuntimeConfig:{
-    strapiBaseUri: process.env.API_URL || "http://192.168.1.45:1337"
+    strapiBaseUri: process.env.API_URL || "http://localhost:1337"
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -45,6 +45,7 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
+    "~plugins/filterdocs.js",
     "~plugins/formatDate.js",
     "~plugins/vue-slick-carousel.js",
     "~plugins/vue-tilt.client.js",
@@ -71,7 +72,7 @@ export default {
 
   strapi: {
     entities: ['documents', 'categories'],
-    url: process.env.API_URL || "http://192.168.1.45:1337"
+    url: process.env.API_URL || "http://localhost:1337"
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)

@@ -14,14 +14,14 @@
           <div class="category-header" v-if="document.first" :id="document.category.slug" :key="document.category.slug">
             <nuxt-link v-if="selectedCategory" class="animatelink goback" :to="{
           path: '/work',
-          query: query,
+          query: $route.query,
         }" :key="document.category.slug+'_b'">
             <svg>
               <polygon points="13.1,5.8 2.2,5.8 7.3,1.2 6.7,0.5 0.2,6.3 6.7,12 7.3,11.3 2.2,6.8 13.1,6.8 "/>
             </svg>View all</nuxt-link>
             <h2 :key="document.category.slug" ><nuxt-link class="animatelink" :to="{
           path: '/work/'+document.category.slug,
-          query: query,
+          query: $route.query,
         }" ><span>{{$store.state.categories[document.category.slug].name}}</span></nuxt-link></h2>
             <div class="pContainer" :key="document.category.slug + '_d'">
               <p>{{$store.state.categories[document.category.slug].description}}</p>
@@ -64,13 +64,14 @@
             :key="document.id"
             :link="{
           path: '/work/'+document.category.slug+'/'+document.slug,
-          query: query,
+          query: $route.query,
         }"
             :doc="document"
+            @clickOnDoc="clickOnDoc"
           />
           </template>
         </transition-group>
-      <div id="portfolioContent">
+      <div id="portfolioContent" ref="portfolioContent" :class="{'visible': $route.params.document }">
         <nuxt :nuxtChildKey="$route.params.document" />
       </div>
     </div>
@@ -96,13 +97,18 @@
   width:100%;
   margin: 0 auto;
   background: var(--background1);
+  overflow-x:hidden;
 }
 #portfolioContent {
   flex-grow: 1;
   min-width: 0;
+  z-index: 3;
+  box-shadow: 0 0 32px black;
+  transform: translateX(100%);
+  transition: all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1);
 }
-.fullscreenlist #portfolioContent{
-  display:none;
+#portfolioContent.visible{
+  transform: translateX(0);
 }
 .portfolioList {
   flex-basis: 368px;
@@ -185,12 +191,7 @@
   margin-top:0;
   margin-bottom:0;
 }
-.portfolioList:not(.fullscreenlist)::after{
-  width:100%;
-  content:'';
-  height:1px;
-  background-color:rgba(255,255,255,0.5);
-}
+
 .fullscreenlist .portfolioList{
   width:100%;
   flex-direction: row;
@@ -340,7 +341,6 @@ export default {
       documents: [],
       selectedCategory: "",
       selectedDocument: "",
-      query: {},
       tagContainerHeight:0
     };
   },
@@ -375,9 +375,8 @@ export default {
       el.style.top = el.offsetTop + "px";
       el.style.left = el.offsetLeft + "px";
     },
-    async filterDocuments() {
+    async filterDocuments(docs) {
       for(let document of this.documents){
-        console.log(this.$store.state.selectedTags[document.category.slug]);
           if(this.$store.state.selectedTags[document.category.slug]["All"]){
             document.hidden = false;
             continue; //All should be visible, continue
@@ -406,18 +405,21 @@ export default {
       this.updateQuery();
     },
     updateQuery:function(){
-      this.query = this.$store.getters['queryString'];
+      let newquery = this.$store.getters['queryString'];
       this.$router.replace({
           path: this.$route.path,
-          query: this.query,
+          query: newquery,
         });
     },
     resizeTagContainer: function({width, height}){
      this.tagContainerHeight = height;
+    },
+    clickOnDoc: function(doc){
+      this.$refs.portfolioContent.style.backgroundColor = doc.backgroundcolor;
     }
   },
   mounted(){
-    this.tagContainerHeight = this.$refs.tagContainer ? this.$refs.tagContainer.clientHeight : 0;
+
     this.filterDocuments();
   },
   head() {
@@ -485,8 +487,6 @@ export default {
             }
           }
           `;
-
-      console.log(qstring);
       const data = await context.$staticAPI({
         query: qstring,
       });
@@ -495,27 +495,47 @@ export default {
       let previousCategory = "";
       data.documents.sort((a,b)=>{
         return a.category.order > b.category.order ? 1 : -1;
-      })
+      });
+
+      context.store.commit('queryToSelection', context.route.query);
+
       for (let i = 0; i < data.documents.length; i++) {
         const d = data.documents[i];
         if (d.slug == selectedDocument) d.selected = true;
         else d.selected = false;
         d.first = (d.category.slug != previousCategory);
         previousCategory = d.category.slug;
-        data.documents[i].tagTable = {};
-        for(let tag of data.documents[i].tags){
-          data.documents[i].tagTable[tag.name] = true;
+        d.tagTable = {};
+        for(let tag of d.tags){
+          d.tagTable[tag.name] = true;
         }
-        console.log(data.documents[i].tagTable);
+
+        if(context.store.state.selectedTags[d.category.slug]["All"]){
+          d.hidden = false;
+        }
+        else{
+          let filteredTags = context.store.state.selectedTags[d.category.slug];
+          for(let tag of Object.keys(filteredTags)){
+            let visible = filteredTags[tag];
+            if(d.tagTable[tag] && visible){
+              d.hidden = false;
+              break;
+            }
+            else{
+              d.hidden = true;
+            }
+          }
+        }
+
         documents.push(d);
       }
-      context.store.commit('queryToSelection', context.route.query);
+
+
       return {
         tags:data.tags,
         documents,
         selectedCategory,
-        selectedDocument,
-        queryString
+        selectedDocument
       };
     } catch (err) {
       return {
