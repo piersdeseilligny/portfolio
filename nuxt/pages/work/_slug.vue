@@ -62,6 +62,7 @@
           --><Document
             :class="{'portfolio-list-item':true, 'filteredout':document.hidden}"
             :key="document.id"
+            ref="docs"
             :link="{
           path: '/work/'+document.category.slug+'/'+document.slug,
           query: $route.query,
@@ -295,30 +296,29 @@
     width:100% !important;
   }
   .portfolioList {
-    padding: 12px;
+    padding-left: 12px;
+    padding-right:12px;
   }
 }
 @media screen and (max-width: 800px) {
   .portfolioContainer:not(.fullscreenlist) {
     flex-direction: column;
-    top:72px;
+    top:0;
+    padding-top:var(--headerheight);
   }
   #portfolioContent{
-    margin-top:32px;
+    margin-top:0px;
   }
   .portfolioContainer:not(.fullscreenlist) .portfolioList {
     width: 100%;
     flex-direction: row;
     flex-basis:128px;
     overflow-x: overlay;
-    top:32px;
+    top:0px;
     padding:0px 12px;
     flex-wrap: nowrap;
   }
-  .portfolioContainer:not(.fullscreenlist) .portfolioList h2{
-    display:none;
-  }
-  .portfolioContainer:not(.fullscreenlist) .portfolioList p{
+  .portfolioContainer:not(.fullscreenlist) .category-header{
     display:none;
   }
   .portfolioList .document {
@@ -326,9 +326,24 @@
     width: 320px;
 
   }
-  .portfolioList .document.selected {
-    transform:translate(0, 12px);
+   .portfolioContainer:not(.fullscreenlist) .portfolioList{
+    overflow-y:hidden;
   }
+  .doccont-container{
+    border-left: none;
+    border-top: solid 1px rgba(255,255,255,0.4);
+  }
+  .doccont-scroller{
+    overflow-y:unset !important;
+  }
+  .portfolioList .document.selected {
+    transform:translate(0, 16px);
+    z-index:2;
+  }
+  ::-webkit-scrollbar{
+    display:none;
+  }
+
 }
 
 </style>
@@ -341,7 +356,8 @@ export default {
       documents: [],
       selectedCategory: "",
       selectedDocument: "",
-      tagContainerHeight:0
+      tagContainerHeight:0,
+      clickedElement:null
     };
   },
   watch: {
@@ -356,6 +372,9 @@ export default {
     },
     "$route.params.document":function(){
       //animate transition from column to row
+      if(this.clickedElement){
+        this.clickedElement.scrollIntoView({behavior: "smooth", block:"nearest", inline:"nearest"});
+      }
     },
     "$route.query": function () {
       this.filterDocuments();
@@ -414,13 +433,24 @@ export default {
     resizeTagContainer: function({width, height}){
      this.tagContainerHeight = height;
     },
-    clickOnDoc: function(doc){
+    clickOnDoc: function(doc, el){
       this.$refs.portfolioContent.style.backgroundColor = doc.backgroundcolor;
+      this.clickedElement = el;
     }
   },
   mounted(){
-
-    this.filterDocuments();
+    if(this.$refs.docs){
+      if(Array.isArray(this.$refs.docs)){
+        this.$refs.docs.forEach((el, i) =>{
+          if(el.doc && el.doc.selected){
+            el.$el.scrollIntoView({behavior: "smooth", block:"nearest", inline:"nearest"});
+          }
+        });
+      }
+      else if(this.$refs.docs.doc && this.$refs.docs.doc.selected){
+        this.$refs.docs.$el.scrollIntoView({behavior: "smooth", block:"nearest", inline:"nearest"});
+      }
+    }
   },
   head() {
     let title="";

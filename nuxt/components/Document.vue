@@ -1,5 +1,5 @@
 <template>
-    <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true}" :to="link" v-on:click.native="$emit('clickOnDoc', doc);">
+    <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true}" :to="link" v-on:click.native="$emit('clickOnDoc', doc, $el);">
     <div class="document-container" v-tilt>
         <img class="document-bg" alt="" v-if="doc.images && doc.images[0]" :src="$staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url)"/>
         <div class="document-overlay" @touchstart="hoverShow" @touchend="hoverHide" @mouseenter="hoverShow" @mouseleave="hoverHide">
@@ -32,6 +32,7 @@
         margin-right: 12px;
         margin-top:12px;
         transition: all 0.2s;
+        scroll-margin: 24px;
     }
 
 @media screen and (max-width: 800px) {
