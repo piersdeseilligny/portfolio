@@ -1,56 +1,103 @@
 <template>
   <div class="portfolioVue">
-    <transition name="slide-down" appear v-on:enter="tagsAppear" v-on:before-leave="tagsHideBefore" v-on:after-leave="tagsHideAfter">
-
+    <transition
+      name="slide-down"
+      appear
+      v-on:enter="tagsAppear"
+      v-on:before-leave="tagsHideBefore"
+      v-on:after-leave="tagsHideAfter"
+    >
     </transition>
-    <div :class="{'portfolioContainer':true,'fullscreenlist':($route.params.document==undefined)}">
-        <transition-group
-          name="portfolio-list"
-          class="portfolioList"
-          tag="div"
-          v-on:before-leave="beforeDocumentLeave"
-        >
+    <div
+      :class="{
+        portfolioContainer: true,
+        fullscreenlist: $route.params.document == undefined,
+      }"
+    >
+      <transition-group
+        name="portfolio-list"
+        class="portfolioList"
+        tag="div"
+        v-on:before-leave="beforeDocumentLeave"
+      >
         <template v-for="document in documents">
-          <div class="category-header" v-if="document.first" :id="document.category.slug" :key="document.category.slug">
-            <nuxt-link v-if="selectedCategory" class="animatelink goback" :to="{
-          path: '/work',
-          query: $route.query,
-        }" :key="document.category.slug+'_b'">
-            <svg>
-              <polygon points="13.1,5.8 2.2,5.8 7.3,1.2 6.7,0.5 0.2,6.3 6.7,12 7.3,11.3 2.2,6.8 13.1,6.8 "/>
-            </svg>View all</nuxt-link>
-            <h2 :key="document.category.slug" ><nuxt-link class="animatelink" :to="{
-          path: '/work/'+document.category.slug,
-          query: $route.query,
-        }" ><span>{{$store.state.categories[document.category.slug].name}}</span></nuxt-link></h2>
+          <div
+            class="category-header"
+            v-if="document.first"
+            :id="document.category.slug"
+            :key="document.category.slug"
+          >
+            <nuxt-link
+              v-if="selectedCategory"
+              class="animatelink goback"
+              :to="{
+                path: '/work',
+                query: $route.query,
+              }"
+              :key="document.category.slug + '_b'"
+            >
+              <svg>
+                <polygon
+                  points="13.1,5.8 2.2,5.8 7.3,1.2 6.7,0.5 0.2,6.3 6.7,12 7.3,11.3 2.2,6.8 13.1,6.8 "
+                /></svg
+              >View all</nuxt-link
+            >
+            <h2 :key="document.category.slug">
+              <nuxt-link
+                class="animatelink"
+                :to="{
+                  path: '/work/' + document.category.slug,
+                  query: $route.query,
+                }"
+                ><span>{{
+                  $store.state.categories[document.category.slug].name
+                }}</span></nuxt-link
+              >
+            </h2>
             <div class="pContainer" :key="document.category.slug + '_d'">
-              <p>{{$store.state.categories[document.category.slug].description}}</p>
+              <p>
+                {{
+                  $store.state.categories[document.category.slug].description
+                }}
+              </p>
             </div>
             <div class="tagscontainer">
               <transition-group
                 name="tag-list"
                 :class="'tags'"
                 tag="div"
-                style="z-index:1"
+                style="z-index: 1"
                 v-on:before-leave="beforeDocumentLeave"
               >
                 <div key="all" class="tag-list-item">
                   <Tag
                     key="all"
                     name="All"
-                    :selected="$store.state.selectedTags[document.category.slug]['All']"
+                    :selected="
+                      $store.state.selectedTags[document.category.slug]['All']
+                    "
                     id="all"
                     :category="document.category.slug"
                     v-on:selectionchange="toggleSelectedAll"
                   />
                 </div>
-                <div v-for="tag in $store.getters['tagsForCategory'](document.category.slug)" :key="tag.id" class="tag-list-item">
+                <div
+                  v-for="tag in $store.getters['tagsForCategory'](
+                    document.category.slug
+                  )"
+                  :key="tag.id"
+                  class="tag-list-item"
+                >
                   <Tag
                     :key="tag.id"
                     :name="tag.name"
                     :icon="tag.icon"
                     :category="document.category.slug"
-                    :selected="$store.state.selectedTags[document.category.slug][tag.name]"
+                    :selected="
+                      $store.state.selectedTags[document.category.slug][
+                        tag.name
+                      ]
+                    "
                     :id="tag.id"
                     v-on:selectionchange="tagselectionChange"
                   />
@@ -60,26 +107,32 @@
           </div>
           <!--<h2 :key="document.id+'_h2'" v-if="document.category.name != documentLoopCategory && (documentLoopCategory = document.category.name)">document.category.name</h2>
           --><Document
-            :class="{'portfolio-list-item':true, 'filteredout':document.hidden}"
+            :class="{
+              'portfolio-list-item': true,
+              filteredout: document.hidden,
+            }"
             :key="document.id"
             ref="docs"
             :link="{
-          path: '/work/'+document.category.slug+'/'+document.slug,
-          query: $route.query,
-        }"
+              path: '/work/' + document.category.slug + '/' + document.slug,
+              query: $route.query,
+            }"
             :doc="document"
             @clickOnDoc="clickOnDoc"
           />
-          </template>
-        </transition-group>
-      <div id="portfolioContent" ref="portfolioContent" :class="{'visible': $route.params.document }">
+        </template>
+      </transition-group>
+      <div
+        id="portfolioContent"
+        ref="portfolioContent"
+        :class="{ visible: $route.params.document }"
+      >
         <nuxt :nuxtChildKey="$route.params.document" />
       </div>
     </div>
   </div>
 </template>
 <style>
-
 .portfolioVue {
   flex-basis: 1;
   flex-grow: 1;
@@ -95,10 +148,10 @@
   height: 100%;
   position: absolute;
   top: 0;
-  width:100%;
+  width: 100%;
   margin: 0 auto;
   background: var(--background1);
-  overflow-x:hidden;
+  overflow-x: hidden;
 }
 #portfolioContent {
   flex-grow: 1;
@@ -106,9 +159,9 @@
   z-index: 3;
   box-shadow: 0 0 32px black;
   transform: translateX(100%);
-  transition: all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1);
+  transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
-#portfolioContent.visible{
+#portfolioContent.visible {
   transform: translateX(0);
 }
 .portfolioList {
@@ -118,100 +171,100 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  transition:all 0.2s;
+  transition: all 0.2s;
   align-content: flex-start;
-  padding:24px;
-  padding-top:32px;
-  overflow-y:overlay;
-  overflow-x:hidden;
+  padding: 24px;
+  padding-top: 32px;
+  overflow-y: overlay;
+  overflow-x: hidden;
   box-sizing: border-box;
   top: var(--headerheight);
 }
-.portfolioList > *{
+.portfolioList > * {
   flex-shrink: 0;
 }
-.fullscreenlist .category-header{
-    margin-top: 24px;
-    flex-basis:100%;
-    width:100%;
+.fullscreenlist .category-header {
+  margin-top: 24px;
+  flex-basis: 100%;
+  width: 100%;
 }
-.portfolioList .category-header:first-child{
-  margin-top:0;
+.portfolioList .category-header:first-child {
+  margin-top: 0;
 }
-.animatelink{
+.animatelink {
   color: var(--foregroundlink);
-  position:relative;
-  text-decoration:none;
+  position: relative;
+  text-decoration: none;
   font-size: 22px;
   font-weight: 200;
-  font-family:var(--font-secondary);
+  font-family: var(--font-secondary);
   transition: color 0.3s;
 }
-.animatelink.goback{
-  font-family:var(--font-primary);
+.animatelink.goback {
+  font-family: var(--font-primary);
   font-weight: normal;
-  font-size:12px;
-  padding-bottom:2px;
-  position:absolute;
+  font-size: 12px;
+  padding-bottom: 2px;
+  position: absolute;
   top: 12px;
 }
-.animatelink.goback svg{
-  height:16px;
-  width:16px;
-  fill:currentColor;
-  margin-bottom:-4px;
-  margin-right:2px;
+.animatelink.goback svg {
+  height: 16px;
+  width: 16px;
+  fill: currentColor;
+  margin-bottom: -4px;
+  margin-right: 2px;
 }
-.animatelink::after{
-  position:absolute;
-  width:0%;
-  left:0;
-  bottom:2px;
-  content:'';
-  height:2px;
+.animatelink::after {
+  position: absolute;
+  width: 0%;
+  left: 0;
+  bottom: 2px;
+  content: "";
+  height: 2px;
   transition: width 0.3s;
-  background:var(--backgroundclick);
+  background: var(--backgroundclick);
 }
-.animatelink:hover{
-  color:white;
+.animatelink:hover {
+  color: white;
 }
-.animatelink:hover::after{
-  width:100%;
-}
-
-.fullscreenlist .portfolioList h2{
-  flex-basis:100%;
-}
-.fullscreenlist .portfolioList .pContainer{
-  flex-basis:100%;
-}
-.portfolioList .pContainer p{
-  max-width:512px;
-  color:var(--foreground);
-  font-size:13px;
-  margin-top:0;
-  margin-bottom:0;
+.animatelink:hover::after {
+  width: 100%;
 }
 
-.fullscreenlist .portfolioList{
-  width:100%;
+.fullscreenlist .portfolioList h2 {
+  flex-basis: 100%;
+}
+.fullscreenlist .portfolioList .pContainer {
+  flex-basis: 100%;
+}
+.portfolioList .pContainer p {
+  max-width: 512px;
+  color: var(--foreground);
+  font-size: 13px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.fullscreenlist .portfolioList {
+  width: 100%;
   flex-direction: row;
   flex-wrap: wrap;
-  flex-basis:auto;
-  background-color:transparent;
+  flex-basis: auto;
+  background-color: transparent;
 }
 
-.fullscreenlist .portfolioList::after{
+.fullscreenlist .portfolioList::after {
   display: none;
 }
-.tagscontainer{
-    position: relative;
-    flex-basis: 100%;
-    width: -moz-fit-content;
-    transform: width 0.2s ease;
-    margin-left:-6px;
-    line-height:16px;
-    margin-top:4px;
+.tagscontainer {
+  position: relative;
+  flex-basis: 100%;
+  width: -moz-fit-content;
+  transform: width 0.2s ease;
+  margin-left: -6px;
+  line-height: 16px;
+  margin-top: 4px;
 }
 .tags {
   user-select: none;
@@ -227,8 +280,8 @@
   -webkit-transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.portfolio-list-item.filteredout{
-  display:none;
+.portfolio-list-item.filteredout {
+  display: none;
 }
 .portfolio-list-enter-active {
   opacity: 0;
@@ -292,60 +345,57 @@
   opacity: 0;
 }
 @media screen and (max-width: 498px) {
-  .portfolioContainer.fullscreenlist .document{
-    width:100% !important;
+  .portfolioContainer.fullscreenlist .document {
+    width: 100% !important;
   }
   .portfolioList {
     padding-left: 12px;
-    padding-right:12px;
+    padding-right: 12px;
   }
 }
 @media screen and (max-width: 800px) {
   .portfolioContainer:not(.fullscreenlist) {
     flex-direction: column;
-    top:0;
-    padding-top:var(--headerheight);
+    top: 0;
+    padding-top: var(--headerheight);
   }
-  #portfolioContent{
-    margin-top:0px;
+  #portfolioContent {
+    margin-top: 0px;
   }
   .portfolioContainer:not(.fullscreenlist) .portfolioList {
     width: 100%;
     flex-direction: row;
-    flex-basis:128px;
+    flex-basis: 128px;
     overflow-x: overlay;
-    top:0px;
-    padding:0px 12px;
+    top: 0px;
+    padding: 0px 12px;
     flex-wrap: nowrap;
   }
-  .portfolioContainer:not(.fullscreenlist) .category-header{
-    display:none;
+  .portfolioContainer:not(.fullscreenlist) .category-header {
+    display: none;
   }
   .portfolioList .document {
     flex-shrink: 0;
     width: 320px;
-
   }
-   .portfolioContainer:not(.fullscreenlist) .portfolioList{
-    overflow-y:hidden;
+  .portfolioContainer:not(.fullscreenlist) .portfolioList {
+    overflow-y: hidden;
   }
-  .doccont-container{
+  .doccont-container {
     border-left: none;
-    border-top: solid 1px rgba(255,255,255,0.4);
+    border-top: solid 1px rgba(255, 255, 255, 0.4);
   }
-  .doccont-scroller{
-    overflow-y:unset !important;
+  .doccont-scroller {
+    overflow-y: unset !important;
   }
   .portfolioList .document.selected {
-    transform:translate(0, 16px);
-    z-index:2;
+    transform: translate(0, 16px);
+    z-index: 2;
   }
-  ::-webkit-scrollbar{
-    display:none;
+  ::-webkit-scrollbar {
+    display: none;
   }
-
 }
-
 </style>
 <script>
 import { gsap } from "gsap";
@@ -356,8 +406,8 @@ export default {
       documents: [],
       selectedCategory: "",
       selectedDocument: "",
-      tagContainerHeight:0,
-      clickedElement:null
+      tagContainerHeight: 0,
+      clickedElement: null,
     };
   },
   watch: {
@@ -370,108 +420,139 @@ export default {
         else this.documents[i].selected = false;
       }
     },
-    "$route.params.document":function(){
+    "$route.params.document": function () {
       //animate transition from column to row
-      if(this.clickedElement){
-        this.clickedElement.scrollIntoView({behavior: "smooth", block:"nearest", inline:"nearest"});
-      }
+      setTimeout(()=>{
+        this.scrollToSelection();
+      },100);
     },
     "$route.query": function () {
       this.filterDocuments();
     },
   },
   methods: {
-    tagsAppear: function(){
-      this.tagContainerHeight = this.$refs.tagContainer ? this.$refs.tagContainer.clientHeight : 0;
+    tagsAppear: function () {
+      this.tagContainerHeight = this.$refs.tagContainer
+        ? this.$refs.tagContainer.clientHeight
+        : 0;
     },
-    tagsHideBefore: function(){
-     // gsap.to(".portfolioContainer", {duration: 2, y:-32})
+    tagsHideBefore: function () {
+      // gsap.to(".portfolioContainer", {duration: 2, y:-32})
     },
-    tagsHideAfter: function(){
-     // gsap.to(".portfolioContainer", {duration: 0, y:0})
+    tagsHideAfter: function () {
+      // gsap.to(".portfolioContainer", {duration: 0, y:0})
     },
     beforeDocumentLeave: function (el, done) {
       el.style.top = el.offsetTop + "px";
       el.style.left = el.offsetLeft + "px";
     },
     async filterDocuments(docs) {
-      for(let document of this.documents){
-          if(this.$store.state.selectedTags[document.category.slug]["All"]){
-            document.hidden = false;
-            continue; //All should be visible, continue
-          }
-          else{
-            let filteredTags = this.$store.state.selectedTags[document.category.slug];
-              for(let tag of Object.keys(filteredTags)){
-                let visible = filteredTags[tag];
-                if(document.tagTable[tag] && visible){
-                  document.hidden = false;
-                  break;
-                }
-                else{
-                  document.hidden = true;
-                }
-              }
+      for (let document of this.documents) {
+        if (this.$store.state.selectedTags[document.category.slug]["All"]) {
+          document.hidden = false;
+          continue; //All should be visible, continue
+        } else {
+          let filteredTags = this.$store.state.selectedTags[
+            document.category.slug
+          ];
+          for (let tag of Object.keys(filteredTags)) {
+            let visible = filteredTags[tag];
+            if (document.tagTable[tag] && visible) {
+              document.hidden = false;
+              break;
+            } else {
+              document.hidden = true;
             }
+          }
+        }
       }
     },
     tagselectionChange: async function (category, tag, ctrlclick) {
-      this.$store.commit('selectTag', {category:category, tag:tag, deselect:!ctrlclick});
+      this.$store.commit("selectTag", {
+        category: category,
+        tag: tag,
+        deselect: !ctrlclick,
+      });
       this.updateQuery();
     },
     toggleSelectedAll: function (category) {
-      this.$store.commit('selectAllTags', {category:category});
+      this.$store.commit("selectAllTags", { category: category });
       this.updateQuery();
     },
-    updateQuery:function(){
-      let newquery = this.$store.getters['queryString'];
+    updateQuery: function () {
+      let newquery = this.$store.getters["queryString"];
       this.$router.replace({
-          path: this.$route.path,
-          query: newquery,
-        });
+        path: this.$route.path,
+        query: newquery,
+      });
     },
-    resizeTagContainer: function({width, height}){
-     this.tagContainerHeight = height;
+    resizeTagContainer: function ({ width, height }) {
+      this.tagContainerHeight = height;
     },
-    clickOnDoc: function(doc, el){
+    clickOnDoc: function (doc, el) {
       this.$refs.portfolioContent.style.backgroundColor = doc.backgroundcolor;
-      this.clickedElement = el;
-    }
+    },
+    scrollToSelection: function () {
+      console.log("scroll to selection");
+      if (this.$refs.docs) {
+        if (Array.isArray(this.$refs.docs)) {
+          this.$refs.docs.forEach((el, i) => {
+            if (el.doc && el.doc.selected) {
+              el.$el.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "nearest",
+              });
+            }
+          });
+        } else if (this.$refs.docs.doc && this.$refs.docs.doc.selected) {
+          this.$refs.docs.$el.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "nearest",
+          });
+        }
+      }
+    },
   },
-  mounted(){
-    if(this.$refs.docs){
-      if(Array.isArray(this.$refs.docs)){
-        this.$refs.docs.forEach((el, i) =>{
-          if(el.doc && el.doc.selected){
-            el.$el.scrollIntoView({behavior: "smooth", block:"nearest", inline:"nearest"});
-          }
-        });
-      }
-      else if(this.$refs.docs.doc && this.$refs.docs.doc.selected){
-        this.$refs.docs.$el.scrollIntoView({behavior: "smooth", block:"nearest", inline:"nearest"});
-      }
-    }
+  mounted() {
+    this.scrollToSelection();
   },
   head() {
-    let title="";
-    let description="";
-    if(this.selectedCategory){
+    let title = "";
+    let description = "";
+    if (this.selectedCategory) {
       title = this.$store.state.categories[this.selectedCategory].name;
-      description = this.$store.state.categories[this.selectedCategory].description;
+      description = this.$store.state.categories[this.selectedCategory]
+        .description;
     }
-    if(!title){
-      title="All work";
-      description=`All my work in ${this.$store.state.categoriesArray.map((v)=>{ return v.name; }).join(', ')}`;
+    if (!title) {
+      title = "All work";
+      description = `All my work in ${this.$store.state.categoriesArray
+        .map((v) => {
+          return v.name;
+        })
+        .join(", ")}`;
     }
-      return {
-        title: `${title} - Piers Deseilligny`,
-        meta:[
-          { hid:'og-title', property:'og:title', content:title },
-          { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/work/"+(this.selectedCategory ? this.selectedCategory : "")},
-          { hid:'og-description', property:'og:description', content:description },
-          { hid:'description', property:'description', content:description }
-        ]
-    }
+    return {
+      title: `${title} - Piers Deseilligny`,
+      meta: [
+        { hid: "og-title", property: "og:title", content: title },
+        {
+          hid: "og-url",
+          property: "og:url",
+          content:
+            "https://piersdeseilligny.com/work/" +
+            (this.selectedCategory ? this.selectedCategory : ""),
+        },
+        {
+          hid: "og-description",
+          property: "og:description",
+          content: description,
+        },
+        { hid: "description", property: "description", content: description },
+      ],
+    };
   },
   async asyncData(context) {
     try {
@@ -480,9 +561,9 @@ export default {
       let queryString = "";
       let documentselector = `(sort:"order")`;
       let tagselector = "";
-      if(selectedCategory){
-        documentselector=`(sort:"order", where:{categories:{slug:"${selectedCategory}"}})`;
-        tagselector=`(where:{categories:{slug:"${selectedCategory}"}})`;
+      if (selectedCategory) {
+        documentselector = `(sort:"order", where:{categories:{slug:"${selectedCategory}"}})`;
+        tagselector = `(where:{categories:{slug:"${selectedCategory}"}})`;
       }
       let qstring = `
           query{
@@ -523,35 +604,33 @@ export default {
       let documents = [];
       let firstOfCategory = true;
       let previousCategory = "";
-      data.documents.sort((a,b)=>{
+      data.documents.sort((a, b) => {
         return a.category.order > b.category.order ? 1 : -1;
       });
 
-      context.store.commit('queryToSelection', context.route.query);
+      context.store.commit("queryToSelection", context.route.query);
 
       for (let i = 0; i < data.documents.length; i++) {
         const d = data.documents[i];
         if (d.slug == selectedDocument) d.selected = true;
         else d.selected = false;
-        d.first = (d.category.slug != previousCategory);
+        d.first = d.category.slug != previousCategory;
         previousCategory = d.category.slug;
         d.tagTable = {};
-        for(let tag of d.tags){
+        for (let tag of d.tags) {
           d.tagTable[tag.name] = true;
         }
 
-        if(context.store.state.selectedTags[d.category.slug]["All"]){
+        if (context.store.state.selectedTags[d.category.slug]["All"]) {
           d.hidden = false;
-        }
-        else{
+        } else {
           let filteredTags = context.store.state.selectedTags[d.category.slug];
-          for(let tag of Object.keys(filteredTags)){
+          for (let tag of Object.keys(filteredTags)) {
             let visible = filteredTags[tag];
-            if(d.tagTable[tag] && visible){
+            if (d.tagTable[tag] && visible) {
               d.hidden = false;
               break;
-            }
-            else{
+            } else {
               d.hidden = true;
             }
           }
@@ -560,12 +639,11 @@ export default {
         documents.push(d);
       }
 
-
       return {
-        tags:data.tags,
+        tags: data.tags,
         documents,
         selectedCategory,
-        selectedDocument
+        selectedDocument,
       };
     } catch (err) {
       return {
