@@ -158,11 +158,10 @@
   min-width: 0;
   z-index: 3;
   box-shadow: 0 0 32px black;
-  transform: translateX(100%);
   transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
-#portfolioContent.visible {
-  transform: translateX(0);
+#portfolioContent:not(.visible) {
+  transform: translateX(100%);
 }
 .portfolioList {
   flex-basis: 368px;

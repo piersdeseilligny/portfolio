@@ -64,7 +64,7 @@
       transform:translateX(25px) scale(1.02);
       pointer-events:none;
       box-shadow: 0 0 32px black;
-      z-index: 4;
+      z-index: 3;
 
     }
 
