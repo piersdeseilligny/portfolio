@@ -6,9 +6,7 @@
     <h2 v-if="!block.tag && block.title">
       {{ block.title }}
     </h2>
-    <div class="contentblock-description fgcolor2">
-      {{ block.description }}
-    </div>
+    <div class="contentblock-description fgcolor2" v-html="block.description"></div>
     <TwentyTwenty
      v-for="ba in block.beforeafters"
      :key="ba.id"
@@ -22,6 +20,12 @@
     <div class="embed-container" :style="`padding-bottom: ${(1/(block.videoembedaspect ? block.videoembedaspect : 1.77))*100}%`" v-if="block.videoembed">
       <video-embed :src="block.videoembed"></video-embed>
     </div>
+      <figure v-for="still in block.stills" :key="still.url">
+        <a :class="{'still':true, 'fx-hovershadow':true, 'childshadow':still.childshadow}" :data-index="still.index" @click.prevent="$emit('openimage', still.index)" :style="`padding-top:${(1/(still.formats.medium.width/still.formats.medium.height) * 100)}%`" :href="$staticAsset($config.strapiBaseUri+still.url)">
+          <img :src="$staticAsset($config.strapiBaseUri+still.formats.medium.url)">
+        </a>
+        <figcaption>{{still.caption}}</figcaption>
+      </figure>
   </div>
 </template>
 <style>
@@ -52,6 +56,39 @@
 .contentblock-description {
   font-size: 13px;
   margin-top:0px;
+}
+
+figure{
+  margin-left:0;
+  margin-right:0;
+  font-size:12px;
+}
+figcaption{
+  margin-top:2px;
+  color:var(--fgcolor2);
+}
+.still{
+  position:relative;
+  overflow: hidden;
+  height:0;
+  display:block;
+  transition: 0.2s;
+  border: rgba(255, 255, 255, 0.1) solid 1px;
+}
+.still.childshadow{
+  overflow:auto;
+  border: solid 1px transparent;
+}
+.still img{
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+}
+.still:hover{
+  transform:scale(1.015);
+  transition:cubic-bezier(0.215, 0.610, 0.355, 1) 0.15s;
 }
 </style>
 <script>

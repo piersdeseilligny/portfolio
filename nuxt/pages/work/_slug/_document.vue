@@ -9,6 +9,11 @@
       :index="lightboxindex"
       @close="lightboxindex = null">
     </CoolLightBox>
+      <CoolLightBox
+      :items="lightboxitemsAlt"
+      :index="lightboxindexAlt"
+      @close="lightboxindexAlt = null">
+    </CoolLightBox>
 
     <div
       v-if="document.images && document.images[0]"
@@ -45,8 +50,8 @@
       ></div>
       <div class="doccont-content" ref="doccontContent">
         <div class="doccont-content-col1" ref="doccontContentCol1">
-          <div class="doccont-content-postercontainer-root" v-if="document.poster">
-          <div
+          <div v-if="document.poster" :class="{'doccont-content-postercontainer-root':true, 'noshadow':document.nopostershadow}">
+            <div
             class="doccont-content-postercontainer"
             :style="`padding-top:calc(${
               (document.poster.formats.medium.height /
@@ -59,7 +64,7 @@
               alt="Poster"
               :src="$staticAsset($config.strapiBaseUri + document.poster.formats.medium.url)"
             />
-          </div>
+            </div>
           </div>
           <div class="moreinfo-container" v-if="document.moreinfo">
             <div
@@ -73,17 +78,10 @@
               <div class="moreinfo-subheader fgcolor2" v-if="info.subheader">
                 {{ info.subheader }}
               </div>
-              <a
-                v-if="info.link && info.outlink"
-                target="_blank"
-                :href="info.link"
-                ><div
-                  class="icon"
-                  v-if="info.outlink.svg"
-                  v-html="info.outlink.svg"
-                />
-                {{ info.outlink.name }}</a
-              >
+              <a class="outlink" v-if="info.link && info.outlink" target="_blank" :href="info.link">
+                <i class="icon" v-if="info.outlink.svg" v-html="info.outlink.svg"/>
+                <span>{{ info.outlink.name }}</span>
+              </a>
             </div>
           </div>
         </div>
@@ -93,12 +91,13 @@
           </h1>
           <div class="doccont-content-description fgcolor2">
             <div class="doccont-content-tags"><span v-for="tag in document.tags" :key="tag.id"><i v-html="tag.icon"></i>{{tag.name}}&nbsp;&nbsp;&nbsp;</span></div>
-            {{ document.description }}
+            <div v-html="document.description"></div>
           </div>
           <div class="doccont-contentblocks">
             <ContentBlock
               v-for="block in document.contentblocks"
               :key="block.id"
+              @openimage="openlightboxalt"
               :block="block"
             />
           </div>
@@ -176,6 +175,9 @@
 .moreinfo-container {
   margin-top: 12px;
 }
+.moreinfo-container:first-child{
+  margin-top:96px;
+}
 .moreinfo {
   font-size: 13px;
   margin-top: 6px;
@@ -185,7 +187,7 @@
   color: var(--fgcolor2);
   font-weight: 600;
   text-decoration: none;
-  font-size: 14px;
+
 }
 .moreinfo a:hover {
   opacity: 0.8;
@@ -193,13 +195,21 @@
 .moreinfo a:active {
   opacity: 0.6;
 }
-.moreinfo a .icon {
-  vertical-align: sub;
-  display: inline-block;
-  margin-right: 4px;
+.outlink {
+  display:flex;
 }
-.moreinfo a .icon svg {
+.outlink .icon {
+  margin-right: 4px;
+  width:20px;
+}
+.outlink span{
+  line-height: 16px;
+  align-self: center;
+  margin-top:-4px;
+}
+.outlink .icon svg {
   max-height: 20px;
+  fill: currentColor;
 }
 
 .doccont-container {
@@ -263,6 +273,13 @@
   z-index: 1;
   width: 100%;
 }
+.doccont-content-col2 a{
+  color:currentColor;
+  transition: all 0.2s;
+}
+.doccont-content-col2 a:hover{
+  color:white;
+}
 .doccont-content-postercontainer-root {
   /*Doesn't exist if there's no poster*/
   margin-right: 24px;
@@ -271,6 +288,10 @@
   height: fit-content;
   position: relative;
   box-shadow: 0 0 12px rgba(0, 0, 0, 1);
+}
+.doccont-content-postercontainer-root.noshadow{
+  border:solid 1px transparent;
+  box-shadow:none;
 }
 
 .doccont-content-postercontainer {
@@ -292,6 +313,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  overflow:hidden;
 }
 .doccont-img {
   width: 100%;
@@ -461,7 +483,9 @@ export default {
         description:"",
       },
       lightboxindex:null,
-      lightboxitems:[]
+      lightboxitems:[],
+      lightboxindexAlt:null,
+      lightboxitemsAlt:[]
     };
   },
   methods: {
@@ -479,8 +503,8 @@ export default {
     slidesEnter:function(){
       gsap.to(this.$refs.doccontImgContent, {
         scale: 1.025,
-        ease: "power.inout",
-        duration:0.3
+        ease: "power.out",
+        duration:0.15
       }).play();
     },
     slidesLeave:function(){
@@ -489,6 +513,9 @@ export default {
         ease: "power.inout",
         duration:0.3
       }).play();
+    },
+    openlightboxalt: function(i){
+      this.lightboxindexAlt = i;
     }
   },
   transition: {
@@ -582,6 +609,7 @@ export default {
 			documents(where:{categories:{slug:"${context.params.slug}"}, slug:"${context.params.document}"}){
         title,
         typeoverride,
+        nopostershadow,
 			  description,
 			  contentblocks{
 				tag{
@@ -589,6 +617,12 @@ export default {
 				  icon
         },
         title,
+        stills{
+          formats,
+          url,
+          caption,
+          name
+        }
         videoembed,
         videoembedaspect,
 				beforeafters{
@@ -641,17 +675,40 @@ export default {
       });
       if (data && data.documents && data.documents.length) {
         let images = [];
+        console.log(data.documents[0]);
         if(data.documents[0].images){
-          for (let i = 0; i < data.documents[0].images.length; i++) {
-            const item = data.documents[0].images[i];
+          for(let img of data.documents[0].images){
             images.push({
-              src:context.$staticAsset(context.$config.strapiBaseUri + item.url),
-              description:item.caption,
-              thumb:context.$staticAsset(context.$config.strapiBaseUri + item.formats.thumbnail.url)
+              src:context.$staticAsset(context.$config.strapiBaseUri + img.url),
+              description:img.caption,
+              thumb:context.$staticAsset(context.$config.strapiBaseUri + img.formats.thumbnail.url)
             });
           }
         }
-        return { document: data.documents[0], lightboxitems:images };
+        let imagesAlt = [];
+        if(data.documents[0].contentblocks){
+          for(let block of data.documents[0].contentblocks){
+            if(block.description){
+              block.description = context.$md.render(block.description);
+            }
+            if(block.stills){
+              for(let i in block.stills){
+                block.stills[i].index = i;
+                block.stills[i].childshadow = (block.stills[i].name && block.stills[i].name.endsWith('_ns.PNG'));
+                imagesAlt.push({
+                  src:context.$staticAsset(context.$config.strapiBaseUri + block.stills[i].url),
+                  description:block.stills[i].caption,
+                  thumb:context.$staticAsset(context.$config.strapiBaseUri + block.stills[i].formats.thumbnail.url)
+                });
+              }
+            }
+          }
+        }
+
+        if(data.documents[0].description){
+          data.documents[0].description = context.$md.render(data.documents[0].description);
+        }
+        return { document: data.documents[0], lightboxitems:images, lightboxitemsAlt:imagesAlt };
       } else {
         //ERROR 404!
         return { document: { title: "404" } };

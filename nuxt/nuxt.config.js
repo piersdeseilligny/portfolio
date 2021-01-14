@@ -70,6 +70,16 @@ export default {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: ['@nuxtjs/strapi', '@nuxtjs/markdownit'],
 
+  markdownit: {
+    preset: 'default',
+    linkify: true,
+    breaks: true,
+    injected: true,
+    use: [
+      ['markdown-it-link-attributes', {attrs: {target: '_blank', rel: 'noopener'}}],
+    ]
+  },
+
   strapi: {
     entities: ['documents', 'categories'],
     url: process.env.API_URL || "http://localhost:1337"

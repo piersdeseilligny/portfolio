@@ -21,6 +21,7 @@
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
     "gsap": "^3.5.1",
+    "markdown-it-link-attributes": "^3.0.0",
     "mkdirp": "^1.0.4",
     "needle": "^2.5.2",
     "node-ssh": "^11.1.1",

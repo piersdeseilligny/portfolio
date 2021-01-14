@@ -210,14 +210,24 @@ h2{
   background: hsla(207, 100%, 92%, 0.9);
 }
 
-    .fx-hovershadow{
+    .fx-hovershadow:not(.childshadow){
       box-shadow: 0 0 24px rgba(0,0,0,0.5);
     }
-    .fx-hovershadow:hover{
+    .fx-hovershadow:not(.childshadow):hover{
       box-shadow: 0 6px 24px rgba(0,0,0,0.8);
     }
-    .fx-hovershadow:active{
+    .fx-hovershadow:not(.childshadow):active{
       box-shadow: 0 4px 12px rgba(0,0,0,1);
+    }
+    .fx-hovershadow.childshadow > img{
+      filter: drop-shadow(0px 0px 24px rgba(0,0,0,0.5));
+      transition: filter 0.2s;
+    }
+    .fx-hovershadow.childshadow:hover > img{
+      filter: drop-shadow(0px 6px 24px rgba(0,0,0,0.8));
+    }
+    .fx-hovershadow.childshadow:active > img{
+      filter: drop-shadow(0px 4px 12px rgba(0,0,0,1));
     }
 
 @media screen and (max-width: 600px) {
