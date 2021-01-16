@@ -20,8 +20,8 @@
       ref="doccontImgContainer"
       class="doccont-imgcontainer"
       :style="`z-index:0;position:absolute;width:100%;top:0;left:0;padding-top:calc(${
-        (document.images[0].formats.large.height /
-          document.images[0].formats.large.width) *
+        (document.images[0].formats.medium.height /
+          document.images[0].formats.medium.width) *
         100
       }% - 64px);`"
     >
@@ -43,8 +43,8 @@
         @mouseenter="slidesEnter"
         @mouseleave="slidesLeave"
         :style="`cursor:pointer;position: relative;width: 100%;height: 0;padding-top:calc(${
-          (document.images[0].formats.large.height /
-            document.images[0].formats.large.width) *
+          (document.images[0].formats.medium.height /
+            document.images[0].formats.medium.width) *
           100
         }% - 64px);`"
       ></div>
@@ -54,15 +54,15 @@
             <div
             class="doccont-content-postercontainer"
             :style="`padding-top:calc(${
-              (document.poster.formats.medium.height /
-                document.poster.formats.medium.width) *
+              (document.poster.height /
+                document.poster.width) *
               100
             }%;`"
           >
             <img
               class="doccont-content-poster"
               alt="Poster"
-              :src="$staticAsset($config.strapiBaseUri + document.poster.formats.medium.url)"
+              :src="$staticAsset($config.strapiBaseUri + bestImageFromLarge(document.poster.formats).url)"
             />
             </div>
           </div>
@@ -516,6 +516,13 @@ export default {
     },
     openlightboxalt: function(i){
       this.lightboxindexAlt = i;
+    },
+    bestImageFromLarge:function(formats){
+      if(!formats) return {url:""};
+      if(formats.large) return formats.large;
+      else if(formats.medium) return formats.medium;
+      else if(formats.small) return formats.small;
+      else return {url:""};
     }
   },
   transition: {
@@ -570,7 +577,7 @@ export default {
       let image = undefined;
       let type = "website";
       if(this.document.poster){
-        image = this.$staticAsset(this.$config.strapiBaseUri + this.document.poster.formats.medium.url, true);
+        image = this.$staticAsset(this.$config.strapiBaseUri + this.bestImageFromLarge(this.document.poster.formats).url, true);
       }
       if(this.$route.params.slug == "software" && this.document.images && this.document.images[0] && this.document.images[0].formats.medium.url){
         image = this.$staticAsset(this.$config.strapiBaseUri + this.document.images[0].formats.medium.url, true);
@@ -657,7 +664,9 @@ export default {
 				  url
 			  },
 			  poster{
-          formats
+          formats,
+          width,
+          height
 			  },
 			  tags{
 				  id,
