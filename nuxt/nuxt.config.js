@@ -25,6 +25,7 @@ export default {
       { rel: 'stylesheet', href:'https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600&display=swap' }
     ]
   },
+
   publicRuntimeConfig:{
     strapiBaseUri: process.env.API_URL || "http://localhost:1337"
   },
@@ -68,7 +69,8 @@ export default {
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: ['@nuxtjs/strapi', '@nuxtjs/markdownit'],
+  modules: ['@nuxtjs/strapi', '@nuxtjs/markdownit',
+['nuxt-matomo', { matomoUrl:'//analytics.piersdeseilligny.com/', siteId: 1, onMetaChange: true}]],
 
   markdownit: {
     preset: 'default',

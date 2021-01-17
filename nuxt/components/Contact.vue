@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <div class="home padder" style="padding-top:24px;padding-bottom:24px;">
       <h1 class="emphasis">Get in touch</h1>
-      <p class="email">If you would like to get in touch to discuss my work or a potential collaboration, please reach out to me at&nbsp;<a href="mailto:contact@piersdeseilligny.com">contact@piersdeseilligny.com</a></p>
-      <Links/>
+      <p class="email">If you would like to get in touch to discuss my work or a potential collaboration, please reach out to me at&nbsp;<a class="fancy" href="mailto:contact@piersdeseilligny.com">contact@piersdeseilligny.com</a></p>
+      <Links v-if="!nolinks"/>
 
 
       <!--<form class="contact-form" @submit.prevent="sendEmail">
@@ -44,16 +44,16 @@
   font-size:14px;
   margin-right:var(--rightmargin);
 }
-.email a{
+ a.fancy, .fancy a{
   text-decoration: none;
   position:relative;
   color:var(--foregroundlink);
   transition: color 0.3s;
 }
-.email a:hover{
+a.fancy:hover, .fancy a:hover {
   color:white;
 }
-.email a::after{
+a.fancy::after, .fancy a::after{
   position:absolute;
   width:0%;
   left:0;
@@ -63,13 +63,13 @@
   transition: width 0.3s;
   background:var(--backgroundclick);
 }
-.email a:active{
+a.fancy:active, .fancy a:active{
   background:var(--backgroundclick);
   background-clip:text;
   color:transparent;
   transition: color 0s;
 }
-.email a:hover::after{
+a.fancy:hover::after, .fancy a:hover::after{
   width:100%;
 }
 
@@ -153,3 +153,8 @@ textarea {
   min-width: 100%;
 }
 </style>
+<script>
+export default {
+    props:["nolinks"]
+}
+</script>

@@ -1,0 +1,29 @@
+{
+  "kind": "singleType",
+  "collectionName": "homes",
+  "info": {
+    "name": "home",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "description": {
+      "type": "richtext"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "underconstruction": {
+      "type": "boolean"
+    },
+    "images": {
+      "type": "component",
+      "repeatable": true,
+      "component": "component.random-image"
+    }
+  }
+}

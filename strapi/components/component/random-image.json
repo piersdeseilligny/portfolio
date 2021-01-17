@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_component_random_images",
+  "info": {
+    "name": "RandomImage",
+    "icon": "air-freshener",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "document": {
+      "model": "document"
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "caption": {
+      "type": "richtext"
+    }
+  }
+}

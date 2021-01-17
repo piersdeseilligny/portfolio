@@ -137,7 +137,7 @@ __webpack_require__.r(__webpack_exports__);
         //reg: /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/i,
         //reg: /^.*(?:(?:v|vi|be|videos|embed)\/(?!videoseries)|(?:v|ci)=)([\w-]{11})/i,
         reg: /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/i,
-        url: 'https://www.youtube.com/embed/$5',
+        url: 'https://www.youtube-nocookie.com/embed/$5',
         params: {
           'picture-in-picture': 1,
           accelerometer: 1,
@@ -196,7 +196,6 @@ __webpack_require__.r(__webpack_exports__);
             var and = v.url.indexOf('?') >= 0 ? '&' : '?';
             this.url = this.src.replace(v.reg, v.url) + and + query;
             this.valid = true; // console.log(this.url);
-
             return;
           }
         }
