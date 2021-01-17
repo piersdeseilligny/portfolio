@@ -89,7 +89,6 @@ export const mutations = {
     if (query) {
       for (let category of Object.keys(query)) {
         selectAll = false;
-        console.log("category=" + category);
         let selection = query[category].split(',');
           state.selectedTags[category]["All"] = false;
           selection.forEach(tag => {
@@ -135,7 +134,6 @@ export const getters = {
     }
     if (empty) return null
     else return queryobj;
-    console.log(querybuilder);
     let queries = [];
     for (let category of Object.keys(querybuilder)) {
       queries.push(category + "=" + querybuilder[category].join(','));

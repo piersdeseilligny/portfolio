@@ -9,7 +9,6 @@ export default(context, inject) =>
   //Inject $staticAsset
   inject('staticAsset', function(url, fullurl=false){
     if(context.isStatic){
-      console.log("static asset server " + url);
       //The current target is static, so download any image into dist and return that path
       let filename = url.substring(url.lastIndexOf('/')+1);
       mkdirp.sync('./dist/assets');

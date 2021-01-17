@@ -33,6 +33,7 @@
   padding: 12px 24px;
   position: absolute;
   width: 100%;
+  max-width:200px;
   top: 0;
   left: 0;
   box-sizing: border-box;
@@ -44,19 +45,18 @@
 }
 .story-nav-block {
   height: 4px;
-  border-radius: 2px;
   margin: 0 4px;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.4);
-  position: relative;
-  box-shadow: 0px 0px 12px rgba(0,0,0,0.5);
+  background-color: var(--fgcolor2);
+  opacity:1;
   display:none;
+  position: relative;
+  box-shadow: 0px 0px 12px var(--bgcolor);
 }
 .story-nav-block-progress {
   height: 4px;
   position: absolute;
-  background-color: white;
-  border-radius: 2px;
+  background-color: var(--fgcolor);
   width: 1%;
 }
 .story-slidecontainer {
@@ -102,7 +102,6 @@ export default {
         console.error(
           "Failed to load previous image!! loading " + slideindex + " instead"
         );
-      else console.log("Trying to load slide " + slideindex);
       let slidetoLoad = this.$refs["slide" + slideindex];
       if (slidetoLoad && slidetoLoad[0] && this.slides[slideindex]) {
         slidetoLoad[0].setAttribute(
@@ -167,7 +166,6 @@ export default {
     },
   },
   mounted: function () {
-    console.log("Mounted timeline");
     let blocks = this.$refs.navBlocks.getElementsByClassName(
       "story-nav-block-progress"
     );
@@ -196,9 +194,7 @@ export default {
     this.timeline.kill();
   },
   fetch: function(){
-    console.log("fetch story");
     if(process.server){
-      console.log("slides");
       this.slides.forEach((slide, index) => {
          this.$staticAsset(this.$config.strapiBaseUri + slide.url);
       });

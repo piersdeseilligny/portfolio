@@ -23,12 +23,21 @@
         position:relative;
     }
 .tag-icon{
-  width: 14px;
   margin-right:2px;
+}
+.contentblock .tag-icon{
+  margin-right:6px;
 }
 .tag-icon svg{
   max-width: 14px;
   max-height: 14px;
+}
+.contentblock .tag-icon{
+  max-height:18px;
+}
+.contentblock .tag-icon svg{
+  max-height:18px;
+  max-width:24px;
 }
     .tag:hover{
         color:var(--foreground)
@@ -46,7 +55,6 @@ export default {
     methods:{
         toggleselect: function(ctrl){
             this.$emit("selectionchange", this.category, this.name, ctrl);
-            console.log(ctrl);
         }
     }
 }

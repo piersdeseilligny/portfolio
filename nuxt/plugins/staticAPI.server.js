@@ -11,9 +11,7 @@ export default(context, inject) =>
   inject('staticAPI', async function(args){
     if(context.isStatic){
       mkdirp.sync('./dist/api');
-      console.log("staticAPI");
       let data = await context.$strapi.graphql(args);
-      console.log(data);
       fs.writeFileSync('./dist/api/'+hash.sha1(args)+'.json', JSON.stringify(data));
 
       return data;

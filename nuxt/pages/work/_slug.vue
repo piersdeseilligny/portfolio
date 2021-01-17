@@ -492,7 +492,6 @@ export default {
       this.$refs.portfolioContent.style.backgroundColor = doc.backgroundcolor;
     },
     scrollToSelection: function () {
-      console.log("scroll to selection");
       if (this.$refs.docs) {
         if (Array.isArray(this.$refs.docs)) {
           this.$refs.docs.forEach((el, i) => {

@@ -634,10 +634,12 @@ export default {
         videoembedaspect,
 				beforeafters{
 				  before{
-					formats
+          formats
+          url
 				  },
 				  after{
-					formats
+          formats
+          url
 				  },
 				  offset
 				},
@@ -684,7 +686,6 @@ export default {
       });
       if (data && data.documents && data.documents.length) {
         let images = [];
-        console.log(data.documents[0]);
         if(data.documents[0].images){
           for(let img of data.documents[0].images){
             images.push({
