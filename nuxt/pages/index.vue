@@ -296,9 +296,9 @@ export default {
         description:this.home.description,
         meta:[
           { hid:'og-title', property:'og:title', content:'Piers Deseilligny'},
-          { hid:'description', name:'description', content:this.home.metadescription},
-          { hid:'og-description', property:'og:description', content:this.home.metadescription},
-          { hid:'og-image', property:'og:image', content:this.home.metaimage.url },
+          { hid:'description', name:'description', content:this.home.subtitle},
+          { hid:'og-description', property:'og:description', content:this.home.subtitle},
+          { hid:'og-image', property:'og:image', content:"https://piersdeseilligny.com"+this.home.metaimage.url },
           { hid:'og-type', property:'og:type', content:"website"},
           { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/" }
         ]
