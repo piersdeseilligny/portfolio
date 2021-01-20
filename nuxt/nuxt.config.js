@@ -1,3 +1,5 @@
+
+
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -67,7 +69,7 @@ export default {
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: ['@nuxtjs/strapi', '@nuxtjs/markdownit', '@nuxtjs/sitemap',
+  modules: ['@nuxtjs/strapi', '@nuxtjs/markdownit',
 ['nuxt-matomo', { matomoUrl:'//analytics.piersdeseilligny.com/', siteId: 1, onMetaChange: true}]],
 
   markdownit: {
@@ -83,11 +85,6 @@ export default {
   strapi: {
     entities: ['documents', 'categories'],
     url: process.env.API_URL || "http://localhost:1337"
-  },
-
-  sitemap:{
-    hostname:'https://piersdeseilligny.com',
-    gzip:true
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
