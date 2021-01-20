@@ -24,9 +24,10 @@
           <div
             class="category-header"
             v-if="document.first"
-            :id="document.category.slug"
+
             :key="document.category.slug"
           >
+
             <nuxt-link
               v-if="selectedCategory"
               class="animatelink goback"
@@ -36,6 +37,7 @@
               }"
               :key="document.category.slug + '_b'"
             >
+
               <svg>
                 <polygon
                   points="13.1,5.8 2.2,5.8 7.3,1.2 6.7,0.5 0.2,6.3 6.7,12 7.3,11.3 2.2,6.8 13.1,6.8 "
@@ -44,6 +46,7 @@
             >
             <h2 :key="document.category.slug">
               <nuxt-link
+                :id="document.category.slug"
                 class="animatelink"
                 :to="{
                   path: '/work/' + document.category.slug,
@@ -133,6 +136,20 @@
   </div>
 </template>
 <style>
+.goback-enter-active {
+  opacity: 0;
+  transform: translateX(-32px);
+}
+.goback-enter-to {
+  opacity: 1;
+  transform: translateX(0px);
+}
+.goback-leave-to {
+  opacity: 0;
+  transform: translateX(-32px);
+}
+
+
 .portfolioVue {
   flex-basis: 1;
   flex-grow: 1;
@@ -238,7 +255,7 @@
   flex-basis: 100%;
 }
 .portfolioList .pContainer p {
-  max-width: 512px;
+  max-width: 652px;
   color: var(--foreground);
   font-size: 13px;
   margin-top: 0;
@@ -515,6 +532,12 @@ export default {
   },
   mounted() {
     this.scrollToSelection();
+    if(this.$route.hash){
+      console.log(this.$route);
+      if (document.querySelector(this.$route.hash)) {
+        document.querySelector(".portfolioList").scrollTo({top:document.querySelector(this.$route.hash).offsetTop-6, behavior:'smooth' });
+      }
+    }
   },
   head() {
     let title = "";

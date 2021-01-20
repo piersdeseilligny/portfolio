@@ -1,7 +1,7 @@
 <template>
     <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true}" :to="link" v-on:click.native="$emit('clickOnDoc', doc, $el);">
-    <div class="document-container" v-tilt>
-        <img class="document-bg" alt="" v-if="doc.images && doc.images[0]" :src="$staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url)"/>
+    <div class="document-container" :style="`background-color:${doc.backgroundcolor};z-index:0;`" v-tilt>
+        <img ref="docbg" class="document-bg" alt="" @load="loadimg" v-if="doc.images && doc.images[0]" :src="$staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url)"/>
         <div class="document-overlay" @touchstart="hoverShow" @touchend="hoverHide" @mouseenter="hoverShow" @mouseleave="hoverHide">
             <div ref="docoverlay" class="document-gradient"
                 :style="`background: linear-gradient(transparent,${doc.backgroundcolor});`"></div>
@@ -83,6 +83,7 @@
         height:100%;
         object-fit: cover;
         z-index: -1;
+        opacity:0;
 
     }
     .document.selected .document-bg{
@@ -219,6 +220,9 @@ export default {
         },
         hoverHide(){
             this.hoverAnimation(".in").reverse(0);
+        },
+        loadimg(){
+          gsap.to(this.$refs.docbg, {opacity:1, duration:0.3});
         }
     },
     mounted(){

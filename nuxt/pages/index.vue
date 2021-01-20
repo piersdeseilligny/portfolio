@@ -12,7 +12,7 @@
         <h1 class="emphasis" style="margin-top:48px;">About me</h1>
         <div class="highlighted" v-html="home.subtitle">Cinematography • Color grading • Software development</div>
         <div v-html="home.description"></div>
-
+        <Links class="indexcontainer-secondlinks" style="display:none;"/>
         <h2 class="alth2">My work</h2>
         <CategoriesHero :categories="categories"/>
 
@@ -169,16 +169,19 @@ h2.emphasis.noline{
   margin-top:12px;
 }
 .showanother{
-  color:hsl(202deg 36% 52%);
+  color:#6678ac;
   display:inline-block;
   cursor: pointer;
   font-weight:400;
   font-size:14px;
-  transition:color 0.3s;
+  transition:color 0.2s;
   user-select:none;
 }
 .showanother:hover{
-  color:white;
+  color:hsl(202deg 36% 52%);
+}
+.showanother:active{
+  color:hsl(202deg 36% 75%);
 }
 .showanother svg{
   margin-top:-2px;
@@ -201,6 +204,9 @@ h2.emphasis.noline{
 @media screen and (max-width: 820px) {
   .indexcontainer-links.links{
     display:none;
+  }
+  .indexcontainer-secondlinks{
+    display:flex !important;
   }
   .indexcontainer{
     --rightmargin:0;
@@ -292,7 +298,7 @@ export default {
           { hid:'og-title', property:'og:title', content:'Piers Deseilligny'},
           { hid:'description', name:'description', content:this.home.metadescription},
           { hid:'og-description', property:'og:description', content:this.home.metadescription},
-          { hid:'og-image', property:'og:image', content:"" },
+          { hid:'og-image', property:'og:image', content:this.home.metaimage.url },
           { hid:'og-type', property:'og:type', content:"website"},
           { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/" }
         ]
@@ -306,6 +312,9 @@ export default {
               home{
                 description,
                 metadescription,
+                metaimage{
+                  url
+                },
                 subtitle,
                 underconstruction,
                 images{
@@ -344,6 +353,13 @@ export default {
           image.image.url = context.$staticAsset(context.$config.strapiBaseUri + image.image.url);
           if(image.caption) image.caption = context.$md.render(image.caption);
         }
+        if(data.home.metaimage){
+          data.home.metaimage.url = context.$staticAsset(context.$config.strapiBaseUri + data.home.metaimage.url);
+        }
+        else{
+          data.home.metaimage = {url:""};
+        }
+
         console.log(data.home.images)
         const home = data.home;
         const categories = data.categories;
