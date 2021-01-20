@@ -1,6 +1,6 @@
 <template>
   <div class="links">
-        <a class="social" target="_blank" href="https://instagram.com/piersdeseilligny" rel="noopener">
+        <a class="social" @click="clicklink('Instagram')" target="_blank" href="https://instagram.com/piersdeseilligny" rel="noopener">
         <svg
           version="1.1"
           id="Logo"
@@ -42,7 +42,7 @@
         </svg>
         <span>Instagram</span>
       </a>
-        <a class="social" target="_blank" href="https://linkedin.com/piersdeseilligny" rel="noopener">
+        <a class="social" @click="clicklink('LinkedIn')" target="_blank" href="https://linkedin.com/piersdeseilligny" rel="noopener">
         <svg
           version="1.1"
           id="Logo"
@@ -75,7 +75,7 @@
         </svg>
         <span>LinkedIn</span>
       </a>
-      <a class="social" target="_blank" href="https://www.imdb.com/name/nm11052334" rel="noopener">
+      <a class="social" @click="clicklink('IMDb')" target="_blank" href="https://www.imdb.com/name/nm11052334" rel="noopener">
         <svg
           version="1.1"
           id="Logo"
@@ -183,3 +183,13 @@ a.social:active >span{
 }
 
 </style>
+<script>
+export default {
+  methods:{
+    clicklink(social){
+      if(this.$matomo)
+        this.$matomo.trackEvent('Clicks', 'Social', social);
+    }
+  }
+}
+</script>

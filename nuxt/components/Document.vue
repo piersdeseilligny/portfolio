@@ -101,6 +101,7 @@
         width:100%;
         transform: translateZ(40px);
     }
+
     .document:visited{
         color:rgba(255,255,255,0.5);
     }
@@ -175,6 +176,29 @@
         .selectIndicator.selected path{
             d: path("M 0 1 L 80 1 L 160 32 L 240 1 L 320 1") !important;
         }
+        .document-title{
+          font-size:20px;
+        }
+        .document-tags{
+          display:none;
+        }
+    }
+    @media (hover: none) {
+      .document-title{
+        opacity:1 !important;
+        transform:translateY(0) !important;
+      }
+      .document-year{
+        opacity:1 !important;
+        transform:translateY(0) !important;
+      }
+      .document-tags{
+        opacity:1 !important;
+        transform:translateY(0) !important;
+      }
+      .document-gradient{
+        opacity:1 !important;
+      }
     }
 </style>
 <script>

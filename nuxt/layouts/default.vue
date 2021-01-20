@@ -179,6 +179,29 @@ body{
   fill:currentColor;
 }
 
+.content-tags{
+  line-height: 14px;
+  font-size:12px;
+  color:var(--fgcolor);
+  margin-bottom:12px;
+}
+.content-tags>span{
+  display:inline-block;
+  opacity:0.6;
+}
+.content-tags i{
+  break-after: avoid;
+}
+.content-tags svg {
+  fill:var(--fgcolor);
+  max-height:14px;
+  width:14px;
+  margin-right:4px;
+  margin-bottom:-2px;
+  display:inline-block;
+}
+
+
 h1{
   font-size:2.5em;
   font-weight: 600;

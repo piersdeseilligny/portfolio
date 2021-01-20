@@ -90,7 +90,7 @@
             {{ document.title }}
           </h1>
           <div class="doccont-content-description fgcolor2">
-            <div class="doccont-content-tags"><span v-for="tag in document.tags" :key="tag.id"><i v-html="tag.icon"></i>{{tag.name}}&nbsp;&nbsp;&nbsp;</span></div>
+            <div class="content-tags"><span v-for="tag in document.tags" :key="tag.id"><i v-html="tag.icon"></i>{{tag.name}}&nbsp;&nbsp;&nbsp;</span></div>
             <div v-html="document.description"></div>
           </div>
           <div class="doccont-contentblocks">
@@ -328,27 +328,7 @@
   font-family: var(--font-secondary);
   font-weight: 200;
 }
-.doccont-content-tags{
-  line-height: 14px;
-  font-size:12px;
-  color:var(--fgcolor);
-  margin-bottom:12px;
-}
-.doccont-content-tags>span{
-  display:inline-block;
-  opacity:0.6;
-}
-.doccont-content-tags i{
-  break-after: avoid;
-}
-.doccont-content-tags svg {
-  fill:var(--fgcolor);
-  max-height:14px;
-  width:14px;
-  margin-right:4px;
-  margin-bottom:-2px;
-  display:inline-block;
-}
+
 .doccont-content-description {
   font-size: 13px;
   margin-top: 0px;
@@ -418,7 +398,7 @@ function timelineFrom(el, done) {
     0.05
   );
   tl.from(
-    el.querySelector(".doccont-content-tags"),
+    el.querySelector(".content-tags"),
     { y: -48, opacity: 0, duration: 0.3 },
     0.05
   );
@@ -454,7 +434,7 @@ function timelineTo(el, done) {
     0
   );
   tl.to(
-    el.querySelector(".doccont-content-tags"),
+    el.querySelector(".content-tags"),
     { y: 48, opacity: 0, duration: 0.3 },
     0
   );

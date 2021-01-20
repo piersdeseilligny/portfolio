@@ -24,6 +24,9 @@
       "type": "component",
       "repeatable": true,
       "component": "component.random-image"
+    },
+    "metadescription": {
+      "type": "text"
     }
   }
 }

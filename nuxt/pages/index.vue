@@ -23,7 +23,7 @@
     <div class="randomsample">
       <div class="padder">
         <h2 class="alth2"><span style="margin-right:12px;">Random sample</span>
-          <div ref="showanother" class="showanother" @click.prevent="randomImage">
+          <div ref="showanother" class="showanother" @click.prevent="randomImage(true)">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             	 viewBox="0 0 14 12.5" style="enable-background:new 0 0 14 12.5;" xml:space="preserve">
             <polygon fill="currentColor" points="1.5,1.1 2.5,2.1 5,2.1 5,4.6 6,5.6 6,1.1 "/>
@@ -34,10 +34,10 @@
           </div>
         </h2>
         <p class="fancy" v-html="hero.caption"></p>
-        <div class="doccont-content-tags" style="--fgcolor:var(--foreground);margin-top:0px;margin-bottom:0;" v-if="hero.document"><span v-for="tag in hero.document.tags" :key="tag.id"><i v-html="tag.icon"></i>{{tag.name}}&nbsp;&nbsp;&nbsp;</span></div>
+        <div class="content-tags" style="--fgcolor:var(--foreground);margin-top:0px;margin-bottom:0;" v-if="hero.document"><span v-for="tag in hero.document.tags" :key="tag.id"><i v-html="tag.icon"></i>{{tag.name}}&nbsp;&nbsp;&nbsp;</span></div>
       </div>
-      <div :style="`position:relative;padding-top:${(hero.image.height/hero.image.width)*100}%`">
-        <img style="position:absolute;top:0;left:0;right:0;width:100%;" :src="hero.image.url">
+      <div :style="`position:relative;padding-top:${(hero.image.height/hero.image.width)*100}%;transition: padding-top 0.2s;`">
+        <img id="randomimage" @load="loadimage" style="position:absolute;top:0;left:0;right:0;width:100%;" :src="hero.image.url">
       </div>
     </div>
   </div>
@@ -224,6 +224,7 @@ h2.emphasis.noline{
 
 </style>
 <script>
+import { gsap } from "gsap";
 export default {
     data(){
         return{
@@ -249,7 +250,8 @@ export default {
         }
     },
     methods:{
-      randomImage: function(){
+      randomImage: function(onclick){
+        gsap.to("#randomimage", { opacity:0, duration:0.2 });
         this.hero = this.home.images[this.imageindex];
         if(this.imageindex == this.home.images.length-1){
           this.imageindex = 0;
@@ -259,6 +261,12 @@ export default {
         }
         this.$refs.showanother.classList.add('rotating');
         setTimeout(()=>{ this.$refs.showanother.classList.remove('rotating'); }, 400);
+        if(onclick && this.$matomo){
+          this.$matomo.trackEvent('Clicks', 'Show another image');
+        }
+      },
+      loadimage: function(){
+        gsap.to("#randomimage", { opacity:1, duration:0.2 });
       }
     },
     mounted(){
@@ -276,6 +284,20 @@ export default {
       this.home.images = shuffleArray(this.home.images);
       this.randomImage();
     },
+    head() {
+      return {
+        title: "Piers Deseilligny",
+        description:this.home.description,
+        meta:[
+          { hid:'og-title', property:'og:title', content:'Piers Deseilligny'},
+          { hid:'description', name:'description', content:this.home.metadescription},
+          { hid:'og-description', property:'og:description', content:this.home.metadescription},
+          { hid:'og-image', property:'og:image', content:"" },
+          { hid:'og-type', property:'og:type', content:"website"},
+          { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/" }
+        ]
+      }
+    },
     async asyncData (context) {
       try{
         const data = await context.$staticAPI({
@@ -283,6 +305,7 @@ export default {
           query {
               home{
                 description,
+                metadescription,
                 subtitle,
                 underconstruction,
                 images{
