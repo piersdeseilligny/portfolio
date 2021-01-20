@@ -15,7 +15,6 @@
              class="category-hero fx-hovershadow viewall"
             to='/work'>
             <div class="mask"></div>
-            <img class="thumbnail">
             <span>View All</span></nuxt-link>
 </div>
 </template>

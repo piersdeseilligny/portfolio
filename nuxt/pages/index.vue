@@ -37,7 +37,7 @@
         <div class="content-tags" style="--fgcolor:var(--foreground);margin-top:0px;margin-bottom:0;" v-if="hero.document"><span v-for="tag in hero.document.tags" :key="tag.id"><i v-html="tag.icon"></i>{{tag.name}}&nbsp;&nbsp;&nbsp;</span></div>
       </div>
       <div :style="`position:relative;padding-top:${(hero.image.height/hero.image.width)*100}%;transition: padding-top 0.2s;`">
-        <img id="randomimage" @load="loadimage" style="position:absolute;top:0;left:0;right:0;width:100%;" :src="hero.image.url">
+        <img id="randomimage" alt="" @load="loadimage" style="position:absolute;top:0;left:0;right:0;width:100%;" :src="hero.image.url">
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@
     <Contact style="background-color:hsla(207,100%,92%,0.1);padding-bottom:72px;padding-top:72px;" nolinks="true"/>
     <div class="footer">
       <span class="copyright">©{{ new Date().getFullYear() }} Piers Deseilligny</span>
-      <span>This website is <a class="fancy" target="_blank" href="https://github.com/piersdeseilligny/portfolio">open-source</a></span>
+      <span>This website is <a class="fancy" rel="noopener" target="_blank" href="https://github.com/piersdeseilligny/portfolio">open-source</a></span>
     </div>
   </div>
 </div>

@@ -48,15 +48,13 @@ export default {
   plugins: [
     "~plugins/filterdocs.js",
     "~plugins/formatDate.js",
-    "~plugins/vue-slick-carousel.js",
     "~plugins/vue-tilt.client.js",
     "~plugins/staticAPI.client.js",
     "~plugins/staticAPI.server.js",
     "~plugins/staticAsset.client.js",
     "~plugins/staticAsset.server.js",
     {src:"~plugins/vue-embed.js", mode:"client"},
-    {src:"~plugins/vue-cool-lightbox.js", mode:"client"},
-    {src:"~plugins/vue-resize-observer.js", mode:"client"}
+    {src:"~plugins/vue-cool-lightbox.js", mode:"client"}
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -69,7 +67,7 @@ export default {
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: ['@nuxtjs/strapi', '@nuxtjs/markdownit',
+  modules: ['@nuxtjs/strapi', '@nuxtjs/markdownit', '@nuxtjs/sitemap',
 ['nuxt-matomo', { matomoUrl:'//analytics.piersdeseilligny.com/', siteId: 1, onMetaChange: true}]],
 
   markdownit: {
@@ -85,6 +83,11 @@ export default {
   strapi: {
     entities: ['documents', 'categories'],
     url: process.env.API_URL || "http://localhost:1337"
+  },
+
+  sitemap:{
+    hostname:'https://piersdeseilligny.com',
+    gzip:true
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)

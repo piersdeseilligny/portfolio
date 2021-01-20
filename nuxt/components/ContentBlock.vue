@@ -92,22 +92,8 @@ figcaption{
 }
 </style>
 <script>
-import 'vue-slick-carousel/dist/vue-slick-carousel.css';
-import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
+
 export default {
-  props: ["block"],
-  data() {
-    return {
-      slickOptions: {
-  dots: true,
-  dotsClass: "slick-dots custom-dot-class",
-  edgeFriction: 0.35,
-  infinite: false,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-      }
-    };
-  },
+  props: ["block"]
 };
 </script>
