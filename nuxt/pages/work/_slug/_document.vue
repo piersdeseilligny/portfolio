@@ -343,6 +343,10 @@
   opacity: 0;
 }
 
+.cool-lightbox__slide{
+  opacity:1 !important;
+}
+
 @media screen and (max-width: 800px) {
     .doccont-content {
     padding: 0 24px;
