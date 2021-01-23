@@ -687,7 +687,7 @@ export default {
             }
             if(block.stills){
               for(let i in block.stills){
-                block.stills[i].index = i;
+                block.stills[i].index = imagesAlt.length;
                 block.stills[i].childshadow = (block.stills[i].name && block.stills[i].name.endsWith('_ns.PNG'));
                 imagesAlt.push({
                   src:context.$staticAsset(context.$config.strapiBaseUri + block.stills[i].url),

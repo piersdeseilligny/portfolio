@@ -94,6 +94,6 @@ figcaption{
 <script>
 
 export default {
-  props: ["block"]
+  props: ["block","blockindex"]
 };
 </script>
