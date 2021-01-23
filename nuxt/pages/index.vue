@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="home">
-    <video-embed class="showreel-container" src="https://youtu.be/U6UP8V_mWxc"></video-embed>
+    <video-embed class="showreel-container" src="https://vimeo.com/503694378"></video-embed>
     <div class="padder">
     <div class="indexcontainer">
       <div class="indexcontainer-about">
@@ -134,7 +134,7 @@ h2.emphasis.noline{
 .showreel-container {
     position: relative;
     height: 0;
-    padding-bottom: 56.25%;
+    padding-bottom: 50%;
     overflow: hidden;
     /* Not needed if it's a block element, like a div */
     width: 100%;
