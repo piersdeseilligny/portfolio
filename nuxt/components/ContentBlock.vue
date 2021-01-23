@@ -20,12 +20,14 @@
     <div class="embed-container" :style="`padding-bottom: ${(1/(block.videoembedaspect ? block.videoembedaspect : 1.77))*100}%`" v-if="block.videoembed">
       <video-embed :src="block.videoembed"></video-embed>
     </div>
+    <div :class="{'squarestills':block.squarestills}">
       <figure v-for="still in block.stills" :key="still.url">
         <a :class="{'still':true, 'fx-hovershadow':true, 'childshadow':still.childshadow}" :data-index="still.index" @click.prevent="$emit('openimage', still.index)" :style="`padding-top:${(1/(still.formats.medium.width/still.formats.medium.height) * 100)}%`" :href="$staticAsset($config.strapiBaseUri+still.url)">
           <img :src="$staticAsset($config.strapiBaseUri+still.formats.medium.url)">
         </a>
         <figcaption>{{still.caption}}</figcaption>
       </figure>
+    </div>
   </div>
 </template>
 <style>
@@ -66,6 +68,12 @@ figure{
 figcaption{
   margin-top:2px;
   color:var(--fgcolor2);
+}
+.squarestills{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
 }
 .still{
   position:relative;

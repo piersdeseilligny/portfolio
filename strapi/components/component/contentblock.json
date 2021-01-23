@@ -37,6 +37,10 @@
     },
     "videoembedaspect": {
       "type": "float"
+    },
+    "squarestills": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

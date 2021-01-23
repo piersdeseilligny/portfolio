@@ -49,7 +49,7 @@
         }% - 64px);`"
       ></div>
       <div class="doccont-content" ref="doccontContent">
-        <div class="doccont-content-col1" ref="doccontContentCol1">
+        <div class="doccont-content-col1" ref="doccontContentCol1" v-if="document.poster && document.moreinfo">
           <div v-if="document.poster" :class="{'doccont-content-postercontainer-root':true, 'noshadow':document.nopostershadow}">
             <div
             class="doccont-content-postercontainer"
@@ -542,6 +542,7 @@ export default {
       opacity: 1,
     });
 
+  if(this.$refs.doccontContentCol1){
     gsap.to(this.$refs.doccontContentCol1, {
       scrollTrigger: {
         scroller: this.$refs.doccontScroller,
@@ -555,6 +556,7 @@ export default {
         scrub: true,
       },
     });
+  }
   },
   head() {
     if(this.document && this.document.title){
@@ -582,7 +584,7 @@ export default {
           { hid:'og-title', property:'og:title', content:this.document.title},
           { hid:'description', name:'description', content:this.document.description},
           { hid:'og-description', property:'og:description', content:this.document.description},
-          { hid:'og-image', property:'og:image', content:image },
+          { hid:'og-image', property:'og:image', content: "https://piersdeseilligny.com" + image },
           { hid:'og-type', property:'og:type', content:type},
           { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/work/"+this.$route.params.slug+"/"+this.$route.params.document }
         ]
@@ -613,7 +615,8 @@ export default {
           url,
           caption,
           name
-        }
+        },
+        squarestills,
         videoembed,
         videoembedaspect,
 				beforeafters{

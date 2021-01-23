@@ -533,7 +533,6 @@ export default {
   mounted() {
     this.scrollToSelection();
     if(this.$route.hash){
-      console.log(this.$route);
       if (document.querySelector(this.$route.hash)) {
         document.querySelector(".portfolioList").scrollTo({top:document.querySelector(this.$route.hash).offsetTop-6, behavior:'smooth' });
       }
@@ -542,10 +541,15 @@ export default {
   head() {
     let title = "";
     let description = "";
+    let image = {};
     if (this.selectedCategory) {
       title = this.$store.state.categories[this.selectedCategory].name;
-      description = this.$store.state.categories[this.selectedCategory]
-        .description;
+      description = this.$store.state.categories[this.selectedCategory].description;
+      image = {
+          hid:"og-image",
+          property: "og:image",
+          content: "https://piersdeseilligny.com" + this.$staticAsset(this.$config.strapiBaseUri + this.$store.state.categories[this.selectedCategory].thumbnailimage.formats.medium.url, true)
+        }
     }
     if (!title) {
       title = "All work";
@@ -571,6 +575,7 @@ export default {
           property: "og:description",
           content: description,
         },
+        image,
         { hid: "description", property: "description", content: description },
       ],
     };

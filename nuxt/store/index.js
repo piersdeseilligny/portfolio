@@ -19,6 +19,9 @@ export const actions = {
                 description,
                 tags{
                   name
+                },
+                thumbnailimage{
+                  formats
                 }
               },
               tags{
