@@ -11,7 +11,7 @@
         </template>
         <h1 class="emphasis" style="margin-top:48px;">About me</h1>
         <div class="highlighted" v-html="home.subtitle">Cinematography • Color grading • Software development</div>
-        <div v-html="home.description"></div>
+        <div class="fancy" v-html="home.description"></div>
         <Links class="indexcontainer-secondlinks" style="display:none;"/>
         <h2 class="alth2">My work</h2>
         <CategoriesHero :categories="categories"/>
