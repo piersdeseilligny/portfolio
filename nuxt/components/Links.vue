@@ -109,6 +109,23 @@
         </svg>
         <span>IMDb</span>
       </a>
+      <a class="social" @click="clicklink('Twitter')" target="_blank" href="https://twitter.com/pdeseilligny" rel="noopener">
+      <svg version="1.1" id="Layer_2_1_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 14 12.5" style="enable-background:new 0 0 14 12.5;" xml:space="preserve">
+           <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#476b85"/>
+            <stop offset="100%" stop-color="#3d8f7a"/>
+          </linearGradient>
+        </defs>
+<path d="M13.688,2.302c-0.471,0.209-0.974,0.35-1.508,0.414c0.547-0.328,0.956-0.844,1.152-1.451
+	c-0.515,0.306-1.079,0.522-1.667,0.637C9.539-0.206,6.543,1.98,7.189,4.298c-2.182-0.11-4.12-1.152-5.412-2.743
+	C1.034,2.819,1.518,4.373,2.59,5.057C2.159,5.043,1.755,4.925,1.401,4.728c0,0.011,0,0.022,0,0.033c0,1.273,0.905,2.331,2.107,2.575
+	C3.098,7.437,2.707,7.453,2.318,7.381C2.652,8.42,3.62,9.179,4.771,9.207c-1.161,0.882-2.509,1.245-3.886,1.086
+	c5.927,3.483,11.517-1.077,11.498-6.292c0-0.113-0.003-0.226-0.007-0.339c0.513-0.371,0.955-0.833,1.311-1.358"/>
+</svg>
+        <span>Twitter</span>
+      </a>
 </div>
 </template>
 <style>
