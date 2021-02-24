@@ -212,6 +212,11 @@
   fill: currentColor;
 }
 
+.outlink .icon .imdb-logo{
+    max-height: 40px;
+    width: 42px;
+}
+
 .doccont-container {
   position: relative;
   width: 100%;
