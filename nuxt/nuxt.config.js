@@ -29,7 +29,7 @@ export default {
   },
 
   publicRuntimeConfig:{
-    strapiBaseUri: process.env.API_URL || "http://localhost:1337"
+    strapiBaseUri: process.env.API_URL || "http://localhost:3001"
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -84,7 +84,7 @@ export default {
 
   strapi: {
     entities: ['documents', 'categories'],
-    url: process.env.API_URL || "http://localhost:1337"
+    url: process.env.API_URL || "http://localhost:3001"
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
