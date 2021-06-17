@@ -114,6 +114,7 @@
               'portfolio-list-item': true,
               filteredout: document.hidden,
             }"
+            v-if="document.order != -1"
             :key="document.id"
             ref="docs"
             :link="{
@@ -613,6 +614,7 @@ export default {
               backgroundcolor,
               foregroundcolor,
               foregroundcolor2,
+              order,
               tags{
                 name,
                 id,
