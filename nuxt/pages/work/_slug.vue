@@ -256,7 +256,7 @@
   flex-basis: 100%;
 }
 .portfolioList .pContainer p {
-  max-width: 652px;
+  max-width: 722px;
   color: var(--foreground);
   font-size: 13px;
   margin-top: 0;

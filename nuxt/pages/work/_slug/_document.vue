@@ -162,6 +162,7 @@
 }
 .topbuttons .topbutton svg {
   fill: white;
+  filter: drop-shadow(0px 0px 12px black);
 }
 
 .moreinfo-header {
