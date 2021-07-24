@@ -55,8 +55,9 @@ export default {
     "~plugins/staticAPI.server.js",
     "~plugins/staticAsset.client.js",
     "~plugins/staticAsset.server.js",
-    {src:"~plugins/vue-embed.js", mode:"client"},
-    {src:"~plugins/vue-cool-lightbox.js", mode:"client"}
+    { src:"~plugins/vue-embed.js", mode:"client" },
+    { src:"~plugins/vue-cool-lightbox.js", mode:"client" },
+    { src: '~/plugins/vue-matomo.js', ssr: false }
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

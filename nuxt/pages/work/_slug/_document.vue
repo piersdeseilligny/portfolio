@@ -526,6 +526,7 @@ export default {
     css: false,
   },
   mounted: function () {
+    _paq.push(["trackPageView"]);
     ScrollTrigger.create({
       scroller: this.$refs.doccontScroller,
       trigger: this.$refs.doccontImgContent,

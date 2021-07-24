@@ -31,6 +31,7 @@
     "object-hash": "^2.1.1",
     "v-video-embed": "^1.0.8",
     "vue-cool-lightbox": "^2.7.0",
+    "vue-matomo": "^4.1.0",
     "vue-resize-observer": "^1.0.32",
     "vue-tilt.js": "^1.1.1",
     "vue-twentytwenty": "^0.10.1"
