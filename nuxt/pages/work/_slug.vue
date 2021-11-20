@@ -57,12 +57,7 @@
                 }}</span></nuxt-link
               >
             </h2>
-            <div class="pContainer" :key="document.category.slug + '_d'">
-              <p>
-                {{
-                  $store.state.categories[document.category.slug].description
-                }}
-              </p>
+            <div class="pContainer fancy" :key="document.category.slug + '_d'" v-html="$md.render($store.state.categories[document.category.slug].description)">
             </div>
             <div class="tagscontainer">
               <transition-group

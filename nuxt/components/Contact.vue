@@ -44,34 +44,6 @@
   font-size:14px;
   margin-right:var(--rightmargin);
 }
- a.fancy, .fancy a{
-  text-decoration: none;
-  position:relative;
-  color:var(--foregroundlink);
-  transition: color 0.3s;
-}
-a.fancy:hover, .fancy a:hover {
-  color:white;
-}
-a.fancy::after, .fancy a::after{
-  position:absolute;
-  width:0%;
-  left:0;
-  bottom:0;
-  content:'';
-  height:2px;
-  transition: width 0.3s;
-  background:var(--backgroundclick);
-}
-a.fancy:active, .fancy a:active{
-  background:var(--backgroundclick);
-  background-clip:text;
-  color:transparent;
-  transition: color 0s;
-}
-a.fancy:hover::after, .fancy a:hover::after{
-  width:100%;
-}
 
 label {
   display: block;

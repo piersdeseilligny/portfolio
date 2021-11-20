@@ -62,7 +62,7 @@
             <img
               class="doccont-content-poster"
               alt="Poster"
-              :src="$staticAsset($config.strapiBaseUri + bestImageFromLarge(document.poster.formats).url)"
+              :src="$staticAsset($config.strapiBaseUri + bestImageFromLarge(document.poster).url)"
             />
             </div>
           </div>
@@ -507,11 +507,12 @@ export default {
     openlightboxalt: function(i){
       this.lightboxindexAlt = i;
     },
-    bestImageFromLarge:function(formats){
-      if(!formats) return {url:""};
-      if(formats.large) return formats.large;
-      else if(formats.medium) return formats.medium;
-      else if(formats.small) return formats.small;
+    bestImageFromLarge:function(img){
+      if(!img) return {url:""};
+      if(!img.formats) return img;
+      if(img.formats.large) return img.formats.large;
+      else if(img.formats.medium) return img.formats.medium;
+      else if(img.formats.small) return img.formats.small;
       else return {url:""};
     }
   },
@@ -570,7 +571,7 @@ export default {
       let image = undefined;
       let type = "website";
       if(this.document.poster){
-        image = this.$staticAsset(this.$config.strapiBaseUri + this.bestImageFromLarge(this.document.poster.formats).url, true);
+        image = this.$staticAsset(this.$config.strapiBaseUri + this.bestImageFromLarge(this.document.poster).url, true);
       }
       if(this.$route.params.slug == "software" && this.document.images && this.document.images[0] && this.document.images[0].formats.medium.url){
         image = this.$staticAsset(this.$config.strapiBaseUri + this.document.images[0].formats.medium.url, true);
@@ -662,7 +663,8 @@ export default {
 			  poster{
           formats,
           width,
-          height
+          height,
+          url
 			  },
 			  tags{
 				  id,
