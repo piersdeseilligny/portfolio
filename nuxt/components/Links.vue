@@ -12,7 +12,7 @@
           style="enable-background: new 0 0 512 512"
           xml:space="preserve"
         >
-        <defs>
+        <defs>\
           <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%"   stop-color="#476b85"/>
             <stop offset="100%" stop-color="#3d8f7a"/>

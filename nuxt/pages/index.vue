@@ -12,6 +12,8 @@
         <h1 class="emphasis" style="margin-top:48px;">About me</h1>
         <div class="highlighted" v-html="home.subtitle">Cinematography • Color grading • Software development</div>
         <div class="fancy" v-html="home.description"></div>
+        <h2 class="alth2" style="margin-top:24px">Get in touch</h2>
+        <p class="fancy">If you would like to get in touch to discuss my work or a potential collaboration, please reach out to me at <a href="mailto:contact@piersdeseilligny.com">contact@piersdeseilligny.com</a></p>
         <Links class="indexcontainer-secondlinks" style="display:none;"/>
         <h2 class="alth2">My work</h2>
         <CategoriesHero :categories="categories"/>
@@ -43,8 +45,7 @@
   </div>
 
   <div >
-    <Contact style="background-color:hsla(207,100%,92%,0.1);padding-bottom:72px;padding-top:72px;" nolinks="true"/>
-    <div class="footer">
+        <div class="footer" style="padding-top:72px">
       <span class="copyright">©{{ new Date().getFullYear() }} Piers Deseilligny</span>
       <span>This website is <a class="fancy" rel="noopener" target="_blank" href="https://github.com/piersdeseilligny/portfolio">open-source</a></span>
     </div>

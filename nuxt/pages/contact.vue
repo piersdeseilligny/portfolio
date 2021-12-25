@@ -65,7 +65,8 @@ export default {
         });
         let backgroundImage = undefined;
         if(data.contactImage && data.contactImage.image && data.contactImage.image.length){
-          backgroundImage = data.contactImage.image[Math.floor(Math.random() * data.contactImage.image.length)];
+          var randomIndex = Math.floor(Math.random() * data.contactImage.image.length);
+          backgroundImage = data.contactImage.image[randomIndex];
         }
         return{ backgroundImage:backgroundImage }
       }
