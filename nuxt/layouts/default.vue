@@ -1,5 +1,28 @@
 <template>
 <div class="maincontent">
+    <svg aria-hidden="true" focusable="false" style="width:0;height:0;position:absolute;">
+      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%" style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+        <stop offset="0%" stop-color="#476b85" />
+        <stop offset="100%" stop-color="#3d8f7a" />
+      </linearGradient>
+      <linearGradient id="gradient-instagram" x1="0%" y1="100%" x2="100%" y2="0%" style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+        <stop offset="0%" stop-color="#FBBD65" />
+        <stop offset="50%" stop-color="#C2327C" />
+        <stop offset="100%" stop-color="#6C53BC" />
+      </linearGradient>
+      <linearGradient id="gradient-linkedin" x1="0%" y1="100%" x2="100%" y2="0%" style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+        <stop offset="0%" stop-color="#095bac" />
+        <stop offset="100%" stop-color="#237cd5" />
+      </linearGradient>
+      <linearGradient id="gradient-imdb" x1="0%" y1="100%" x2="100%" y2="0%" style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+        <stop offset="0%" stop-color="#e2b616" />
+        <stop offset="100%" stop-color="#ffdc18" />
+      </linearGradient>
+      <linearGradient id="gradient-github" x1="0%" y1="100%" x2="100%" y2="0%" style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="100%" stop-color="#f0f0f0" />
+      </linearGradient>
+    </svg>
   <div class="centercontent">
     <div class="headercontainer" style="z-index:3">
 	  <nav class="header">
