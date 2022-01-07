@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="home">
-    <video-embed class="showreel-container" src="https://vimeo.com/503694378"></video-embed>
+    <video-embed class="showreel-container" src="https://vimeo.com/663424256"></video-embed>
     <div class="padder">
     <div class="indexcontainer">
       <div class="indexcontainer-about">
@@ -133,6 +133,7 @@ h2.emphasis.noline{
 }
 
 .showreel-container {
+    background: black;
     position: relative;
     height: 0;
     padding-bottom: 50%;
