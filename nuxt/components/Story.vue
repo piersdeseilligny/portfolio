@@ -99,7 +99,7 @@ export default {
   methods: {
     loadSlide(slideindex, iserror) {
       if (iserror)
-        console.error(
+        console.info(
           "Failed to load previous image!! loading " + slideindex + " instead"
         );
       let slidetoLoad = this.$refs["slide" + slideindex];
@@ -109,7 +109,7 @@ export default {
           this.$staticAsset(this.$config.strapiBaseUri + this.slides[slideindex].url)
         );
       } else {
-        console.error("Slide " + slideindex + " doesn't exist!!");
+        console.info("Slide " + slideindex + " doesn't exist!!");
       }
     },
     showSlide(slideindex) {

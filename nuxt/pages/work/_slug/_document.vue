@@ -560,6 +560,7 @@ export default {
         pin: true,
         pinSpacing: false,
         pinReparent:true,
+        anticipatePin:true,
         scrub: true,
       },
     });

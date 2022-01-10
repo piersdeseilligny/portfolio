@@ -17,6 +17,51 @@
  */
 
 
+/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=script&lang=js& */
+
+/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=template&id=058b7650& */
+
+/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */
+
+/*! ./embed.vue */
+
+/*! ./embed.vue?vue&type=script&lang=js& */
+
+/*! ./embed.vue?vue&type=template&id=058b7650& */
+
+/*! exports provided: default */
+
+/*! exports provided: render, staticRenderFns */
+
+/*!**********************!*\
+        !*** ./src/index.js ***!
+        \**********************/
+
+/*!***********************!*\
+        !*** ./src/embed.vue ***!
+        \***********************/
+
+/*!************************************************!*\
+        !*** ./src/embed.vue?vue&type=script&lang=js& ***!
+        \************************************************/
+
+/*!******************************************************!*\
+        !*** ./src/embed.vue?vue&type=template&id=058b7650& ***!
+        \******************************************************/
+
+/*!********************************************************************!*\
+        !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
+        \********************************************************************/
+
+/*!**********************************************************************************************************************************!*\
+        !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=script&lang=js& ***!
+        \**********************************************************************************************************************************/
+
+/*!************************************************************************************************************************************************************************************!*\
+        !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=template&id=058b7650& ***!
+        \************************************************************************************************************************************************************************************/
+
+
 /*!
  * cookie
  * Copyright(c) 2012-2014 Roman Shtylman
@@ -71,48 +116,3 @@
  * Club GreenSock members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
 */
-
-
-/*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=script&lang=js& */
-
-/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=template&id=058b7650& */
-
-/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */
-
-/*! ./embed.vue */
-
-/*! ./embed.vue?vue&type=script&lang=js& */
-
-/*! ./embed.vue?vue&type=template&id=058b7650& */
-
-/*! exports provided: default */
-
-/*! exports provided: render, staticRenderFns */
-
-/*!**********************!*\
-        !*** ./src/index.js ***!
-        \**********************/
-
-/*!***********************!*\
-        !*** ./src/embed.vue ***!
-        \***********************/
-
-/*!************************************************!*\
-        !*** ./src/embed.vue?vue&type=script&lang=js& ***!
-        \************************************************/
-
-/*!******************************************************!*\
-        !*** ./src/embed.vue?vue&type=template&id=058b7650& ***!
-        \******************************************************/
-
-/*!********************************************************************!*\
-        !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
-        \********************************************************************/
-
-/*!**********************************************************************************************************************************!*\
-        !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=script&lang=js& ***!
-        \**********************************************************************************************************************************/
-
-/*!************************************************************************************************************************************************************************************!*\
-        !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=template&id=058b7650& ***!
-        \************************************************************************************************************************************************************************************/
