@@ -1,7 +1,9 @@
 <template>
 <div>
   <div class="home">
-    <video-embed class="showreel-container" src="https://vimeo.com/663424256"></video-embed>
+    <div class="showreel-container">
+    <video-embed src="https://vimeo.com/663424256"></video-embed>
+    </div>
     <div class="padder">
     <div class="indexcontainer">
       <div class="indexcontainer-about">
@@ -71,7 +73,6 @@
 }
 .indexcontainer-links{
   flex-direction: column;
-  height:fit-content;
   margin-top:96px;
   flex-basis:25%;
   flex-shrink: 0;

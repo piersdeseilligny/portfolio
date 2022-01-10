@@ -8,3 +8,12 @@ Options -Indexes
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]
 </IfModule>
+
+<filesMatch "(favicon.ico)$">
+    Header set Cache-Control "immutable"
+</filesMatch>
+
+# X-Content-Type nosniff
+<IfModule mod_headers.c>
+	Header set X-Content-Type-Options nosniff
+</IfModule>

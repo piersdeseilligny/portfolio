@@ -21,10 +21,10 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'icon', type: 'image/png', sizes:'32x32', href: '/favicon-32x32.png' },
       { rel: 'icon', type: 'image/png', sizes:'16x16', href: '/favicon-16x16.png' },
-      { rel: 'manifest', href: '/site.webmanifest' },
-      { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#447b82' },
+      { rel: 'manifest', href: '/site.webmanifest', type:'application/manifest+json' },
+      { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#447b82', type:'image/svg+xml' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
-      { rel: 'stylesheet', href:'https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600&display=swap' }
+      { rel: 'stylesheet', href:'https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600&display=swap', type:'text/css' }
     ]
   },
 
@@ -56,8 +56,7 @@ export default {
     "~plugins/staticAsset.client.js",
     "~plugins/staticAsset.server.js",
     { src:"~plugins/vue-embed.js", mode:"client" },
-    { src:"~plugins/vue-cool-lightbox.js", mode:"client" },
-    { src: '~/plugins/vue-matomo.js', ssr: false }
+    { src:"~plugins/vue-cool-lightbox.js", mode:"client" }
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -71,7 +70,7 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: ['@nuxtjs/strapi', '@nuxtjs/markdownit',
-['nuxt-matomo', { matomoUrl:'//analytics.piersdeseilligny.com/', siteId: 1, onMetaChange: true}]],
+['nuxt-matomo', { matomoUrl:'https://analytics.piersdeseilligny.com/', siteId: 1, onMetaChange: true}]],
 
   markdownit: {
     preset: 'default',

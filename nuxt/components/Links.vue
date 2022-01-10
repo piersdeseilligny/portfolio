@@ -10,7 +10,6 @@
     >
       <svg
         version="1.1"
-        id="Logo"
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         x="0px"
@@ -53,7 +52,6 @@
     >
       <svg
         version="1.1"
-        id="Logo"
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         x="0px"
@@ -90,7 +88,6 @@
     >
       <svg
         version="1.1"
-        id="Logo"
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         x="0px"
@@ -136,11 +133,10 @@
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         width="20px"
-        id="Logo"
         viewBox="4 0 18 24"
         version="1.1"
       >
-        <g id="surface9423585">
+        <g>
           <path
             style="
               stroke: none;
@@ -184,9 +180,9 @@ a.social > span {
   margin-left: 42px;
   margin-right: 24px;
   transition: all 0.3s;
-  background-clip: text;
   -webkit-background-clip: text;
   -moz-background-clip: text;
+  background-clip: text;
 }
 a.social > span::after {
   position: absolute;
