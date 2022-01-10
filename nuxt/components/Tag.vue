@@ -12,9 +12,9 @@
     .tag{
         display:inline-block;
         color:var(--foregroundsubtle);
-        user-select: none;
         -moz-user-select: none;
         -webkit-user-select: none;
+        user-select: none;
         cursor: pointer;
         padding: 0px 8px;
         font-size:0.7em;

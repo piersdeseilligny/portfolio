@@ -78,7 +78,7 @@
               <div class="moreinfo-subheader fgcolor2" v-if="info.subheader">
                 {{ info.subheader }}
               </div>
-              <a class="outlink" v-if="info.link && info.outlink" target="_blank" :href="info.link">
+              <a class="outlink" v-if="info.link && info.outlink" target="_blank" :href="info.link" rel="noopener">
                 <i class="icon" v-if="info.outlink.svg" v-html="info.outlink.svg"/>
                 <span>{{ info.outlink.name }}</span>
               </a>
@@ -527,7 +527,6 @@ export default {
     css: false,
   },
   mounted: function () {
-    _paq.push(["trackPageView"]);
     ScrollTrigger.create({
       scroller: this.$refs.doccontScroller,
       trigger: this.$refs.doccontImgContent,

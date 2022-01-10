@@ -273,6 +273,7 @@
   position: relative;
   flex-basis: 100%;
   width: -moz-fit-content;
+  width: fit-content;
   transform: width 0.2s ease;
   margin-left: -6px;
   line-height: 16px;

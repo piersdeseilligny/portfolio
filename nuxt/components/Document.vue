@@ -33,6 +33,7 @@
         margin-top:12px;
         transition: all 0.2s;
         scroll-margin: 24px;
+        scroll-snap-margin: 24px;
     }
 
 @media screen and (max-width: 800px) {
