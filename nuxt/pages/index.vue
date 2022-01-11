@@ -11,7 +11,7 @@
           <h1>Website currently under construction</h1>
           <p>I'm still finalizing the design and content of my personal website, but please don't hesitate to come back and check it out in a couple weeks :)</p>
         </template>
-        <h1 class="emphasis" style="margin-top:48px;">About me</h1>
+        <h1 class="emphasis" style="margin-top:48px;">About Me</h1>
         <div class="highlighted" v-html="home.subtitle">Cinematography • Color grading • Software development</div>
         <div class="fancy" v-html="home.description"></div>
         <h2 class="alth2" style="margin-top:24px">Get in touch</h2>
