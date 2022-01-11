@@ -66,10 +66,11 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
+    '@/modules/sitemapRouteGenerator'
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: ['@nuxtjs/strapi', '@nuxtjs/markdownit',
+  modules: ['@nuxtjs/strapi', '@nuxtjs/markdownit', '@nuxtjs/sitemap',
 ['nuxt-matomo', { matomoUrl:'https://analytics.piersdeseilligny.com/', siteId: 1, onMetaChange: true}]],
 
   markdownit: {
@@ -80,6 +81,10 @@ export default {
     use: [
       ['markdown-it-link-attributes', {attrs: {target: '_blank', rel: 'noopener'}}],
     ]
+  },
+
+  sitemap:{
+    hostname:'https://piersdeseilligny.com'
   },
 
   strapi: {
