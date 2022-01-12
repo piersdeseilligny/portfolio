@@ -4,7 +4,7 @@
             <nuxt-link
             v-tilt
              class="category-hero fx-hovershadow" v-for="category in categories" :key="category.id"
-            :to="{path:'/work', hash: category.slug + '/'}">
+            :to="{path:'/work', hash: category.slug}">
             <div class="mask"></div>
             <img v-if="category.thumbnailimage" alt="" :class="{'thumbnail': true, 'novideo':!category.thumbnailvideo}" :src="$staticAsset($config.strapiBaseUri + category.thumbnailimage.formats.small.url)">
             <video ref="vid" alt="" loop muted autoplay v-if="category.thumbnailvideo" :src="$staticAsset($config.strapiBaseUri + category.thumbnailvideo.url)"></video>
@@ -13,7 +13,7 @@
             <nuxt-link
             v-tilt
              class="category-hero fx-hovershadow viewall"
-            to='/work/'>
+            to='/work'>
             <div class="mask"></div>
             <span>View All</span></nuxt-link>
 </div>

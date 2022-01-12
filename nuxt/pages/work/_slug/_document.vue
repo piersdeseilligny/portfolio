@@ -105,7 +105,7 @@
       </div>
     </div>
         <div class="topbuttons">
-      <nuxt-link class="topbutton" v-if="this.$route.params.slug" title="Close" :to="{ path:'/work/'+this.$route.params.slug+'/' }">
+      <nuxt-link class="topbutton" v-if="this.$route.params.slug" title="Close" :to="{ path:'/work/'+this.$route.params.slug }">
         <svg
           version="1.1"
           id="Layer_1"
