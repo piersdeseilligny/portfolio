@@ -32,7 +32,7 @@
               v-if="selectedCategory"
               class="animatelink goback"
               :to="{
-                path: '/work',
+                path: '/work/',
                 query: $route.query,
               }"
               :key="document.category.slug + '_b'"

@@ -11,12 +11,12 @@ Options -Indexes
 # Remove trailing slash from non-filepath urls
 RewriteCond %{REQUEST_URI} /(.+)/$
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ https://www.example.com/%1 [R=301,L]
+RewriteRule ^ https://piersdeseilligny.com/%1 [R=301,L]
 
 # Include trailing slash on directory 
 RewriteCond %{REQUEST_URI} !(.+)/$
 RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^(.+)$ https://www.example.com/$1/ [R=301,L]
+RewriteRule ^(.+)$ https://piersdeseilligny.com/$1/ [R=301,L]
 
 # Force HTTPS and WWW 
   RewriteCond %{HTTPS} on

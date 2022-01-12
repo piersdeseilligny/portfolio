@@ -9,7 +9,7 @@
         </div>
         <div class="navcontainer" v-for="category in categories" :key="category.id">
             <nuxt-link
-            :to="'/work/' + category.slug"
+            :to="'/work/' + category.slug + '/'"
             :class="`clickable ${category.slug == selected ? 'selected' : ''}`"
             v-on:click.native="$emit('select', category)">{{ category.name }}</nuxt-link>
         </div>
