@@ -43,7 +43,7 @@ export default {
       title: "Contact - Piers Deseilligny",
       meta:[
         { hid:'og-title', property:'og:title', content:"Contact"},
-        { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/contact"},
+        { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/contact/"},
         { hid:'og-image', property:'og:image', content: (this.backgroundImage ?  this.$staticAsset(this.$config.strapiBaseUri + this.backgroundImage.url) : '') },
         { hid:'og-description', property:'og:description', content:"If you would like to get in touch to discuss my work or a potential collaboration, please reach out to me at contact@piersdeseilligny.com"},
         { hid:'description', name:'description', content:"If you would like to get in touch to discuss my work or a potential collaboration, please reach out to me at contact@piersdeseilligny.com"},

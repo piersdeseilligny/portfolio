@@ -32,10 +32,10 @@
       </nuxt-link>
     </div>
 	  <div class="navcontainer">
-      <nuxt-link to="/work" class="clickable">Work</nuxt-link>
+      <nuxt-link to="/work/" class="clickable">Work</nuxt-link>
     </div>
 		<div class="navcontainer">
-      <nuxt-link to="/contact" class="clickable">Contact</nuxt-link>
+      <nuxt-link to="/contact/" class="clickable">Contact</nuxt-link>
     </div>
 	  </nav>
     </div>

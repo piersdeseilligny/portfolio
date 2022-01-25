@@ -105,7 +105,7 @@
       </div>
     </div>
         <div class="topbuttons">
-      <nuxt-link class="topbutton" v-if="this.$route.params.slug" title="Close" :to="{ path:'/work/'+this.$route.params.slug }">
+      <nuxt-link class="topbutton" v-if="this.$route.params.slug" title="Close" :to="{ path:'/work/'+this.$route.params.slug+'/' }">
         <svg
           version="1.1"
           id="Layer_1"
@@ -594,7 +594,7 @@ export default {
           { hid:'og-description', property:'og:description', content:this.document.shortdescription},
           { hid:'og-image', property:'og:image', content: "https://piersdeseilligny.com" + image },
           { hid:'og-type', property:'og:type', content:type},
-          { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/work/"+this.$route.params.slug+"/"+this.$route.params.document }
+          { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/work/"+this.$route.params.slug+"/"+this.$route.params.document+'/' }
         ]
       }
     }

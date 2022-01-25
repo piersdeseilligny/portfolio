@@ -49,7 +49,7 @@
                 :id="document.category.slug"
                 class="animatelink"
                 :to="{
-                  path: '/work/' + document.category.slug,
+                  path: '/work/' + document.category.slug + '/',
                   query: $route.query,
                 }"
                 ><span>{{
@@ -113,7 +113,7 @@
             :key="document.id"
             ref="docs"
             :link="{
-              path: '/work/' + document.category.slug + '/' + document.slug,
+              path: '/work/' + document.category.slug + '/' + document.slug+'/',
               query: $route.query,
             }"
             :doc="document"

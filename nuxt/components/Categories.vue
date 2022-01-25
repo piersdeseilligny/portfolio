@@ -3,13 +3,13 @@
     <nav class="header subheader1">
         <div class="navcontainer" key="all">
             <nuxt-link
-            to="/work"
+            to="/work/"
             :class="`clickable ${!selected ? 'selected' : ''}`"
             v-on:click.native="$emit('select', {slug:undefined, name:undefined})">All</nuxt-link>
         </div>
         <div class="navcontainer" v-for="category in categories" :key="category.id">
             <nuxt-link
-            :to="'/work/' + category.slug"
+            :to="'/work/' + category.slug+'/'"
             :class="`clickable ${category.slug == selected ? 'selected' : ''}`"
             v-on:click.native="$emit('select', category)">{{ category.name }}</nuxt-link>
         </div>
