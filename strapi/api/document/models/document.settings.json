@@ -30,7 +30,8 @@
         "videos"
       ],
       "plugin": "upload",
-      "required": false
+      "required": false,
+      "pluginOptions": {}
     },
     "categories": {
       "collection": "category",
@@ -53,7 +54,8 @@
         "videos"
       ],
       "plugin": "upload",
-      "required": false
+      "required": false,
+      "pluginOptions": {}
     },
     "backgroundcolor": {
       "type": "string"
@@ -81,7 +83,8 @@
         "videos"
       ],
       "plugin": "upload",
-      "required": false
+      "required": false,
+      "pluginOptions": {}
     },
     "category": {
       "model": "category"
@@ -94,6 +97,10 @@
     },
     "nopostershadow": {
       "type": "boolean"
+    },
+    "shortdescription": {
+      "type": "text",
+      "maxLength": 200
     }
   }
 }

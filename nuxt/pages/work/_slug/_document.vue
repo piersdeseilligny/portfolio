@@ -590,8 +590,8 @@ export default {
         description:this.document.description,
         meta:[
           { hid:'og-title', property:'og:title', content:this.document.title},
-          { hid:'description', name:'description', content:this.document.description},
-          { hid:'og-description', property:'og:description', content:this.document.description},
+          { hid:'description', name:'description', content:this.document.shortdescription},
+          { hid:'og-description', property:'og:description', content:this.document.shortdescription},
           { hid:'og-image', property:'og:image', content: "https://piersdeseilligny.com" + image },
           { hid:'og-type', property:'og:type', content:type},
           { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/work/"+this.$route.params.slug+"/"+this.$route.params.document }
@@ -612,6 +612,7 @@ export default {
         typeoverride,
         nopostershadow,
 			  description,
+        shortdescription,
 			  contentblocks{
 				tag{
 				  name,

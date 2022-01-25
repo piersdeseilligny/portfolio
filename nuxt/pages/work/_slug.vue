@@ -573,7 +573,7 @@ export default {
           content: description,
         },
         image,
-        { hid: "description", property: "description", content: description },
+        { hid: "description", name: "description", content: description },
       ],
     };
   },
