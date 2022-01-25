@@ -327,10 +327,10 @@ export default {
     head() {
       return {
         title: "Piers Deseilligny",
-        description:this.home.description,
+        description:this.home.metadescription,
         meta:[
-          { hid:'og-title', property:'og:title', content:'Piers Deseilligny'},
-          { hid:'description', name:'description', content:this.home.subtitle},
+          { hid:'og-title', property:'og:title', content:'Piers Deseilligny - Cinematographer/Director of Photography'},
+          { hid:'description', name:'description', content:this.home.metadescription},
           { hid:'og-description', property:'og:description', content:this.home.subtitle},
           { hid:'og-image', property:'og:image', content:"https://piersdeseilligny.com"+this.home.metaimage.url },
           { hid:'og-type', property:'og:type', content:"website"},
