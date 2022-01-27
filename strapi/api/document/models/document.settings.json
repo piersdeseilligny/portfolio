@@ -34,12 +34,12 @@
       "pluginOptions": {}
     },
     "categories": {
-      "collection": "category",
-      "via": "documents"
+      "via": "documents",
+      "collection": "category"
     },
     "tags": {
-      "collection": "tag",
       "via": "documents",
+      "collection": "tag",
       "dominant": true
     },
     "slug": {

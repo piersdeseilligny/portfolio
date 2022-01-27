@@ -1,5 +1,5 @@
 <template>
-    <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true}" :to="link" v-on:click.native="$emit('clickOnDoc', doc, $el);">
+    <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true}" :title="doc.tags.map(c=> c.name).join(', ')" :to="link" v-on:click.native="$emit('clickOnDoc', doc, $el);">
     <div class="document-container" :style="`background-color:${doc.backgroundcolor};z-index:0;`" v-tilt>
         <img ref="docbg" class="document-bg" alt="" @load="loadimg" v-if="doc.images && doc.images[0]" :src="$staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url)"/>
         <div class="document-overlay" @touchstart="hoverShow" @touchend="hoverHide" @mouseenter="hoverShow" @mouseleave="hoverHide">
@@ -8,7 +8,7 @@
             <div class="document-bottom">
                 <div ref="docyear" :style="'color:'+doc.foregroundcolor2" class="document-year">{{doc.date | formatDate}}</div>
                 <div ref="doctitle" :style="'color:'+doc.foregroundcolor" class="document-title">{{doc.title}}</div>
-                <div ref="doctags" :style="'fill:'+doc.foregroundcolor2" class="document-tags" :title="doc.tags.map(c=> c.name).join(', ')">
+                <div ref="doctags" :style="'fill:'+doc.foregroundcolor2" class="document-tags" >
                     <span v-for="tag in doc.tags" :key="tag.id" v-html="tag.icon"></span>
                 </div>
             </div>

@@ -22,12 +22,14 @@ export const actions = {
                 },
                 thumbnailimage{
                   formats
-                }
+                },
+                title
               },
               tags{
                 id,
                 name,
-                icon
+                icon,
+                title
               }
           }
           `

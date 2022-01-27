@@ -326,10 +326,10 @@ export default {
     },
     head() {
       return {
-        title: "Piers Deseilligny",
+        title: "Piers Deseilligny - Director of Photography/Cinematographer",
         description:this.home.metadescription,
         meta:[
-          { hid:'og-title', property:'og:title', content:'Piers Deseilligny - Cinematographer/Director of Photography'},
+          { hid:'og-title', property:'og:title', content:'Piers Deseilligny - Director of Photography/Cinematographer'},
           { hid:'description', name:'description', content:this.home.metadescription},
           { hid:'og-description', property:'og:description', content:this.home.subtitle},
           { hid:'og-image', property:'og:image', content:"https://piersdeseilligny.com"+this.home.metaimage.url },
@@ -375,7 +375,8 @@ export default {
                 },
                 thumbnailvideo{
                   url
-                }
+                },
+                title
               }
           }
           `

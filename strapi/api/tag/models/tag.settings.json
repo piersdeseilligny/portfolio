@@ -2,11 +2,13 @@
   "kind": "collectionType",
   "collectionName": "tags",
   "info": {
-    "name": "Tag"
+    "name": "Tag",
+    "description": ""
   },
   "options": {
     "increments": true,
-    "timestamps": true
+    "timestamps": true,
+    "draftAndPublish": false
   },
   "attributes": {
     "name": {
@@ -22,6 +24,9 @@
       "collection": "document"
     },
     "icon": {
+      "type": "string"
+    },
+    "title": {
       "type": "string"
     }
   }

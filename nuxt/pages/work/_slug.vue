@@ -48,6 +48,7 @@
               <nuxt-link
                 :id="document.category.slug"
                 class="animatelink"
+                :title="$store.state.categories[document.category.slug].title"
                 :to="{
                   path: '/work/' + document.category.slug + '/',
                   query: $route.query,
@@ -75,6 +76,7 @@
                       $store.state.selectedTags[document.category.slug]['All']
                     "
                     id="all"
+                    title="Show all my work in this category"
                     :category="document.category.slug"
                     v-on:selectionchange="toggleSelectedAll"
                   />
@@ -83,6 +85,7 @@
                   v-for="tag in $store.getters['tagsForCategory'](
                     document.category.slug
                   )"
+                  :title="tag.title"
                   :key="tag.id"
                   class="tag-list-item"
                 >
@@ -550,11 +553,7 @@ export default {
     }
     if (!title) {
       title = "All work";
-      description = `All my work in ${this.$store.state.categoriesArray
-        .map((v) => {
-          return v.name;
-        })
-        .join(", ")}`;
+      description = "Some of the work I have done as director of photography, camera operator, software developper, graphic designer..."
     }
     return {
       title: `${title} - Piers Deseilligny`,
@@ -593,7 +592,8 @@ export default {
             tags${tagselector}{
               name,
               id,
-              icon
+              icon,
+              title
             },
             documents${documentselector}{
               title,
@@ -662,7 +662,6 @@ export default {
 
         documents.push(d);
       }
-
       return {
         tags: data.tags,
         documents,
