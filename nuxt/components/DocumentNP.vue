@@ -4,7 +4,7 @@
 
     </div>
     <div class="docnp-details">
-    <a class="docnp-title fancy" target="_blank" href="https://imdb.com/">
+    <a class="docnp-title fancy" target="_blank" :href="doc.np_link">
       {{ doc.title }}
       <span class="docnp-year">({{ doc.date | formatYear }})</span>
     </a>

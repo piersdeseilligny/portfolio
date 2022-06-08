@@ -38,6 +38,11 @@
   margin-right:4px;
   font-size:20px;
 }
+@media screen and (max-width: 498px) {
+  .category-hero {
+    font-size:14px;
+  }
+}
 .category-hero.viewall{
   font-size:14px;
   color:rgba(215, 237, 255, 0.5);
@@ -91,13 +96,17 @@
   opacity:0.5;
 }
 .category-hero span{
-  line-height:var(--heroheight);
   user-select:none;
   text-align: center;
   width:100%;
+  top: 50%;
+  transform: translateY(-50%);
+  padding:6px;
+  box-sizing: border-box;
   display:block;
   position:absolute;
 }
+
 </style>
 <script>
   export default {

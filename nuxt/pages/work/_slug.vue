@@ -365,7 +365,7 @@
 }
 @media screen and (max-width: 498px) {
   .portfolioContainer.fullscreenlist .document {
-    width: 100% !important;
+    width: calc(100vw - 24px) !important;
   }
   .portfolioList {
     padding-left: 12px;
@@ -617,6 +617,7 @@ export default {
               date,
               id,
               slug,
+              np_link,
               backgroundcolor,
               foregroundcolor,
               foregroundcolor2,

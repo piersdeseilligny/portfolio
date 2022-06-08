@@ -104,6 +104,9 @@
     },
     "nopage": {
       "type": "boolean"
+    },
+    "np_link": {
+      "type": "string"
     }
   }
 }
