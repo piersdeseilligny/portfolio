@@ -205,8 +205,14 @@ h2.emphasis.noline{
   color:var(--foregroundlink);
   transition: color 0.3s;
 }
+a.fancy.fancysubtle{
+  color:var(--foregroundsubtle);
+}
 a.fancy:hover, .fancy a:hover {
   color:white;
+}
+a.fancy.fancysubtle:hover{
+  color:var(--foregroundlink);
 }
 a.fancy::after, .fancy a::after{
   position:absolute;
@@ -326,10 +332,10 @@ export default {
     },
     head() {
       return {
-        title: "Piers Deseilligny - Director of Photography/Cinematographer",
+        title: "Piers Deseilligny - Camera Department",
         description:this.home.metadescription,
         meta:[
-          { hid:'og-title', property:'og:title', content:'Piers Deseilligny - Director of Photography/Cinematographer'},
+          { hid:'og-title', property:'og:title', content:'Piers Deseilligny - Camera Department'},
           { hid:'description', name:'description', content:this.home.metadescription},
           { hid:'og-description', property:'og:description', content:this.home.subtitle},
           { hid:'og-image', property:'og:image', content:"https://piersdeseilligny.com"+this.home.metaimage.url },

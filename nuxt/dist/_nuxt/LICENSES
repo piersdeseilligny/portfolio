@@ -1,3 +1,78 @@
+/*!
+  * vue-router v3.5.1
+  * (c) 2021 Evan You
+  * @license MIT
+  */
+
+/*!
+ * Vue.js v2.6.12
+ * (c) 2014-2020 Evan You
+ * Released under the MIT License.
+ */
+
+/*!
+ * vuex v3.6.2
+ * (c) 2021 Evan You
+ * @license MIT
+ */
+
+
+/*!
+	 * ScrollTrigger 3.9.1
+	 * https://greensock.com
+	 *
+	 * @license Copyright 2008-2021, GreenSock. All rights reserved.
+	 * Subject to the terms at https://greensock.com/standard-license or for
+	 * Club GreenSock members, the agreement issued with that membership.
+	 * @author: Jack Doyle, jack@greensock.com
+	*/
+
+
+/*!
+ * cookie
+ * Copyright(c) 2012-2014 Roman Shtylman
+ * Copyright(c) 2015 Douglas Christopher Wilson
+ * MIT Licensed
+ */
+
+/*!
+ * vue-client-only v2.0.0
+ * (c) 2019-present egoist <0x142857@gmail.com>
+ * Released under the MIT License.
+ */
+
+/*!
+ * vue-no-ssr v1.1.1
+ * (c) 2018-present egoist <0x142857@gmail.com>
+ * Released under the MIT License.
+ */
+
+/*! MIT License © Sindre Sorhus */
+
+/*! https://mths.be/punycode v1.4.1 by @mathias */
+
+
+/*!
+ * CSSPlugin 3.9.1
+ * https://greensock.com
+ *
+ * Copyright 2008-2021, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/*!
+ * GSAP 3.9.1
+ * https://greensock.com
+ *
+ * @license Copyright 2008-2021, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+
 /*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=script&lang=js& */
 
 /*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=template&id=058b7650& */
@@ -41,78 +116,3 @@
 /*!************************************************************************************************************************************************************************************!*\
         !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=template&id=058b7650& ***!
         \************************************************************************************************************************************************************************************/
-
-
-/*!
- * CSSPlugin 3.9.1
- * https://greensock.com
- *
- * Copyright 2008-2021, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
- * @author: Jack Doyle, jack@greensock.com
-*/
-
-/*!
- * GSAP 3.9.1
- * https://greensock.com
- *
- * @license Copyright 2008-2021, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
- * @author: Jack Doyle, jack@greensock.com
-*/
-
-
-/*!
-	 * ScrollTrigger 3.9.1
-	 * https://greensock.com
-	 *
-	 * @license Copyright 2008-2021, GreenSock. All rights reserved.
-	 * Subject to the terms at https://greensock.com/standard-license or for
-	 * Club GreenSock members, the agreement issued with that membership.
-	 * @author: Jack Doyle, jack@greensock.com
-	*/
-
-
-/*!
-  * vue-router v3.5.1
-  * (c) 2021 Evan You
-  * @license MIT
-  */
-
-/*!
- * Vue.js v2.6.12
- * (c) 2014-2020 Evan You
- * Released under the MIT License.
- */
-
-/*!
- * vuex v3.6.2
- * (c) 2021 Evan You
- * @license MIT
- */
-
-
-/*!
- * cookie
- * Copyright(c) 2012-2014 Roman Shtylman
- * Copyright(c) 2015 Douglas Christopher Wilson
- * MIT Licensed
- */
-
-/*!
- * vue-client-only v2.0.0
- * (c) 2019-present egoist <0x142857@gmail.com>
- * Released under the MIT License.
- */
-
-/*!
- * vue-no-ssr v1.1.1
- * (c) 2018-present egoist <0x142857@gmail.com>
- * Released under the MIT License.
- */
-
-/*! MIT License © Sindre Sorhus */
-
-/*! https://mths.be/punycode v1.4.1 by @mathias */

@@ -101,6 +101,9 @@
     "shortdescription": {
       "type": "text",
       "maxLength": 200
+    },
+    "nopage": {
+      "type": "boolean"
     }
   }
 }

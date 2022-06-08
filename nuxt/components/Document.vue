@@ -1,16 +1,14 @@
 <template>
     <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true}" :title="doc.tags.map(c=> c.name).join(', ')" :to="link" v-on:click.native="$emit('clickOnDoc', doc, $el);">
     <div class="document-container" :style="`background-color:${doc.backgroundcolor};z-index:0;`" v-tilt>
-        <img ref="docbg" class="document-bg" alt="" @load="loadimg" v-if="doc.images && doc.images[0]" :src="$staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url)"/>
+        <img ref="docbg" class="document-bg" alt="" @load="loadimg" v-if="doc.images && doc.images[0]" 
+        :src="doc.secondaryCategory ? $staticAsset($config.strapiBaseUri+doc.images[1].formats.medium.url) : $staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url)"/>
         <div class="document-overlay" @touchstart="hoverShow" @touchend="hoverHide" @mouseenter="hoverShow" @mouseleave="hoverHide">
             <div ref="docoverlay" class="document-gradient"
                 :style="`background: linear-gradient(transparent,${doc.backgroundcolor});`"></div>
             <div class="document-bottom">
                 <div ref="docyear" :style="'color:'+doc.foregroundcolor2" class="document-year">{{doc.date | formatDate}}</div>
                 <div ref="doctitle" :style="'color:'+doc.foregroundcolor" class="document-title">{{doc.title}}</div>
-                <div ref="doctags" :style="'fill:'+doc.foregroundcolor2" class="document-tags" >
-                    <span v-for="tag in doc.tags" :key="tag.id" v-html="tag.icon"></span>
-                </div>
             </div>
         </div>
         <svg v-bind:class="{selected:doc.selected, 'selectIndicator':true}">
@@ -18,13 +16,14 @@
         </svg>
         </div>
     </nuxt-link>
+
 </template>
 <style>
     .document{
         color:white;
-        width:320px;
+        width:276px;
         background-color:black;
-        height:152px;
+        height:138px;
         text-decoration: none;
         box-sizing:border-box;
         position:relative;

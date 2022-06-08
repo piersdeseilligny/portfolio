@@ -236,6 +236,25 @@ h2{
   margin-bottom:0;
 }
 
+h2.lined{
+  display: flex;
+  align-items: center;
+}
+h2.lined::after {
+  content: '';
+  flex: 1;
+  margin-left: 1rem;
+  margin-right:12px;
+  height: 1px;
+  margin-top:1px;
+  opacity:0.5;
+  background: var(--foregroundlink);
+  transition: opacity 0.2s;
+}
+h2.lined.hideline::after{
+  opacity:0;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
