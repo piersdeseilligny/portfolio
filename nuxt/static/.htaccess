@@ -1,4 +1,6 @@
 Options -Indexes
+ErrorDocument 404 /404/index.html
+
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
