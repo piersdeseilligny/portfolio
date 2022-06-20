@@ -1,3 +1,5 @@
+
+RewriteOptions inherit
 Options -Indexes
 
 <IfModule mod_rewrite.c>
@@ -28,3 +30,7 @@ Options -Indexes
 <IfModule mod_headers.c>
 	Header set X-Content-Type-Options nosniff
 </IfModule>
+RewriteCond %{HTTP_HOST} ^.*$
+RewriteRule ^work\/software\/metacoloreditor\/$ "https\:\/\/piersdeseilligny\.com\/work\/post\/metacoloreditor\/" [R=301,L]
+RewriteCond %{HTTP_HOST} ^.*$
+RewriteRule ^work\/software\/betterfountain\/$ "https\:\/\/piersdeseilligny\.com\/work\/everything\-else\/betterfountain\/" [R=301,L]
