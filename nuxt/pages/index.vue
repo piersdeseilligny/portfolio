@@ -345,6 +345,7 @@ export default {
       }
     },
     async asyncData (context) {
+      console.log(context);
       try{
         const data = await context.$staticAPI({
           query:`
@@ -407,9 +408,7 @@ export default {
         return{ categories, home }
       }
       catch(err){
-        return {
-          error: err
-        }
+        context.error({message:err.message, statusCode:404});
       }
     },
 }

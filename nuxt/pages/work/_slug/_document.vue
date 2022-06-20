@@ -719,12 +719,10 @@ export default {
         return { document: data.documents[0], lightboxitems:images, lightboxitemsAlt:imagesAlt };
       } else {
         //ERROR 404!
-        return { document: { title: "404" } };
+        context.error({message:"Page not found", statusCode:404});
       }
     } catch (err) {
-      return {
-        error: err,
-      };
+      context.error({message:err.message, statusCode:404});
     }
   },
 };

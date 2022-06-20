@@ -547,7 +547,7 @@ export default {
         let title = "";
         let description = "";
         let image = {};
-        if (this.selectedCategory) {
+        if (this.selectedCategory && this.$store.state.categories[this.selectedCategory]) {
             title = this.$store.state.categories[this.selectedCategory].name;
             description = this.$store.state.categories[this.selectedCategory].description;
             image = {
@@ -587,9 +587,12 @@ export default {
             let queryString = "";
             let documentselector = `(sort:"order")`;
             let tagselector = "";
-            if (selectedCategory) {
+            if (selectedCategory && context.store.state.categories[selectedCategory]) {
                 documentselector = `(sort:"order", where:{categories:{slug:"${selectedCategory}"}})`;
                 tagselector = `(where:{categories:{slug:"${selectedCategory}"}})`;
+            }
+            else{
+              context.error({statusCode:404, message:'Category not found'});
             }
             let qstring = `
           query{
@@ -751,6 +754,7 @@ export default {
             };
         }
         catch (err) {
+          context.error({statusCode:404, message:err.message});
             return {
                 error: err,
             };
