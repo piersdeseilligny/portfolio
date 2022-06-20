@@ -591,7 +591,7 @@ export default {
                 documentselector = `(sort:"order", where:{categories:{slug:"${selectedCategory}"}})`;
                 tagselector = `(where:{categories:{slug:"${selectedCategory}"}})`;
             }
-            else{
+            else if(selectedCategory && !context.store.state.categories[selectedCategory]){
               context.error({statusCode:404, message:'Category not found'});
             }
             let qstring = `
