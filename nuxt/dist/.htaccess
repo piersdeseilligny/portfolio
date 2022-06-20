@@ -1,3 +1,5 @@
+
+RewriteOptions inherit
 Options -Indexes
 
 <IfModule mod_rewrite.c>
@@ -7,16 +9,17 @@ Options -Indexes
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]
-  
-# Remove trailing slash from non-filepath urls
-RewriteCond %{REQUEST_URI} /(.+)/$
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ https://piersdeseilligny.com/%1 [R=301,L]
 
 # Force HTTPS and WWW 
   RewriteCond %{HTTPS} on
   RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
   RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+  
+  
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_URI} !(.*)$
+  RewriteRule ^(.*)$ https://piersdeseilligny.com/$1 [R=301,L]
+
 </IfModule>
 
 <filesMatch "(favicon.ico)$">
@@ -27,3 +30,7 @@ RewriteRule ^ https://piersdeseilligny.com/%1 [R=301,L]
 <IfModule mod_headers.c>
 	Header set X-Content-Type-Options nosniff
 </IfModule>
+RewriteCond %{HTTP_HOST} ^.*$
+RewriteRule ^work\/software\/metacoloreditor\/$ "https\:\/\/piersdeseilligny\.com\/work\/post\/metacoloreditor\/" [R=301,L]
+RewriteCond %{HTTP_HOST} ^.*$
+RewriteRule ^work\/software\/betterfountain\/$ "https\:\/\/piersdeseilligny\.com\/work\/everything\-else\/betterfountain\/" [R=301,L]
