@@ -91,6 +91,9 @@ export default {
     entities: ['documents', 'categories'],
     url: process.env.API_URL || "http://localhost:3001"
   },
+  generate: {
+    routes: ['404']
+    },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
