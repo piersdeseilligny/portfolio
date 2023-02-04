@@ -143,7 +143,17 @@ __webpack_require__.r(__webpack_exports__);
           accelerometer: 1,
           gyroscope: 1
         }
-      }, {
+      },
+      {
+        reg: /^.*vimeo.com\/(\d+)(?:(?:\/)(\d+))?($|\/|\b)/i,
+        url: 'https://player.vimeo.com/video/$1?h=$2',
+        params: {
+          title: 0,
+          byline: 0,
+          portrait: 0
+        }
+      }, 
+      {
         reg: /^.*vimeo.com\/(\d+)($|\/|\b)/i,
         url: 'https://player.vimeo.com/video/$1',
         params: {
@@ -151,7 +161,8 @@ __webpack_require__.r(__webpack_exports__);
           byline: 0,
           portrait: 0
         }
-      }, {
+      },
+      {
         reg: /^.*(?:\/video|dai.ly)\/([A-Za-z0-9]+)([^#\&\?]*).*/i,
         url: 'https://www.dailymotion.com/embed/video/$1',
         params: {
