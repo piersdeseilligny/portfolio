@@ -15,7 +15,7 @@
         <div class="highlighted" v-html="home.subtitle">Cinematography • Color grading • Software development</div>
         <div class="fancy" v-html="home.description"></div>
         <h2 class="alth2" style="margin-top:24px">Get in touch</h2>
-        <p class="fancy">If you would like to get in touch to discuss my work or a potential collaboration, please reach out to me at <a href="mailto:contact@piersdeseilligny.com">contact@piersdeseilligny.com</a></p>
+        <p class="fancy">If you would like to get in touch, please feel free to reach out via&nbsp;<a href="mailto:contact@piersdeseilligny.com">contact@piersdeseilligny.com</a></p>
         <Links class="indexcontainer-secondlinks" style="display:none;"/>
         <h2 class="alth2">My work</h2>
         <CategoriesHero :categories="categories"/>
