@@ -514,6 +514,7 @@ export default {
       if(img.formats.large) return img.formats.large;
       else if(img.formats.medium) return img.formats.medium;
       else if(img.formats.small) return img.formats.small;
+      else if(img.formats.thumbnail) return img.formats.thumbnail;
       else return {url:""};
     }
   },

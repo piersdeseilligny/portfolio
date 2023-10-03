@@ -1,7 +1,10 @@
 <template>
   <div class="docnp-container">
     <div class="docnp-poster">
-
+      <img
+              alt="Poster"
+              :src="$staticAsset($config.strapiBaseUri + doc.poster.formats.thumbnail.url)"
+            />
     </div>
     <div class="docnp-details">
     <a class="docnp-title fancy" target="_blank" :href="doc.np_link">
@@ -43,12 +46,18 @@
   }
 }
 .docnp-poster{
-  height:64px;
-  width:40px;
-  margin-right:6px;
-  background-color:white;
-  opacity:0.1;
+  height: 64px;
+    width: 40px;
+    margin-right: 6px;
+    background-color: rgba(255,255,255,0.1);
+    opacity: 1;
 }
+.docnp-poster img{
+  height: 100%;
+  width:100%;
+  opacity: 0.5;
+}
+
 .docnp-title{
   display:block;
 }

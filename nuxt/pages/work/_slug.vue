@@ -644,6 +644,9 @@ export default {
               images{
                 formats
               },
+              poster{
+                formats
+              },
               nopage
             }
           }
