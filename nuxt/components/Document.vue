@@ -21,9 +21,9 @@
 <style>
     .document{
         color:white;
-        width:276px;
+       /* width:276px;*/
         background-color:black;
-        height:138px;
+        height:158px;
         text-decoration: none;
         box-sizing:border-box;
         position:relative;
@@ -34,10 +34,14 @@
         scroll-margin: 24px;
         scroll-snap-margin: 24px;
     }
+    .withinportfolio .document{
+      width:276px;
+      height:138px;
+    }
 
 @media screen and (max-width: 800px) {
   .document{
-    width:213px !important;
+   /* width:213px !important;*/
     height: 101px !important;
   }
 }
@@ -84,7 +88,6 @@
         object-fit: cover;
         z-index: -1;
         opacity:0;
-
     }
     .document.selected .document-bg{
       transform:translateX(1px);
@@ -145,6 +148,7 @@
     .fullscreenlist .selectIndicator{
       display:none;
     }
+    .fullscreenlist
     .document .selectIndicator path{
         transition: 0.2s;
         d: path("M 1 0 L 1 44 L 1 76 L 1 108 L 1 152");

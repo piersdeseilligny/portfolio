@@ -12,6 +12,7 @@
       :class="{
         portfolioContainer: true,
         fullscreenlist: $route.params.document == undefined,
+        withinportfolio: $route.params.document != undefined,
       }"
     >
       <transition-group
@@ -189,18 +190,22 @@
   content: '';
 }
 .portfolio-list-item-container{
-    width: 276px;
+    /*width: 276px;*/
     min-height: 138px;
     position: relative;
     display: flex;
     flex-direction: column;
-    flex-basis: content;
+    flex-basis: 33%;
 }
 @media screen and (max-width: 800px) {
   .portfolio-list-item-container{
-    width:213px !important;
+    /*width:213px !important;*/
     min-height: 101px !important;
+    flex-basis: 50%;
   }
+}
+.withinportfolio .portfolio-list-item-container{
+  flex-basis:content;
 }
 .animatelink {
   color: var(--foregroundlink);
@@ -395,10 +400,10 @@
   .portfolioContainer:not(.fullscreenlist) .category-header {
     display: none;
   }
-  .portfolioList .document {
+  /*.portfolioList .document {
     flex-shrink: 0;
     width: 320px;
-  }
+  }*/
   .doccont-container {
     border-left: none;
     border-top: solid 1px rgba(255, 255, 255, 0.4);
