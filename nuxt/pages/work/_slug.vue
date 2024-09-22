@@ -63,7 +63,7 @@
           <div class="portfolio-list-item-container" :key="document.key+'container'">
               <transition-group
               :key="document.key+'tag'"
-                v-if="document.firsttag && document.maintag"
+                v-if="document.firsttag && document.maintag && document.maintag.name"
                 name="tag-list"
                 :class="'tags'"
                 tag="div"
