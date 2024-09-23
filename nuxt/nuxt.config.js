@@ -29,6 +29,7 @@ export default {
   },
 
   publicRuntimeConfig:{
+    clientVersion:1,
     strapiBaseUri: process.env.API_URL || "http://localhost:3001"
   },
 
