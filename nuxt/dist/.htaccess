@@ -9,6 +9,8 @@ ErrorDocument 404 /404/index.html
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L,R=404]
   
+  RewriteRule ^work\/everything\-else\/betterfountain$ "https\:\/\/piersdeseilligny\.com\/work\/software\/betterfountain\/" [R=301,L]
+  
 # Remove trailing slash from non-filepath urls
 RewriteCond %{REQUEST_URI} /(.+)/$
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -27,8 +29,6 @@ RewriteRule ^ https://piersdeseilligny.com/%1 [R=301,L]
 # X-Content-Type nosniff
 <IfModule mod_headers.c>
 	Header set X-Content-Type-Options nosniff
+    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
 </IfModule>
-RewriteCond %{HTTP_HOST} ^piersdeseilligny\.com$ [OR]
-RewriteCond %{HTTP_HOST} ^www\.piersdeseilligny\.com$
-RewriteRule ^work\/everything\-else\/betterfountain$ "https\:\/\/piersdeseilligny\.com\/work\/software\/betterfountain\/" [R=301,L]
-
