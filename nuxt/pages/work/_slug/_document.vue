@@ -262,11 +262,15 @@
   display: flex;
   box-sizing: border-box;
 }
-
+.doccont-content .pin-spacer {
+  /*Horrible hack, to fix something weird going on with GSAP */
+  flex-basis:auto !important;
+}
 
 
 .doccont-content-col1 {
   flex-basis: 128px;
+  width:128px;
   margin-right: 24px;
   margin-top: -24px;
   flex-shrink: 0;

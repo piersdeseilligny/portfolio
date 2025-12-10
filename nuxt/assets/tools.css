@@ -1,0 +1,29 @@
+/* Global Form Styles for Reusable Components */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  /* Using the dark-theme-friendly color from your page styles */
+  color: rgba(215, 237, 255, 0.8);
+}
+
+/* A base class for all form inputs (selects, text, etc.) */
+.form-input-base {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: rgba(215, 237, 255, 0.9);
+  font-size: 1rem;
+}
+
+.form-input-base:disabled {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(215, 237, 255, 0.4);
+}

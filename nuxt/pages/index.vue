@@ -93,6 +93,7 @@
 .padder{
   padding-right:var(--sidepadding);
   padding-left:var(--sidepadding);
+  background-color: var(--backgroundhigh);
 }
 .home p{
   color:rgba(215, 237, 255, 0.5);
@@ -149,14 +150,6 @@ h2.emphasis.noline{
   width:100%;
   margin-top:24px;
   box-shadow: 0 0 24px rgba(0,0,0,0.5);
-}
-
-.alth2 {
-    margin-top: 48px;
-    color: var(--foregroundhigh);
-    font-size:24px;
-    font-weight:500;
-    margin-bottom:0;
 }
 .randomsampleflex{
   display:flex;

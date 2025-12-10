@@ -37,9 +37,12 @@
 		<div class="navcontainer">
       <nuxt-link to="/contact/" class="clickable">Contact</nuxt-link>
     </div>
+    <div class="navcontainer navcontainer-right">
+      <nuxt-link to="/tools/" class="clickable">Tools</nuxt-link>
+    </div>
 	  </nav>
     </div>
-	  <nuxt/>
+    <slot><nuxt/></slot>
   </div>
 </div>
 </template>
@@ -150,6 +153,10 @@ body{
     border-right:rgba(255, 255, 255, 0.1) solid 1px;
     box-sizing: border-box;
   }
+  .navcontainer-right{
+    border-left:rgba(255, 255, 255, 0.1) solid 1px;
+    margin-left:auto;
+  }
   .header a{
     display:block;
     height: 100%;
@@ -254,7 +261,13 @@ h2.lined::after {
 h2.lined.hideline::after{
   opacity:0;
 }
-
+.alth2 {
+    margin-top: 48px;
+    color: var(--foregroundhigh);
+    font-size:24px;
+    font-weight:500;
+    margin-bottom:0;
+}
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

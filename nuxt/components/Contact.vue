@@ -37,7 +37,7 @@
       </form>-->
   </div>
 </template>
-<style>
+<style scoped>
 
 .email {
   color:var(--foreground);

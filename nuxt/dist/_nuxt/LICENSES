@@ -1,23 +1,6 @@
 /*!
-	 * ScrollTrigger 3.9.1
-	 * https://greensock.com
-	 *
-	 * @license Copyright 2008-2021, GreenSock. All rights reserved.
-	 * Subject to the terms at https://greensock.com/standard-license or for
-	 * Club GreenSock members, the agreement issued with that membership.
-	 * @author: Jack Doyle, jack@greensock.com
-	*/
-
-
-/*!
-  * vue-router v3.5.1
-  * (c) 2021 Evan You
-  * @license MIT
-  */
-
-/*!
- * Vue.js v2.6.12
- * (c) 2014-2020 Evan You
+ * Vue.js v2.7.16
+ * (c) 2014-2023 Evan You
  * Released under the MIT License.
  */
 
@@ -29,23 +12,29 @@
 
 
 /*!
- * CSSPlugin 3.9.1
- * https://greensock.com
- *
- * Copyright 2008-2021, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
- * @author: Jack Doyle, jack@greensock.com
-*/
+   * Observer 3.14.1
+   * https://gsap.com
+   *
+   * @license Copyright 2008-2025, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license
+   * @author: Jack Doyle, jack@greensock.com
+  */
 
 /*!
- * GSAP 3.9.1
- * https://greensock.com
- *
- * @license Copyright 2008-2021, GreenSock. All rights reserved.
- * Subject to the terms at https://greensock.com/standard-license or for
- * Club GreenSock members, the agreement issued with that membership.
- * @author: Jack Doyle, jack@greensock.com
+   * ScrollTrigger 3.14.1
+   * https://gsap.com
+   *
+   * @license Copyright 2008-2025, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license
+   * @author: Jack Doyle, jack@greensock.com
+  */
+
+
+/* @license
+Papa Parse
+v5.5.3
+https://github.com/mholt/PapaParse
+License: MIT
 */
 
 
@@ -57,8 +46,8 @@
  */
 
 /*!
- * vue-client-only v2.0.0
- * (c) 2019-present egoist <0x142857@gmail.com>
+ * vue-client-only v0.0.0-semantic-release
+ * (c) 2021-present egoist <0x142857@gmail.com>
  * Released under the MIT License.
  */
 
@@ -90,29 +79,48 @@
 /*! exports provided: render, staticRenderFns */
 
 /*!**********************!*\
-        !*** ./src/index.js ***!
-        \**********************/
+      !*** ./src/index.js ***!
+      \**********************/
 
 /*!***********************!*\
-        !*** ./src/embed.vue ***!
-        \***********************/
+      !*** ./src/embed.vue ***!
+      \***********************/
 
 /*!************************************************!*\
-        !*** ./src/embed.vue?vue&type=script&lang=js& ***!
-        \************************************************/
+      !*** ./src/embed.vue?vue&type=script&lang=js& ***!
+      \************************************************/
 
 /*!******************************************************!*\
-        !*** ./src/embed.vue?vue&type=template&id=058b7650& ***!
-        \******************************************************/
+      !*** ./src/embed.vue?vue&type=template&id=058b7650& ***!
+      \******************************************************/
 
 /*!********************************************************************!*\
-        !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
-        \********************************************************************/
+      !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
+      \********************************************************************/
 
 /*!**********************************************************************************************************************************!*\
-        !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=script&lang=js& ***!
-        \**********************************************************************************************************************************/
+      !*** ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=script&lang=js& ***!
+      \**********************************************************************************************************************************/
 
 /*!************************************************************************************************************************************************************************************!*\
-        !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=template&id=058b7650& ***!
-        \************************************************************************************************************************************************************************************/
+      !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/embed.vue?vue&type=template&id=058b7650& ***!
+      \************************************************************************************************************************************************************************************/
+
+
+/*!
+ * CSSPlugin 3.14.1
+ * https://gsap.com
+ *
+ * Copyright 2008-2025, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/*!
+ * GSAP 3.14.1
+ * https://gsap.com
+ *
+ * @license Copyright 2008-2025, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
+ * @author: Jack Doyle, jack@greensock.com
+*/
