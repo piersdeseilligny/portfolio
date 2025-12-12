@@ -35,8 +35,9 @@
         scroll-snap-margin: 24px;
     }
     .withinportfolio .document{
-      width:276px;
+      width:287px;
       height:138px;
+      margin-right:0px;
     }
 
 @media screen and (max-width: 800px) {
@@ -62,14 +63,12 @@
       border: solid 1px rgba(255,255,255,0.6);
     }
     .document.selected .document-container::after{
-      border: solid 1px rgba(255,255,255,0.6);
+      border: solid 1px rgba(255,255,255,1);
     }
     .document.selected{
-      transform:translateX(25px) scale(1.02);
       pointer-events:none;
-      box-shadow: 0 0 32px black;
+      box-shadow: 0 0 24px black;
       z-index: 3;
-
     }
 
 .document-container{

@@ -164,7 +164,7 @@ body{
     font-size:1.25em;
     line-height:1em;
     height:32px;
-    padding:12px 24px;
+    padding:10px 22px;
     color:rgba(255,255,255,0.5);
     line-height:32px;
     box-shadow:0 0 0px rgba(0,0,0,0);

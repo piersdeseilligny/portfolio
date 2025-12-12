@@ -149,7 +149,7 @@
   flex-grow: 1;
   min-width: 0;
   z-index: 3;
-  box-shadow: 0 0 32px black;
+  box-shadow: 0 0 18px black;
   transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 #portfolioContent:not(.visible) {
@@ -158,6 +158,7 @@
 .portfolioList {
   flex-basis: 328px;
   flex-shrink: 0;
+  scrollbar-width: none;
   height: calc(100% - var(--headerheight));
   position: relative;
   display: flex;
@@ -165,8 +166,7 @@
   transition: all 0.2s;
   align-content: flex-start;
   align-items: flex-end;
-  padding: 24px;
-  padding-top: 32px;
+  padding: 32px 20px 0 20px;
   overflow-y: overlay;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -260,10 +260,12 @@
   font-size: 13px;
   margin-top: 0;
   margin-bottom: 0;
+  margin-right:0;
 }
 
 .fullscreenlist .portfolioList {
   width: 100%;
+  padding: 32px 8px 24px 32px;
   flex-direction: row;
   flex-wrap: wrap;
   flex-basis: auto;
@@ -406,7 +408,7 @@
   }*/
   .doccont-container {
     border-left: none;
-    border-top: solid 1px rgba(255, 255, 255, 0.4);
+    border-top: solid 1px rgba(255, 255, 255, 0.1);
   }
   .doccont-scroller {
     overflow-y: unset !important;
