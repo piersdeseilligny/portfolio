@@ -256,7 +256,7 @@
 
 .doccont-content {
   width: 100%;
-  padding: 0px 48px;
+  padding: 0 48px;
   /*padding-bottom: 64px;*/
   position: relative;
   display: flex;
@@ -358,7 +358,7 @@
   opacity:1 !important;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1200px) {
     .doccont-content {
     padding: 0 24px;
   }
@@ -370,7 +370,8 @@
   }
   .doccont-content-col1{
     flex-direction: row;
-    /*flex-basis: 100%;*/
+    flex-basis: content;
+    width: 100%;
   }
     .doccont-content-col2{
     margin-top:12px;

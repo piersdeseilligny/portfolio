@@ -37,7 +37,6 @@
     .withinportfolio .document{
       width:287px;
       height:138px;
-      margin-right:0px;
     }
 
 @media screen and (max-width: 800px) {

@@ -166,7 +166,7 @@
   transition: all 0.2s;
   align-content: flex-start;
   align-items: flex-end;
-  padding: 32px 20px 0 20px;
+  padding: 32px 8px 0 20px;
   overflow-y: overlay;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -374,9 +374,8 @@
   .portfolioContainer.fullscreenlist .document {
     width: calc(100vw - 24px) !important;
   }
-  .portfolioList {
-    padding-left: 12px;
-    padding-right: 12px;
+  .fullscreenlist .portfolioList {
+    padding: 32px 12px 24px 12px;
   }
 }
 @media screen and (max-width: 800px) {
@@ -391,12 +390,11 @@
   .portfolioContainer:not(.fullscreenlist) .portfolioList {
     width: 100%;
     flex-direction: row;
-    flex-basis: 172px;
+    flex-basis: 158px;
     overflow-x: overlay;
     overflow-y:hidden;
-    margin-top:-12px;
     top: 0px;
-    padding: 0px 12px;
+    padding: 0px 12px 12px 12px;
     flex-wrap: nowrap;
   }
   .portfolioContainer:not(.fullscreenlist) .category-header {
@@ -414,7 +412,6 @@
     overflow-y: unset !important;
   }
   .portfolioList .document.selected {
-    transform: translate(0, 16px);
     z-index: 2;
   }
   ::-webkit-scrollbar {

@@ -79,7 +79,7 @@ body{
     --font-primary: 'Poppins', sans-serif;
     --font-secondary: 'Big Shoulders Inline Text', 'DM Serif Display';
 
-    --headerheight:58px;
+    --headerheight:54px;
     --subheaderheight:45px;
 
     --rightmargin:25%;
