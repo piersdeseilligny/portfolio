@@ -376,6 +376,7 @@ a.fancy:hover::after,
 
 .featured-work-container button.cantScroll {
   opacity: 0;
+  pointer-events: none;
 }
 
 .featured-work-container button svg {

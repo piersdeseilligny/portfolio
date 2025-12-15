@@ -373,9 +373,6 @@ const downloadCsv = (csvString: string, originalFileName: string) => {
   padding-bottom: 8px;
   margin-bottom: 16px;
 }
-.tool-body{
-  padding-bottom:64px;
-}
 
 /* --- Preview Styles --- */
 .preview-section {

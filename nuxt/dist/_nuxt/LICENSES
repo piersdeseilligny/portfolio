@@ -30,6 +30,14 @@
  */
 
 
+/* @license
+Papa Parse
+v5.5.3
+https://github.com/mholt/PapaParse
+License: MIT
+*/
+
+
 /*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=script&lang=js& */
 
 /*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=template&id=058b7650& */
@@ -133,11 +141,3 @@
 /*! MIT License © Sindre Sorhus */
 
 /*! https://mths.be/punycode v1.4.1 by @mathias */
-
-
-/* @license
-Papa Parse
-v5.5.3
-https://github.com/mholt/PapaParse
-License: MIT
-*/
