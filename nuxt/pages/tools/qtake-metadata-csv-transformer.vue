@@ -1,6 +1,6 @@
 <template>
-  <div class="padder tool-body">
-    <ToolHeader name="QTake Metadata CSV Transformer" description="Perform various operations on CSV Files exported from QTake, mainly for improved compatibility with DaVinci Resolve. All processing is performed locally."/>
+  <div class="padder tool-body container">
+    <ToolHeader flipid="qtake-csv" name="QTake Metadata CSV Transformer" description="Perform various operations on CSV Files exported from QTake, mainly for improved compatibility with DaVinci Resolve. All processing is performed locally."/>
     <!-- 1. File Upload -->
     <FileUpload @files-uploaded="onFilesReceived" @files-cleared="onFilesCleared" />
 

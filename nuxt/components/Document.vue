@@ -55,6 +55,9 @@
       pointer-events: none;
       transition: border 0.3s;
     }
+    .document:hover{
+      transform: scale(1.02);
+    }
     .document:hover .document-container::after{
       border: solid 1px rgba(255,255,255,0.4);
     }
@@ -67,7 +70,6 @@
     .document.selected{
       pointer-events:none;
       box-shadow: 0 0 24px black;
-      z-index: 3;
     }
 
 .document-container{
@@ -108,8 +110,10 @@
         color:rgba(255,255,255,0.5);
     }
     .document-title{
-        font-size:24px;
-        font-weight: 200;
+        font-size:1.4rem;
+        line-height:1.4rem;
+        margin-bottom:4px;
+        font-weight: 600;
         opacity:0;
         transform:translateY(32px);
         font-family:var(--font-secondary);
@@ -129,8 +133,8 @@
         margin-top:6px;
     }
     .document-year{
-        margin-bottom:-4px;
-        font-weight: 600;
+      margin-bottom:2px;
+      font-weight: 600;
     }
     .selectIndicator{
         position:absolute;
@@ -215,6 +219,7 @@ export default {
             tl.fromTo(this.$refs.doctitle, {y:24, opacity:0}, {opacity:1, y:0},0);
             tl.fromTo(this.$refs.doctags, {y:32, opacity:0}, {opacity:1, y:0},0);
             tl.fromTo(this.$refs.docoverlay, {opacity:0}, {opacity:1},0);
+            tl.fromTo(this.$refs.docbg, {opacity:1}, {opacity:0.8},0)
             return tl;
         },
         hoverShow(){

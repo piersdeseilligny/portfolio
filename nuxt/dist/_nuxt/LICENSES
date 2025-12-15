@@ -1,17 +1,4 @@
 /*!
- * Vue.js v2.7.16
- * (c) 2014-2023 Evan You
- * Released under the MIT License.
- */
-
-/*!
- * vuex v3.6.2
- * (c) 2021 Evan You
- * @license MIT
- */
-
-
-/*!
    * Observer 3.14.1
    * https://gsap.com
    *
@@ -30,13 +17,45 @@
   */
 
 
-/* @license
-Papa Parse
-v5.5.3
-https://github.com/mholt/PapaParse
-License: MIT
+/*!
+ * Vue.js v2.7.16
+ * (c) 2014-2023 Evan You
+ * Released under the MIT License.
+ */
+
+/*!
+ * vuex v3.6.2
+ * (c) 2021 Evan You
+ * @license MIT
+ */
+
+
+/*!
+ * CSSPlugin 3.14.1
+ * https://gsap.com
+ *
+ * Copyright 2008-2025, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
+ * @author: Jack Doyle, jack@greensock.com
 */
 
+/*!
+ * Flip 3.14.1
+ * https://gsap.com
+ *
+ * @license Copyright 2008-2025, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/*!
+ * GSAP 3.14.1
+ * https://gsap.com
+ *
+ * @license Copyright 2008-2025, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
+ * @author: Jack Doyle, jack@greensock.com
+*/
 
 /*!
  * cookie
@@ -44,6 +63,15 @@ License: MIT
  * Copyright(c) 2015 Douglas Christopher Wilson
  * MIT Licensed
  */
+
+/*!
+ * matrix 3.14.1
+ * https://gsap.com
+ *
+ * Copyright 2008-2025, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
+ * @author: Jack Doyle, jack@greensock.com
+*/
 
 /*!
  * vue-client-only v0.0.0-semantic-release
@@ -62,22 +90,11 @@ License: MIT
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 
 
-/*!
- * CSSPlugin 3.14.1
- * https://gsap.com
- *
- * Copyright 2008-2025, GreenSock. All rights reserved.
- * Subject to the terms at https://gsap.com/standard-license
- * @author: Jack Doyle, jack@greensock.com
-*/
-
-/*!
- * GSAP 3.14.1
- * https://gsap.com
- *
- * @license Copyright 2008-2025, GreenSock. All rights reserved.
- * Subject to the terms at https://gsap.com/standard-license
- * @author: Jack Doyle, jack@greensock.com
+/* @license
+Papa Parse
+v5.5.3
+https://github.com/mholt/PapaParse
+License: MIT
 */
 
 

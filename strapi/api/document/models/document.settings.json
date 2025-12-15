@@ -107,6 +107,10 @@
     },
     "np_link": {
       "type": "string"
+    },
+    "hero": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

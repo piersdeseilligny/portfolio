@@ -9,25 +9,50 @@
 </template>
 <style>
 .contactpage {
-  height: calc(100% - 64px);
   max-width: var(--maxwidth);
   background: var(--backgroundhigh);
-  position: relative;
+  position: absolute;
   width: 100%;
   margin: auto;
   box-sizing: border-box;
   overflow-y: auto;
   display:flex;
   flex-direction: column;
+  top: 0;
+  bottom: 0;
 }
 .contactpage .top{
-  margin-bottom:48px;
+  padding-bottom:24px;
+  padding-top:calc(var(--headerheight));
+  background: var(--backgroundpaper);
+  box-shadow: 0 0 24px rgba(0,0,0,0.5);
+  flex:0;
+  z-index:1;
 }
 .contactpage .bottom{
   background-color: rgba(0,0,0,0.5);
   background-position: center;
   background-size:cover;
-  flex-basis: 100%;
+  flex: 1;
+}
+@media (max-width:600px){
+  .contactpage{
+    flex-direction: column-reverse;
+  }
+  .contactpage .top{
+    padding-bottom:64px;
+    padding-top:24px;
+  }
+  .contactpadder.padder{
+    padding-right:48px;
+    padding-left:48px;
+  }
+}
+@media (max-width:400px){
+  .contactpadder.padder{
+    padding-right:24px;
+    padding-left:24px;
+  }
 }
 </style>
 <script>
@@ -50,35 +75,43 @@ export default {
       ]
     }
   },
-    async asyncData (context) {
-      try{
-        const data = await context.$staticAPI({
-          query:`
+  async asyncData(context) {
+    try {
+      const data = await context.$staticAPI({
+        query: `
           query{
-  contactImage{
-    image{
-      url
+            contactImage{
+              image{
+                url
+              }
+            }
+          }
+        `
+      });
+
+      const images = data.contactImage?.image || [];
+      for (const image of images) {
+        context.$staticAsset(image.url);
+      }
+
+      let serverSelectedImage = null;
+      if (images.length) {
+        serverSelectedImage = images[Math.floor(Math.random() * images.length)];
+      }
+
+      return { 
+        backgroundImage: serverSelectedImage,
+        allImages: images 
+      }
+    } catch (err) {
+      return { error: err }
+    }
+  },
+  mounted() {
+    if (this.allImages && this.allImages.length) {
+      const randomIndex = Math.floor(Math.random() * this.allImages.length);
+      this.backgroundImage = this.allImages[randomIndex];
     }
   }
-}
-          `
-        });
-        let backgroundImage = undefined;
-          for (const image of data.contactImage.image) {
-              context.$staticAsset(image.url);
-          }
-        
-        if(data.contactImage && data.contactImage.image && data.contactImage.image.length){
-          var randomIndex = Math.floor(Math.random() * data.contactImage.image.length);
-          backgroundImage = data.contactImage.image[randomIndex];
-        }
-        return{ backgroundImage:backgroundImage }
-      }
-      catch(err){
-        return {
-          error: err
-        }
-      }
-    },
 }
 </script>

@@ -18,7 +18,8 @@
         -moz-user-select: none;
         -webkit-user-select: none;
         user-select: none;
-        font-size: 14px;
+        font-size: 0.8rem;
+        font-weight: 500;
         transition: background-color 0.2s, color 0.1s;
         white-space: normal;
         position:relative;

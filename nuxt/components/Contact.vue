@@ -1,7 +1,7 @@
 <template>
-  <div class="home padder" style="padding-top:24px;padding-bottom:24px;">
-      <h1 class="emphasis">Get in touch</h1>
-      <p class="email">If you would like to get in touch, please feel free to reach out via&nbsp;<a class="fancy" href="mailto:contact@piersdeseilligny.com" @click="emailclick">contact@piersdeseilligny.com</a></p>
+  <div class="padder contactpadder" style="padding-top:24px;padding-bottom:24px;">
+      <h1 class="emphasis"><span>Get in touch</span></h1>
+      <p class="email">Send me an email at <a class="fancy" href="mailto:contact@piersdeseilligny.com" @click="emailclick">contact@piersdeseilligny.com</a> and let's have a chat over a coffee (or pint).</p>
       <Links v-if="!nolinks"/>
 
 
@@ -67,7 +67,6 @@ input {
 .input {
   z-index: 4;
   box-sizing: border-box;
-  background: var(--background2color);
   color: white;
   border: solid 1px transparent;
   border-bottom: solid 2px hsla(195, 50%, 60%, 0.5);

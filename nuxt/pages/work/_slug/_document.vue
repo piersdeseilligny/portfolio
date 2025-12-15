@@ -168,35 +168,41 @@
 
 .moreinfo-header {
   font-weight: 700;
+  margin-bottom:4px;
 }
-.moreinfo-subheader {
-  margin-top: -2px;
-  font-size: 12px;
+.moreinfo-subheader span{
+  opacity: 0.6;
+}
+.moreinfo a{
+  color: var(--fgcolor2);
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0.8;
+}
+.moreinfo a:hover {
+  opacity: 1;
+}
+.moreinfo a:active {
   opacity: 0.6;
 }
 .moreinfo-container {
-  margin-top: 12px;
+  margin-top: 6px;
+  margin-left: 2px;
 }
 .moreinfo-container:first-child{
   margin-top:96px;
 }
 .moreinfo {
-  font-size: 13px;
-  margin-top: 6px;
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+  margin-top: 14px;
 }
 
 .moreinfo a {
-  color: var(--fgcolor2);
-  font-weight: 600;
-  text-decoration: none;
+
 
 }
-.moreinfo a:hover {
-  opacity: 0.8;
-}
-.moreinfo a:active {
-  opacity: 0.6;
-}
+
 .outlink {
   display:flex;
 }
@@ -227,7 +233,7 @@
   overflow: hidden;
   transition: all 0.2s;
   color: var(--fgcolor);
-  border-left:solid 1px rgba(255, 255, 255, 0.4);
+  border-left:solid 1px rgba(255, 255, 255, 0.1);
   box-sizing:border-box;
 }
 .doccont-gradient {
@@ -252,6 +258,8 @@
   overflow-x: hidden;
   position: relative;
   z-index: 2;
+  background: url("/noisetexture.png");
+  background-attachment: fixed;
 }
 
 .doccont-content {
@@ -279,7 +287,7 @@
   flex-direction: column;
 }
 .doccont-content-col2 {
-  max-width: 720px;
+  /*max-width: 720px;*/
   margin-bottom: 72px;
   z-index: 1;
   width: 100%;
@@ -337,11 +345,10 @@
 
 .doccont-content-title {
   font-family: var(--font-secondary);
-  font-weight: 200;
+  font-weight: 500;
 }
 
 .doccont-content-description {
-  font-size: 13px;
   margin-top: 0px;
   z-index: 1;
   text-align: justify;
@@ -542,7 +549,8 @@ export default {
       animation: gsap.to(this.$refs.doccontImgContent, {
         opacity: 0.5,
         ease: "power.out",
-        yPercent: -25,
+        yPercent: -10,
+        filter:'blur(10px)'
       }),
     });
 

@@ -1,10 +1,13 @@
+import flipTransition from "~/plugins/flip-transition";
+
 export const state = () => ({
   tags: {},
   tagsArray: [],
   selectedTags: {},
   tagsQuery: "",
   categories: {},
-  categoriesArray: []
+  categoriesArray: [],
+  flipTransition: []
 })
 
 export const actions = {
@@ -84,6 +87,9 @@ export const mutations = {
       state.selectedTags[p.category]["All"] = true;
     }
   },
+  flipTransition(state, p){
+    state.flipTransition = p;
+  },
   selectAllTags(state, p) {
     for (let tag of Object.keys(state.selectedTags[p.category])) {
       state.selectedTags[p.category][tag] = (tag == "All");
@@ -112,6 +118,9 @@ export const mutations = {
 }
 
 export const getters = {
+  flipTransition: (state) => {
+    return state.flipTransition;
+  },
   tagsForCategory: (state) => (slug) => {
     let tags = [];
     for (let i = 0; i < state.categories[slug].tags.length; i++) {

@@ -49,7 +49,7 @@
 }
 .contentblock {
   margin-top: 24px;
-  max-width:712px;
+  /*max-width:712px;*/
   text-align: justify;
 }
 .contentblock h2 {
@@ -61,8 +61,7 @@
 }
 
 figure{
-  margin-left:0;
-  margin-right:0;
+  margin:0;
   font-size:12px;
 }
 figcaption{

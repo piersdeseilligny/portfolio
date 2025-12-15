@@ -37,7 +37,11 @@
         "videos"
       ],
       "plugin": "upload",
-      "required": false
+      "required": false,
+      "pluginOptions": {}
+    },
+    "featured": {
+      "collection": "document"
     }
   }
 }

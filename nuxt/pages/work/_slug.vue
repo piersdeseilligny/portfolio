@@ -60,7 +60,7 @@
             <div v-if="document.firstcat" class="pContainer fancy" :key="document.category.slug + '_d'" v-html="$md.render($store.state.categories[document.category.slug].description)">
             </div>
           </div>
-          <br :key="document.key+'flb'" v-if="document.forceLineBreak"/>
+          <div :key="document.key+'flb'" class="portfolio-list-break" v-if="document.forceLineBreak"></div>
           <div class="portfolio-list-item-container" :key="document.key+'container'">
               <transition-group
               :key="document.key+'tag'"
@@ -159,18 +159,19 @@
   flex-basis: 328px;
   flex-shrink: 0;
   scrollbar-width: none;
-  height: calc(100% - var(--headerheight));
-  position: relative;
   display: flex;
   flex-direction: column;
   transition: all 0.2s;
   align-content: flex-start;
   align-items: flex-end;
-  padding: 32px 8px 0 20px;
   overflow-y: overlay;
   overflow-x: hidden;
   box-sizing: border-box;
-  top: var(--headerheight);
+  padding-top:calc(var(--headerheight) + 16px);
+  padding-right:8px;
+  padding-left:20px;
+  background: var(--backgroundpaper);
+  background-attachment: local;
 }
 .portfolioList > * {
   flex-shrink: 0;
@@ -183,10 +184,8 @@
 .portfolioList .category-header:first-child {
   margin-top: 0;
 }
-.portfolioList > br {
-    flex-basis: 100%;
-}
-.fullscreenlist .portfolioList > br{
+.fullscreenlist .portfolioList > .portfolio-list-break{
+  flex-basis: 100%;
   content: '';
 }
 .portfolio-list-item-container{
@@ -212,7 +211,6 @@
   position: relative;
   text-decoration: none;
   font-size: 1.5em;
-  font-weight: 200;
   font-family: var(--font-secondary);
   transition: color 0.3s;
 }
@@ -257,7 +255,6 @@
 .portfolioList .pContainer p {
   max-width: 722px;
   color: var(--foregroundsubtle);
-  font-size: 13px;
   margin-top: 0;
   margin-bottom: 0;
   margin-right:0;
@@ -265,11 +262,13 @@
 
 .fullscreenlist .portfolioList {
   width: 100%;
-  padding: 32px 8px 24px 32px;
+  padding-top:calc(var(--headerheight) + 16px);
+  padding-right:8px;
+  padding-bottom:24px;
+  padding-left:32px;
   flex-direction: row;
   flex-wrap: wrap;
   flex-basis: auto;
-  background-color: transparent;
 }
 
 
@@ -375,7 +374,8 @@
     width: calc(100vw - 24px) !important;
   }
   .fullscreenlist .portfolioList {
-    padding: 32px 12px 24px 12px;
+    padding-right: 12px;
+    padding-left:12px;
   }
 }
 @media screen and (max-width: 800px) {
@@ -410,9 +410,7 @@
   }
   .doccont-scroller {
     overflow-y: unset !important;
-  }
-  .portfolioList .document.selected {
-    z-index: 2;
+    background: url(/noisetexture.png);
   }
   ::-webkit-scrollbar {
     display: none;
@@ -421,6 +419,8 @@
 </style>
 <script>
 import { gsap } from "gsap";
+import { Flip } from "gsap/Flip";
+gsap.registerPlugin(Flip);
 import DocumentNP from "~/components/DocumentNP.vue";
 let cntrlIsPressed = false;
 export default {
@@ -434,7 +434,8 @@ export default {
         };
     },
     watch: {
-        "$route.path": function (path) {
+        "$route.path": async function (path) {
+
             this.selectedDocument = this.$route.params.document;
             this.selectedCategory = this.$route.params.slug;
             for (let i = 0; i < this.documents.length; i++) {
@@ -443,6 +444,7 @@ export default {
                 else
                     this.documents[i].selected = false;
             }
+
         },
         "$route.params.document": function () {
             //animate transition from column to row
@@ -584,189 +586,161 @@ export default {
             ],
         };
     },
-    async asyncData(context) {
-        try {
-            const selectedCategory = context.params.slug;
-            const selectedDocument = context.params.document;
-            let queryString = "";
-            let documentselector = `(sort:"order")`;
-            let tagselector = "";
-            if (selectedCategory && context.store.state.categories[selectedCategory]) {
-                documentselector = `(sort:"order", where:{categories:{slug:"${selectedCategory}"}})`;
-                tagselector = `(where:{categories:{slug:"${selectedCategory}"}})`;
-            }
-            else if(selectedCategory && !context.store.state.categories[selectedCategory]){
-              context.error({statusCode:404, message:'Category not found'});
-            }
-            let qstring = `
-          query{
-            categories{
-              slug,
-              order,
-              tags{
-                id
-              }
-            },
-            tags${tagselector}{
-              name,
-              id,
-              icon,
-              title
-            },
-            documents${documentselector}{
-              title,
-              categories{
-                slug
-              },
-              category{
-                slug,
-              },
-              date,
-              id,
-              slug,
-              np_link,
-              backgroundcolor,
-              foregroundcolor,
-              foregroundcolor2,
-              			  moreinfo{
-				link,
-				outlink{
-				  svg
-				  tooltip,
-				  name
-				},
-				header,
-				subheader
-			  },
-              order,
-              tags{
-                name,
-                id,
-                icon,
-                title
-              },
-              images{
-                formats
-              },
-              poster{
-                formats
-              },
-              nopage
-            }
-          }
-          `;
-            const data = await context.$staticAPI({
-                query: qstring,
-            });
-            let documents = [];
-            data.documents.sort((a, b) => {
-                return a.category.order > b.category.order ? 1 : -1;
-            });
-            context.store.commit("queryToSelection", context.route.query);
-            data.categories.sort((a, b) => {
-                return a.order > b.order ? 1 : -1;
-            });
-            let previousCategory = "";
-            let previousMainTag = "";
-            let tagCounter = 0;
-            for (let i = 0; i < data.categories.length; i++) {
-                const c = {...data.categories[i] };
-                const tagIds = c.tags.map((t) => t.id);
-                console.log("category is " + c.slug);
-                //if slug is defined, include everything, otherwise only include those with the main category
-                for (let j = 0; j < data.documents.length; j++) {
-                    const d = {... data.documents[j] };
-                    const categorySlugs = d.categories.map((dc) => dc.slug);
-                    let include = false;
-                    
-                    if(selectedCategory == c.slug){
-                      for(let x = 0; x < d.categories.length; x++){
-                        if(d.categories[x].slug == c.slug){
-                          d.firstcat = d.category.slug != previousCategory;
-                          include = true;
-                          break;
-                        }
-                      }
-                    }
-                    else{
-                      if (d.category.slug == c.slug) {
-                          include = true;
-                          d.firstcat = d.category.slug != previousCategory;
-                      }
-                      else if(categorySlugs.includes(c.slug)){
-                        d.firstcat = c.slug != previousCategory;
-                        include = true;
-                      }
-                    }
-                    if (include) {
-                        //main tag is whichever one overlaps with those in the current category
-                        d.maintag = { id: 0 };
-                        for (let x = 0; x < d.tags.length; x++) {
-                            if (tagIds.includes(d.tags[x].id)) {
-                                //tag overlaps!!
-                                d.maintag = d.tags[x];
-                                break;
-                            }
-                        }
-                        if (d.slug == selectedDocument)
-                            d.selected = true;
-                        else
-                            d.selected = false;
-                        
-                        d.firsttag = (c.slug + d.maintag.id) != previousMainTag;
+  async asyncData(context) {
+    const { params, store, $staticAPI, error, route } = context;
+    const selectedCategorySlug = params.slug;
+    const selectedDocumentSlug = params.document;
 
-                        //Force the tag to be on a new line if the previous tag group has got more than three items
-                        if(d.firsttag){
-                          d.forceLineBreak = (tagCounter >= 3);
-                          tagCounter = 1;
-                        }
-                        else{
-                          tagCounter++;
-                        }
-                        
-                        
-                        d.secondaryCategory = c.slug != d.category.slug;
-                        d.category = c;
-                        
-                        
-                        d.key = c.slug+ d.maintag.id + d.slug;
-                        previousCategory = c.slug;
-                        previousMainTag = c.slug + d.maintag.id;
-                        documents.push(d);
-                    }
-                }
-            }
-            /*
-                  for (let i = 0; i < data.documents.length; i++) {
-                    const d = data.documents[i];
-                    if (d.slug == selectedDocument) d.selected = true;
-                    else d.selected = false;
-                    d.firstslug = d.category.slug != previousCategory;
-            
-                    
-                    previousCategory = d.category.slug;
-                    d.tagTable = {};
-                    for (let tag of d.tags) {
-                      d.tagTable[tag.name] = true;
-                    }
-            
-                    documents.push(d);
-                  }*/
-            console.log(documents);
-            return {
-                tags: data.tags,
-                documents,
-                selectedCategory,
-                selectedDocument,
-            };
+    // --- 1. Validation ---
+    // If a category is requested but doesn't exist in the store, 404 immediately.
+    const categoryExists = store.state.categories[selectedCategorySlug];
+    if (selectedCategorySlug && !categoryExists) {
+      return error({ statusCode: 404, message: 'Category not found' });
+    }
+
+    try {
+      // --- 2. Build Query ---
+      // We conditionally create the filter strings here for readability
+      const docFilter = selectedCategorySlug
+        ? `(sort:"order", where:{categories:{slug:"${selectedCategorySlug}"}})`
+        : `(sort:"order")`;
+
+      const tagFilter = selectedCategorySlug
+        ? `(where:{categories:{slug:"${selectedCategorySlug}"}})`
+        : ``;
+
+      const query = `
+        query {
+          categories { slug, order, tags { id } },
+          tags${tagFilter} { name, id, icon, title, order },
+          documents${docFilter} {
+            id, title, slug, date, order,
+            np_link, backgroundcolor, foregroundcolor, foregroundcolor2,
+            nopage,
+            category { slug },
+            categories { slug },
+            tags { name, id, icon, title },
+            images { formats },
+            poster { formats },
+            moreinfo { link, header, subheader, outlink { svg, tooltip, name } }
+          }
         }
-        catch (err) {
-          context.error({statusCode:404, message:err.message});
-            return {
-                error: err,
-            };
+      `;
+
+      // --- 3. Fetch Data ---
+      const data = await $staticAPI({ query });
+
+      // Sort raw data immediately
+      data.documents.sort((a, b) => (a.category.order > b.category.order ? 1 : -1));
+      data.categories.sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      // Update Store
+      store.commit("queryToSelection", route.query);
+
+      // --- 4. Transformation (The "Matrix" Logic) ---
+      // We want a list of documents, but grouped by Category. 
+      // A document appears multiple times if it belongs to multiple categories.
+      
+      
+      // We iterate categories, finding documents that belong to them
+  // --- 4. Transformation (The "Matrix" Logic) ---
+      let processedDocuments = [];
+
+      processedDocuments = data.categories.flatMap((cat) => {
+        const catTagIds = cat.tags.map((t) => t.id);
+
+        // A. Filter documents relevant to this category
+        let categoryDocs = data.documents.filter((doc) => {
+          if (selectedCategorySlug === cat.slug) {
+            return doc.categories.some((dc) => dc.slug === cat.slug);
+          }
+          const isPrimary = doc.category.slug === cat.slug;
+          const isSecondary = doc.categories.some((c) => c.slug === cat.slug);
+          return isPrimary || isSecondary;
+        });
+
+        // B. Pre-process: Attach "maintag" and clone the object
+        // We do this BEFORE sorting so we have the data we need to sort with.
+        categoryDocs = categoryDocs.map((doc) => {
+          const d = { ...doc };
+          
+          // Find the tag that matches the current category context
+          // If no tag matches (rare), provide a fallback object with high order so it goes to the bottom
+          d.maintag = d.tags.find((t) => catTagIds.includes(t.id)) || { id: 0, order: 9999 };
+          
+          return d;
+        });
+
+        // C. Sort: Group by Tag Order, then ensure Grouping Stability
+        categoryDocs.sort((a, b) => {
+          // 1. Primary Sort: Tag Order (High numbers first)
+          // We use (b - a) to put the highest 'order' tags at the top
+          const tagOrderDiff = (b.maintag.order || 0) - (a.maintag.order || 0);
+          if (tagOrderDiff !== 0) return tagOrderDiff;
+
+          // 2. Secondary Sort: Tag ID (Guarantees grouping if orders are identical)
+          const idDiff = a.maintag.id - b.maintag.id;
+          if (idDiff !== 0) return idDiff;
+
+          // 3. Tertiary Sort: Document Order (High numbers first)
+          // We use (b - a) here too so documents with higher 'order' are at the top
+          return (b.order || 0) - (a.order || 0);
+        });
+
+        // D. Final Map: Apply Contextual Flags
+        return categoryDocs.map((d) => {
+          d.selected = d.slug === selectedDocumentSlug;
+          d.secondaryCategory = cat.slug !== d.category.slug;
+          
+          // Ensure the doc knows which category group it's currently sitting in
+          d.category = { ...cat }; 
+          d.key = `${cat.slug}-${d.maintag.id}-${d.slug}`;
+
+          return d;
+        });
+      });
+
+      // --- 5. Layout Calculation Pass ---
+      // Now that we have a flat list, we calculate visual relationship flags
+      // (headers, line breaks) based on the *previous* item in the list.
+      
+      let prevCatSlug = "";
+      let prevMainTagId = "";
+      let tagGroupCount = 0;
+
+      processedDocuments.forEach((d) => {
+        const currentMainTagId = d.category.slug + d.maintag.id;
+
+        // Is this the start of a new Category Section?
+        d.firstcat = (d.category.slug !== prevCatSlug);
+
+        // Is this the start of a new Tag Group?
+        d.firsttag = (currentMainTagId !== prevMainTagId);
+
+        // Logic: Force a line break if the PREVIOUS tag group had >= 3 items
+        if (d.firsttag) {
+          d.forceLineBreak = (tagGroupCount >= 3);
+          tagGroupCount = 1; // Reset counter for new group
+        } else {
+          tagGroupCount++;
         }
-    },
+
+        // Update trackers for next iteration
+        prevCatSlug = d.category.slug;
+        prevMainTagId = currentMainTagId;
+      });
+
+      return {
+        tags: data.tags,
+        documents: processedDocuments,
+        selectedCategory: selectedCategorySlug,
+        selectedDocument: selectedDocumentSlug,
+      };
+
+    } catch (err) {
+      return error({ statusCode: 404, message: err.message });
+    }
+  },
     components: { DocumentNP }
 };
 </script>

@@ -24,7 +24,7 @@ export default {
       { rel: 'manifest', href: '/site.webmanifest', type:'application/manifest+json' },
       { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#447b82', type:'image/svg+xml' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
-      { rel: 'stylesheet', href:'https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@300;400;500;600&display=swap', type:'text/css' }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Outfit:wght@100..900&display=swap', rel:'stylesheet', type:'text/css' }
     ]
   },
 
@@ -56,6 +56,8 @@ export default {
     "~plugins/staticAPI.server.js",
     "~plugins/staticAsset.client.js",
     "~plugins/staticAsset.server.js",
+    { src:"~plugins/flip-transition.js", mode:"client" },
+    { src:"~plugins/flip-directive.js", mode:"client" },
     { src:"~plugins/vue-embed.js", mode:"client" },
     { src:"~plugins/vue-cool-lightbox.js", mode:"client" }
   ],

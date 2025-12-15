@@ -1,6 +1,6 @@
 <template>
   <div class="tool-header">
-  <h2 class="alth2" style="margin-top:24px;">{{ name }}</h2>
+  <h2 class="alth2" style="margin-top:24px;"><span v-flip-id="flipid">{{ name }}</span></h2>
   <p>{{ description }}</p>
   </div>
 </template>
@@ -15,7 +15,7 @@ p{
 <script>
 import "~/assets/tools.css";
   export default {
-    props: ["name", "description", "link"],
+    props: ["name", "description", "link", "flipid"],
     methods:{
 
     }
