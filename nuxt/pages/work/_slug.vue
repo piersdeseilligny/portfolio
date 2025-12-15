@@ -196,15 +196,13 @@
     flex-direction: column;
     flex-basis: 33%;
 }
-@media screen and (max-width: 800px) {
-  .portfolio-list-item-container{
-    /*width:213px !important;*/
-    min-height: 101px !important;
-    flex-basis: 50%;
-  }
-}
 .withinportfolio .portfolio-list-item-container{
   flex-basis:content;
+}
+@media screen and (max-width: 800px) {
+  .portfolio-list-item-container{
+    min-height: 101px !important;
+  }
 }
 .animatelink {
   color: var(--foregroundlink);
@@ -394,12 +392,17 @@
   .portfolioContainer:not(.fullscreenlist) .portfolioList {
     width: 100%;
     flex-direction: row;
-    flex-basis: 158px;
+    flex-basis: fit-content;
     overflow-x: overlay;
     overflow-y:hidden;
-    top: 0px;
-    padding: 0px 12px 12px 12px;
+    padding-top: var(--headerheight);
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom:12px;
     flex-wrap: nowrap;
+  }
+  .portfolioContainer:not(.fullscreenlist) .portfolio-list-item-container .document{
+    width:210px;
   }
   .portfolioContainer:not(.fullscreenlist) .category-header {
     display: none;
