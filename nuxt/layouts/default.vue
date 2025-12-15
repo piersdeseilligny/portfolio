@@ -277,4 +277,16 @@ p {
   display: inline-block;
   transform-origin: left center;
 }
+
+.tool-body{
+  padding-bottom:64px;
+  background:var(--backgroundpaper);
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  padding-top:var(--headerheight);
+  position: absolute;
+  overflow-y:auto;
+}
 </style>

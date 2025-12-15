@@ -220,7 +220,7 @@
   font-size: 12px;
   padding-bottom: 2px;
   position: absolute;
-  top: 12px;
+  top: calc(var(--headerheight) + 12px)
 }
 .animatelink.goback svg {
   height: 16px;
@@ -245,9 +245,15 @@
 .animatelink:hover::after {
   width: 100%;
 }
-
+.portfolioList h2{
+  margin-top:0;
+  transition: margin-top 0.2s;
+}
 .fullscreenlist .portfolioList h2 {
   flex-basis: 100%;
+}
+.portfolioList h2.hideline {
+  margin-top:12px;
 }
 .fullscreenlist .portfolioList .pContainer {
   flex-basis: 100%;
@@ -262,7 +268,6 @@
 
 .fullscreenlist .portfolioList {
   width: 100%;
-  padding-top:calc(var(--headerheight) + 16px);
   padding-right:8px;
   padding-bottom:24px;
   padding-left:32px;
@@ -382,7 +387,6 @@
   .portfolioContainer:not(.fullscreenlist) {
     flex-direction: column;
     top: 0;
-    padding-top: var(--headerheight);
   }
   #portfolioContent {
     margin-top: 0px;
@@ -619,7 +623,7 @@ export default {
             nopage,
             category { slug },
             categories { slug },
-            tags { name, id, icon, title },
+            tags { name, id, icon, title, order },
             images { formats },
             poster { formats },
             moreinfo { link, header, subheader, outlink { svg, tooltip, name } }
