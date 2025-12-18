@@ -535,10 +535,9 @@ export default {
   },
   head() {
     return {
-      title: "Piers Deseilligny - Camera Department",
+      title: "Piers Deseilligny - Director of Photography",
       description: this.home.metadescription,
       meta: [
-        { hid: 'og-title', property: 'og:title', content: 'Piers Deseilligny - Camera Department' },
         { hid: 'description', name: 'description', content: this.home.metadescription },
         { hid: 'og-description', property: 'og:description', content: this.home.subtitle },
         { hid: 'og-image', property: 'og:image', content: "https://piersdeseilligny.com" + this.home.metaimage.url },
