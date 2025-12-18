@@ -13,9 +13,9 @@ export default {
       { name: 'msapplication-TileColor', content:"#da532c" },
       { name: 'theme-color', content:"#ffffff" },
       { hid: 'description', name: 'description', content: '' },
-      { hid: 'og-title', property: 'og:title', content: 'Piers Deseilligny - Director of Photography' },
-      { hid: 'og-sitename', property: 'og:sitename', content: 'Piers Deseilligny - Director of Photography' },
-      { hid:'og-type', property:'og:type', content:"website"},
+      { hid: 'og:title', property: 'og:title', content: 'Piers Deseilligny - Director of Photography' },
+      { hid: 'og:sitename', property: 'og:sitename', content: 'Piers Deseilligny - Director of Photography' },
+      { hid:'og:type', property:'og:type', content:"website"},
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
