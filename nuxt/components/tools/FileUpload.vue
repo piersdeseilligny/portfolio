@@ -5,9 +5,19 @@
       type="file"
       ref="fileInput"
       @change="onFileSelect"
-      accept=".csv"
+      :accept="accept"
       style="display: none"
       multiple
+    />
+    <input
+      type="file"
+      ref="folderInput"
+      @change="onFileSelect"
+      :accept="accept"
+      style="display: none"
+      multiple
+      webkitdirectory
+      directory
     />
 
     <!-- Dropzone UI -->
@@ -21,8 +31,8 @@
     >
       <div class="dropzone-prompt">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-        <span v-if="uploadedFiles.length === 0">Drag & drop your .csv file(s) here, or click to select</span>
-        <span v-else>Drag & drop to add more files, or click to select</span>
+        <span v-if="uploadedFiles.length === 0">{{ promptFirst }}</span>
+        <span v-else>{{ promptSubsequent }}</span>
       </div>
     </div>
 
@@ -48,6 +58,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+const props = defineProps<{
+  accept:string,
+  promptFirst:string,
+  promptSubsequent:string
+}>();
 
 const emit = defineEmits<{
   (e: 'files-uploaded', files: File[]): void;
@@ -60,23 +75,84 @@ const fileInput = ref<HTMLInputElement | null>(null);
 
 const onDragOver = (e: DragEvent) => {
   // This is necessary to allow dropping
+  e.preventDefault();
 };
 
 const onDragEnter = (e: DragEvent) => {
+  e.preventDefault();
   isDragging.value = true;
 };
 
 const onDragLeave = (e: DragEvent) => {
+  e.preventDefault();
   isDragging.value = false;
 };
 
-const onDrop = (e: DragEvent) => {
+const onDrop = async (e: DragEvent) => {
+  e.preventDefault();
   isDragging.value = false;
-  const files = e.dataTransfer?.files;
-  if (files) {
-    handleFiles(Array.from(files));
-  }
+
+  const dt = e.dataTransfer;
+  if (!dt) return;
+
+  const files: File[] = [];
+
+  // Use Promise.all to process multiple dropped root folders in parallel
+  // This ensures one slow folder doesn't block the others entirely
+  const promises = Array.from(dt.items).map(async (item) => {
+    if (item.kind !== 'file') return;
+
+    const entry = item.webkitGetAsEntry?.();
+    if (!entry) return;
+
+    await collectFiles(entry, files);
+  });
+
+  await Promise.all(promises);
+  handleFiles(files);
 };
+
+// A robust recursive helper to extract files from entries
+async function collectFiles(entry: FileSystemEntry, out: File[]) {
+  if (entry.isFile) {
+    const file = await getFileFromEntry(entry as FileSystemFileEntry);
+    if (file) out.push(file);
+  } 
+  else if (entry.isDirectory) {
+    const dirReader = (entry as FileSystemDirectoryEntry).createReader();
+    let entries: FileSystemEntry[];
+
+    // readEntries must be called repeatedly until it returns an empty array
+    do {
+      entries = await readEntriesPromise(dirReader);
+      for (const childEntry of entries) {
+        await collectFiles(childEntry, out);
+      }
+    } while (entries.length > 0);
+  }
+}
+
+// Wrapper to turn the callback-based readEntries into a Promise
+function readEntriesPromise(reader: FileSystemDirectoryReader): Promise<FileSystemEntry[]> {
+  return new Promise((resolve, reject) => {
+    reader.readEntries(resolve, (err) => reject(err));
+  });
+}
+
+// Wrapper to turn the callback-based file retrieval into a Promise
+function getFileFromEntry(entry: FileSystemFileEntry): Promise<File | null> {
+  return new Promise((resolve) => {
+    entry.file(
+      (file) => resolve(file),
+      (err) => {
+        console.warn(`Could not read file ${entry.name}:`, err);
+        resolve(null); // Resolve with null on error so we don't break the whole loop
+      }
+    );
+  });
+}
+
+
 
 const triggerFileInput = () => {
   fileInput.value?.click();
@@ -98,10 +174,10 @@ const onFileSelect = (e: Event) => {
  * Adds new files to the list, avoiding duplicates.
  */
 const handleFiles = (files: File[]) => {
-  const csvFiles = files.filter(file => file.name.endsWith('.csv'));
+  const inputFiles = files.filter(file => file.name.endsWith(props.accept));
   
   // Filter out duplicates based on file name
-  const newFiles = csvFiles.filter(newFile => 
+  const newFiles = inputFiles.filter(newFile => 
     !uploadedFiles.value.some(existingFile => existingFile.name === newFile.name)
   );
 

@@ -1,6 +1,6 @@
 <template>
     <div class="padder">
-        <p class="tools-desc">These are some small online tools for my personal use, but that other people might find useful.</p>
+        <p class="tools-desc">These are some small online tools for my personal use, but that other people might find useful. All processing is performed locally (I'm cheap and don't want to pay for any server-side processing).</p>
         <ul class="tools-list">
             <ToolListItem flipid="qtake-csv" :link="{path:'/tools/qtake-metadata-csv-transformer'}" name="QTake Metadata CSV Transformer" description="Process metadata .csv exports from QTake for optimized compatibility with DaVinci Resolve"/>
             <ToolListItem flipid="offshootreport" :link="{path:'/tools/offshoot-report-generator'}" name="OffShoot Report Generator" description="Generate DIT Reports from any number of OffShoot log files"/>

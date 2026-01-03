@@ -25,6 +25,8 @@
     "eslint": "^8.17.0",
     "eslint-plugin-vue": "^9.1.0",
     "gsap": "^3.14.1",
+    "jspdf": "^3.0.4",
+    "jspdf-autotable": "^5.0.2",
     "markdown-it-link-attributes": "^3.0.0",
     "mkdirp": "^1.0.4",
     "needle": "^2.5.2",
