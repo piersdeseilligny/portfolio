@@ -41,7 +41,6 @@
 
 .email {
   color:var(--foreground);
-  font-size:14px;
   margin-right:var(--rightmargin);
 }
 
