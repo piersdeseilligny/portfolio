@@ -1,6 +1,7 @@
 Options -Indexes
 ErrorDocument 404 /404/index.html
 
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
@@ -8,8 +9,6 @@ ErrorDocument 404 /404/index.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L,R=404]
-  
-  RewriteRule ^work\/everything\-else\/betterfountain$ "https\:\/\/piersdeseilligny\.com\/work\/software\/betterfountain\/" [R=301,L]
   
 # Remove trailing slash from non-filepath urls
 RewriteCond %{REQUEST_URI} /(.+)/$
@@ -29,17 +28,4 @@ RewriteRule ^ https://piersdeseilligny.com/%1 [R=301,L]
 # X-Content-Type nosniff
 <IfModule mod_headers.c>
 	Header set X-Content-Type-Options nosniff
-    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
-    Header set Pragma "no-cache"
 </IfModule>
-
-# BEGIN cPanel-generated php ini directives, do not edit
-# Manual editing of this file may result in unexpected behavior.
-# To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
-# For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
-<IfModule php8_module>
-</IfModule>
-<IfModule lsapi_module>
-</IfModule>
-# END cPanel-generated php ini directives, do not edit
-AddType application/x-httpd-php .html
