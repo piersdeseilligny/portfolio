@@ -56,8 +56,7 @@ export default {
     "~plugins/staticAPI.server.js",
     "~plugins/staticAsset.client.js",
     "~plugins/staticAsset.server.js",
-    { src:"~plugins/flip-transition.js", mode:"client" },
-    { src:"~plugins/flip-directive.js", mode:"client" },
+
     { src:"~plugins/vue-embed.js", mode:"client" },
     { src:"~plugins/vue-cool-lightbox.js", mode:"client" }
   ],

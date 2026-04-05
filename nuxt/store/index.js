@@ -1,4 +1,4 @@
-import flipTransition from "~/plugins/flip-transition";
+
 
 export const state = () => ({
   tags: {},
@@ -7,11 +7,14 @@ export const state = () => ({
   tagsQuery: "",
   categories: {},
   categoriesArray: [],
-  flipTransition: []
+  clickedDocRect: null,
+  clickedDocId: null,
+  clickedDocEl: null,
+  isInternalNavigation: false,
 })
 
 export const actions = {
-  async nuxtServerInit({commit}, context) {
+  async nuxtServerInit({ commit }, context) {
     const data = await context.$staticAPI({
       query: `
           query {
@@ -87,8 +90,18 @@ export const mutations = {
       state.selectedTags[p.category]["All"] = true;
     }
   },
-  flipTransition(state, p){
-    state.flipTransition = p;
+  setClickedDoc(state, { rect, id, el }) {
+    state.clickedDocRect = rect;
+    state.clickedDocId = id;
+    state.clickedDocEl = el;
+  },
+  clearClickedDoc(state) {
+    state.clickedDocRect = null;
+    state.clickedDocId = null;
+    state.clickedDocEl = null;
+  },
+  setInternalNavigation(state, val) {
+    state.isInternalNavigation = val;
   },
   selectAllTags(state, p) {
     for (let tag of Object.keys(state.selectedTags[p.category])) {
@@ -101,14 +114,14 @@ export const mutations = {
       for (let category of Object.keys(query)) {
         selectAll = false;
         let selection = query[category].split(',');
-          state.selectedTags[category]["All"] = false;
-          selection.forEach(tag => {
-            state.selectedTags[category][decodeURIComponent(tag)] = true;
-          });
+        state.selectedTags[category]["All"] = false;
+        selection.forEach(tag => {
+          state.selectedTags[category][decodeURIComponent(tag)] = true;
+        });
       }
     }
-    if(selectAll){
-      for(let category of Object.keys(state.categories)){
+    if (selectAll) {
+      for (let category of Object.keys(state.categories)) {
         for (let tag of Object.keys(state.selectedTags[category])) {
           state.selectedTags[category][tag] = (tag == "All");
         }
@@ -118,9 +131,8 @@ export const mutations = {
 }
 
 export const getters = {
-  flipTransition: (state) => {
-    return state.flipTransition;
-  },
+  clickedDocRect: (state) => state.clickedDocRect,
+  clickedDocId: (state) => state.clickedDocId,
   tagsForCategory: (state) => (slug) => {
     let tags = [];
     for (let i = 0; i < state.categories[slug].tags.length; i++) {

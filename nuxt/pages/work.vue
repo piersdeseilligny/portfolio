@@ -1,7 +1,6 @@
 <template>
 <div class="portfolioParent">
-    <!--<Categories :categories="categories" :selected="selectedCategory" @select="function(e){ selectedCategory=e.slug; selectedCategoryName=e.name }"/>-->
-    <nuxt-child :key="$route.name"/>
+    <nuxt-child :key="$route.query.context || $route.params.slug || 'all'"/>
 </div>
 </template>
 <style>
@@ -14,30 +13,15 @@
 </style>
 <script>
   export default {
-    data(){
-        return{
-            selectedCategory:"",
-            selectedCategoryName:"",
-            selectedCategoryDescription:"",
-            error:{}
-        }
-    },
-    watch: {
-        '$route.path': function(path) {
-            this.selectedCategory = path.split("/")[2];
-        }
-    },
     async asyncData (context) {
       try{
         let categories = context.store.categoriesArray;
-        const selectedCategory = context.params.slug; // When calling /abc the slug will be "abc"
-        return{ categories, selectedCategory }
+        return{ categories }
       }
       catch(err){
-        return {
-          error: err
-        }
+        return {}
       }
     },
   }
 </script>
+

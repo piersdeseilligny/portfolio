@@ -1,209 +1,108 @@
 <template>
-  <div class="portfolioVue">
-    <transition
-      name="slide-down"
-      appear
-      v-on:enter="tagsAppear"
-      v-on:before-leave="tagsHideBefore"
-      v-on:after-leave="tagsHideAfter"
-    >
-    </transition>
-    <div
-      :class="{
-        portfolioContainer: true,
-        fullscreenlist: $route.params.document == undefined,
-        withinportfolio: $route.params.document != undefined,
-      }"
-    >
-      <transition-group
-        name="portfolio-list"
-        class="portfolioList"
-        tag="div"
-        v-on:before-leave="beforeDocumentLeave"
-      >
-        <template v-for="document in documents">
-          <div
-            class="category-header"
-            v-if="document.firstcat"
-            :key="document.category.slug"
-          >
+  <div class="work-page" ref="workPage">
+    <!-- Back to all work -->
+    <nuxt-link v-if="selectedCategory" class="work-goback" :to="{ path: '/work/', query: $route.query }">
+      <svg>
+        <polygon points="13.1,5.8 2.2,5.8 7.3,1.2 6.7,0.5 0.2,6.3 6.7,12 7.3,11.3 2.2,6.8 13.1,6.8" />
+      </svg>
+      View all work
+    </nuxt-link>
 
-            <nuxt-link
-              v-if="selectedCategory"
-              class="animatelink goback"
-              :to="{
-                path: '/work/',
-                query: $route.query,
-              }"
-              :key="document.category.slug + '_b'"
-            >
-
-              <svg>
-                <polygon
-                  points="13.1,5.8 2.2,5.8 7.3,1.2 6.7,0.5 0.2,6.3 6.7,12 7.3,11.3 2.2,6.8 13.1,6.8 "
-                /></svg>View all</nuxt-link
-            >
-            <h2 :key="document.category.slug+'h2'" v-if="document.firstcat" :class="{lined:true, hideline:selectedCategory}">
-              <nuxt-link
-                :id="document.category.slug"
-                class="animatelink"
-                :title="$store.state.categories[document.category.slug].title"
-                :to="{
-                  path: '/work/' + document.category.slug + '/',
-                  query: $route.query,
-                }"
-                ><span>{{
-                  $store.state.categories[document.category.slug].name
-                }}</span></nuxt-link
-              >
-            </h2>
-            <div v-if="document.firstcat" class="pContainer fancy" :key="document.category.slug + '_d'" v-html="$md.render($store.state.categories[document.category.slug].description)">
-            </div>
-          </div>
-          <div :key="document.key+'flb'" class="portfolio-list-break" v-if="document.forceLineBreak"></div>
-          <div class="portfolio-list-item-container" :key="document.key+'container'">
-              <transition-group
-              :key="document.key+'tag'"
-                v-if="document.firsttag && document.maintag && document.maintag.name"
-                name="tag-list"
-                :class="'tags'"
-                tag="div"
-                style="z-index: 1"
-                v-on:before-leave="beforeDocumentLeave"
-              >
-                  <Tag
-                    :key="document.key+'tag2'"
-                    :name="document.maintag.name"
-                    :title="document.maintag.title"
-                    :icon="document.maintag.icon"
-                    :category="document.category.slug"
-                    :id="document.maintag.id"
-                  />
-              </transition-group>
-          <!--<h2 :key="document.id+'_h2'" v-if="document.category.name != documentLoopCategory && (documentLoopCategory = document.category.name)">document.category.name</h2>
-          --><Document
-            :class="{
-              'portfolio-list-item': true,
-              filteredout: document.hidden,
-            }"
-            v-if="document.order != -1 && !document.nopage"
-            :key="document.key+'doc'"
-            ref="docs"
-            :link="{
-              path: '/work/' + document.category.slug + '/' + document.slug+'/',
-              query: $route.query,
-            }"
-            :doc="document"
-            @clickOnDoc="clickOnDoc"
-          />
-          <DocumentNP v-if="document.nopage" :doc="document" :key="document.id"></DocumentNP>
-        </div>
-        </template>
-      </transition-group>
-      <div
-        id="portfolioContent"
-        ref="portfolioContent"
-        :class="{ visible: $route.params.document }"
-      >
-        <nuxt :nuxtChildKey="$route.params.document" />
+    <!-- Category sections with tag carousels -->
+    <template v-for="cat in categoryGroups">
+      <div :key="cat.slug" class="work-category-section">
+        <h2 class="work-category-heading lined" :class="{ hideline: selectedCategory }">
+          <nuxt-link :id="cat.slug" class="animatelink" :title="cat.title"
+            :to="{ path: '/work/' + cat.slug + '/', query: $route.query }"><span>{{ cat.name }}</span></nuxt-link>
+        </h2>
+        <div class="work-category-desc fancy" v-if="cat.description" v-html="$md.render(cat.description)"></div>
+        <Carousel v-for="tagGroup in cat.tagGroups" :key="cat.slug + '-' + tagGroup.tag.id" :title="tagGroup.tag.name"
+          :icon="tagGroup.tag.icon" :description="tagGroup.tag.title" :documents="tagGroup.documents"
+          :ref="'carousel-' + cat.slug + '-' + tagGroup.tag.id" @docClick="onDocClick" />
       </div>
-    </div>
+    </template>
+
+    <!-- Document modal overlay -->
+    <transition name="modal" @before-enter="modalBeforeEnter" @enter="modalEnter" @leave="modalLeave"
+      @after-leave="modalAfterLeave" :css="false">
+      <div v-if="$route.params.document" class="modal-backdrop" ref="modalBackdrop" @click.self="closeModal">
+        <button v-if="prevDoc" class="modal-nav modal-nav-prev" @click="goToDoc(prevDoc)" title="Previous document">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+          </svg>
+        </button>
+        <div class="modal-container" ref="modalContainer">
+          <DocumentContent v-if="selectedDocument" :key="selectedDocument" :categorySlug="selectedCategory"
+            :documentSlug="selectedDocument" @close="closeModal" />
+        </div>
+        <button v-if="nextDoc" class="modal-nav modal-nav-next" @click="goToDoc(nextDoc)" title="Next document">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+          </svg>
+        </button>
+      </div>
+    </transition>
   </div>
 </template>
+
 <style>
-.goback-enter-active {
-  opacity: 0;
-  transform: translateX(-32px);
-}
-.goback-enter-to {
-  opacity: 1;
-  transform: translateX(0px);
-}
-.goback-leave-to {
-  opacity: 0;
-  transform: translateX(-32px);
-}
-
-
-.portfolioVue {
-  flex-basis: 1;
-  flex-grow: 1;
+.work-page {
   width: 100%;
-  height: calc(100% - 46px);
-  flex-direction: column;
-  display: flex;
-}
-.portfolioContainer {
-  display: flex;
-  align-items: stretch;
-  max-width: var(--maxwidth);
-  height: 100%;
   position: absolute;
+  height: 100%;
   top: 0;
-  width: 100%;
-  margin: 0 auto;
-  background: var(--background1);
+  overflow-y: auto;
   overflow-x: hidden;
-}
-#portfolioContent {
-  flex-grow: 1;
-  min-width: 0;
-  z-index: 3;
-  box-shadow: 0 0 18px black;
-  transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
-}
-#portfolioContent:not(.visible) {
-  transform: translateX(100%);
-}
-.portfolioList {
-  flex-basis: 328px;
-  flex-shrink: 0;
-  scrollbar-width: none;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.2s;
-  align-content: flex-start;
-  align-items: flex-end;
-  overflow-y: overlay;
-  overflow-x: hidden;
+  padding-top: calc(var(--headerheight) + 16px);
+  padding-bottom: 48px;
   box-sizing: border-box;
-  padding-top:calc(var(--headerheight) + 16px);
-  padding-right:8px;
-  padding-left:20px;
   background: var(--backgroundpaper);
   background-attachment: local;
 }
-.portfolioList > * {
-  flex-shrink: 0;
+
+.work-goback {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--foregroundlink);
+  text-decoration: none;
+  font-size: 12px;
+  padding: 0 32px;
+  margin-bottom: 8px;
+  transition: color 0.2s;
 }
-.fullscreenlist .category-header {
-  margin-top: 24px;
-  margin-bottom:6px;
-  width: 100%;
+
+.work-goback:hover {
+  color: white;
 }
-.portfolioList .category-header:first-child {
+
+.work-goback svg {
+  height: 14px;
+  width: 14px;
+  fill: currentColor;
+}
+
+.work-category-section {
+  margin-bottom: 24px;
+}
+
+.work-category-heading {
+  margin: 0 32px 0 32px;
+}
+
+.work-category-desc {
+  padding: 0 32px;
+}
+
+.work-category-desc p {
+  max-width: 722px;
+  color: var(--foregroundsubtle);
   margin-top: 0;
+  margin-bottom: 8px;
 }
-.fullscreenlist .portfolioList > .portfolio-list-break{
-  flex-basis: 100%;
-  content: '';
-}
-.portfolio-list-item-container{
-    /*width: 276px;*/
-    min-height: 138px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    flex-basis: 33%;
-}
-.withinportfolio .portfolio-list-item-container{
-  flex-basis:content;
-}
-@media screen and (max-width: 800px) {
-  .portfolio-list-item-container{
-    min-height: 101px !important;
-  }
-}
+
 .animatelink {
   color: var(--foregroundlink);
   position: relative;
@@ -212,21 +111,7 @@
   font-family: var(--font-secondary);
   transition: color 0.3s;
 }
-.animatelink.goback {
-  font-family: var(--font-primary);
-  font-weight: normal;
-  font-size: 12px;
-  padding-bottom: 2px;
-  position: absolute;
-  top: calc(var(--headerheight) + 12px)
-}
-.animatelink.goback svg {
-  height: 16px;
-  width: 16px;
-  fill: currentColor;
-  margin-bottom: -4px;
-  margin-right: 2px;
-}
+
 .animatelink::after {
   position: absolute;
   width: 0%;
@@ -237,377 +122,550 @@
   transition: width 0.3s;
   background: var(--backgroundclick);
 }
+
 .animatelink:hover {
   color: white;
 }
+
 .animatelink:hover::after {
   width: 100%;
 }
-.portfolioList h2{
-  margin-top:0;
-  transition: margin-top 0.2s;
-}
-.fullscreenlist .portfolioList h2 {
-  flex-basis: 100%;
-}
-.portfolioList h2.hideline {
-  margin-top:12px;
-}
-.fullscreenlist .portfolioList .pContainer {
-  flex-basis: 100%;
-}
-.portfolioList .pContainer p {
-  max-width: 722px;
-  color: var(--foregroundsubtle);
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-right:0;
+
+/* Modal overlay */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 6vh 24px;
 }
 
-.fullscreenlist .portfolioList {
+.modal-container {
   width: 100%;
-  padding-right:8px;
-  padding-bottom:24px;
-  padding-left:32px;
-  flex-direction: row;
-  flex-wrap: wrap;
-  flex-basis: auto;
-}
-
-
-.fullscreenlist .portfolioList::after {
-  display: none;
-}
-.tagscontainer {
-  position: relative;
-  width: -moz-fit-content;
-  width: fit-content;
-  transform: width 0.2s ease;
-  margin-left: -6px;
-  line-height: 16px;
-  margin-top: 4px;
-}
-.fullscreenlist .tags{
-    flex-basis: 100%;
-}
-.tags {
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  max-width: var(--maxwidth);
-  margin: 0 auto;
-  width: 0px;
-  margin-left:0px;
-  margin-top:12px;
-  margin-bottom:-6px;
-}
-.portfolio-list {
-  position: relative;
-}
-.portfolio-list-item {
-  -webkit-transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-}
-.portfolio-list-item.filteredout {
-  display: none;
-}
-.portfolio-list-enter-active {
-  opacity: 0;
-  transform: translateX(-32px);
-}
-.portfolio-list-enter-to {
-  opacity: 1;
-  transform: translateX(0px);
-}
-.portfolio-list-leave-to {
-  opacity: 0;
-  transform: translateX(-32px);
-}
-.portfolio-list-leave-active {
-  position: absolute !important;
-}
-
-.tag-list {
-  position: relative;
+  max-width: 900px;
+  height: 88vh;
   overflow: hidden;
-}
-.tag-list-item {
-  -webkit-transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  display: inline-block;
-}
-.tag-list-enter-active {
-  opacity: 0;
-  transform: translateY(-6px);
-}
-.tag-list-enter-to {
-  opacity: 1;
-  transform: translateY(0px);
-}
-.tag-list-leave-to {
-  opacity: 0;
-  transform: translateY(-6px);
-}
-.tag-list-leave-active {
-  position: absolute !important;
+  border-radius: 6px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  position: relative;
+  z-index: 210;
+  will-change: transform, opacity;
 }
 
-.slide-down-enter-active,
-.slide-right-enter-active {
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+/* Modal prev/next nav buttons */
+.modal-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 220;
+  background: transparent;
+  border: none;
+  width: 48px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foregroundhigh);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  flex-shrink: 0;
 }
-.slide-down-leave-active,
-.slide-right-leave-active {
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+
+.modal-nav svg {
+  width: 36px;
+  height: 36px;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
-.slide-down-enter,
-.slide-down-leave-to,
-.slide-down-leave-active {
-  transform: translateY(-32px);
-  opacity: 0;
+
+.modal-nav:hover {
+  color: white;
 }
-.slide-right-enter,
-.slide-right-leave-to,
-.slide-right-leave-active {
-  transform: translateX(-320px);
-  opacity: 0;
+
+.modal-nav:hover svg {
+  transform: scale(1.15);
 }
-@media screen and (max-width: 498px) {
-  .portfolioContainer.fullscreenlist .document {
-    width: calc(100vw - 24px) !important;
-  }
-  .fullscreenlist .portfolioList {
-    padding-right: 12px;
-    padding-left:12px;
-  }
+
+/* Position buttons outside the max-width modal */
+.modal-nav-prev {
+  left: max(0px, calc(50% - 505px));
 }
-@media screen and (max-width: 800px) {
-  .portfolioContainer:not(.fullscreenlist) {
-    flex-direction: column;
-    top: 0;
+
+.modal-nav-next {
+  right: max(0px, calc(50% - 505px));
+}
+
+@media (max-width: 600px) {
+  .work-goback {
+    padding: 0 12px;
   }
-  #portfolioContent {
-    margin-top: 0px;
+
+  .work-category-heading {
+    margin-left: 12px;
+    margin-right: 12px;
   }
-  .portfolioContainer:not(.fullscreenlist) .portfolioList {
-    width: 100%;
-    flex-direction: row;
-    flex-basis: fit-content;
-    overflow-x: overlay;
-    overflow-y:hidden;
-    padding-top: var(--headerheight);
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-bottom:12px;
-    flex-wrap: nowrap;
+
+  .work-category-desc {
+    padding: 0 12px;
   }
-  .portfolioContainer:not(.fullscreenlist) .portfolio-list-item-container .document{
-    width:210px;
+
+  .modal-backdrop {
+    padding: 0;
   }
-  .portfolioContainer:not(.fullscreenlist) .category-header {
-    display: none;
+
+  .modal-container {
+    max-width: 100%;
+    height: 100vh;
+    border-radius: 0;
   }
-  /*.portfolioList .document {
-    flex-shrink: 0;
-    width: 320px;
-  }*/
-  .doccont-container {
-    border-left: none;
-    border-top: solid 1px rgba(255, 255, 255, 0.1);
+
+  /* On mobile, anchor buttons to the bottom corners */
+  .modal-nav {
+    width: 60px;
+    height: 60px;
+    top: auto;
+    bottom: 0px;
+    transform: none;
+    background: linear-gradient(0deg, var(--backgroundpaper), transparent);
   }
-  .doccont-scroller {
-    overflow-y: unset !important;
-    background: url(/noisetexture.png);
+
+  .modal-nav svg {
+    width: 32px;
+    height: 32px;
   }
-  ::-webkit-scrollbar {
-    display: none;
+
+  .modal-nav:hover svg {
+    transform: scale(1.1);
+  }
+
+  .modal-nav-prev {
+    left: 0px;
+  }
+
+  .modal-nav-next {
+    right: 0px;
   }
 }
 </style>
+
 <script>
 import { gsap } from "gsap";
-import { Flip } from "gsap/Flip";
-gsap.registerPlugin(Flip);
-import DocumentNP from "~/components/DocumentNP.vue";
-let cntrlIsPressed = false;
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import DocumentContent from "~/components/DocumentContent.vue";
+
 export default {
-    data() {
-        return {
-            documents: [],
-            selectedCategory: "",
-            selectedDocument: "",
-            tagContainerHeight: 0,
-            clickedElement: null,
-        };
-    },
-    watch: {
-        "$route.path": async function (path) {
-
-            this.selectedDocument = this.$route.params.document;
-            this.selectedCategory = this.$route.params.slug;
-            for (let i = 0; i < this.documents.length; i++) {
-                if (this.documents[i].slug == this.selectedDocument)
-                    this.documents[i].selected = true;
-                else
-                    this.documents[i].selected = false;
+  components: { DocumentContent },
+  data() {
+    return {
+      closingDocSlug: null,
+      categoryGroups: [],
+      selectedCategory: "",
+      selectedDocument: "",
+    };
+  },
+  computed: {
+    // Flat ordered list of all navigable documents on this page
+    flatDocList() {
+      const docs = [];
+      for (const cat of this.categoryGroups) {
+        for (const tagGroup of cat.tagGroups) {
+          for (const doc of tagGroup.documents) {
+            if (!doc.nopage && !docs.find((d) => d.slug === doc.slug)) {
+              docs.push({ slug: doc.slug, category: doc.category });
             }
+          }
+        }
+      }
+      return docs;
+    },
+    currentDocIndex() {
+      return this.flatDocList.findIndex((d) => d.slug === this.selectedDocument);
+    },
+    prevDoc() {
+      return this.currentDocIndex > 0
+        ? this.flatDocList[this.currentDocIndex - 1]
+        : null;
+    },
+    nextDoc() {
+      return this.currentDocIndex !== -1 && this.currentDocIndex < this.flatDocList.length - 1
+        ? this.flatDocList[this.currentDocIndex + 1]
+        : null;
+    },
+  },
+  watch: {
+    "$route.params": {
+      handler(params, oldParams) {
+        if (oldParams && oldParams.document && !params.document) {
+          this.closingDocSlug = oldParams.document;
+        }
+        this.selectedCategory = params.slug || "";
+        this.selectedDocument = params.document || null;
+        if (params.document) {
+          if (this.$refs.workPage) this.$refs.workPage.style.overflow = "hidden";
+        } else {
+          if (this.$refs.workPage) this.$refs.workPage.style.overflow = "";
+        }
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    onDocClick(doc, rect) {
+      // rect is already stored in Vuex by Carousel's onDocClick
+    },
+    goToDoc(doc) {
+      if (!doc) return;
+      const targetIndex = this.flatDocList.findIndex((d) => d.slug === doc.slug);
+      const direction = targetIndex > this.currentDocIndex ? 1 : -1;
+      const container = this.$refs.modalContainer;
+      const newPath = "/work/" + doc.category.slug + "/" + doc.slug + "/";
+      
+      if (!container) {
+        this.selectedDocument = doc.slug;
+        this.selectedCategory = doc.category.slug;
+        window.history.replaceState({}, '', newPath);
+        return;
+      }
 
-        },
-        "$route.params.document": function () {
-            //animate transition from column to row
+      gsap.to(container, {
+        x: direction * -30,
+        opacity: 0,
+        duration: 0.15,
+        ease: "power2.in",
+        onComplete: () => {
+          gsap.set(container, { opacity: 0, x: direction * 30 });
+          
+          // Set flag to avoid double animation and match new category
+          this.$store.commit("setInternalNavigation", true);
+          
+          this.$router.replace({ path: newPath, query: this.$route.query }).catch(e => {
+            if (e.name !== 'NavigationDuplicated') throw e;
+          });
+
+          this.$nextTick(() => {
             setTimeout(() => {
-                this.scrollToSelection();
-            }, 100);
+              gsap.fromTo(
+                container,
+                { x: direction * 30, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.25, ease: "power2.out" }
+              );
+            }, 40);
+          });
         },
-        "$route.query": function () {
-            this.filterDocuments();
-        },
+      });
     },
-    methods: {
-        tagsAppear: function () {
-            this.tagContainerHeight = this.$refs.tagContainer
-                ? this.$refs.tagContainer.clientHeight
-                : 0;
-        },
-        tagsHideBefore: function () {
-            // gsap.to(".portfolioContainer", {duration: 2, y:-32})
-        },
-        tagsHideAfter: function () {
-            // gsap.to(".portfolioContainer", {duration: 0, y:0})
-        },
-        beforeDocumentLeave: function (el, done) {
-            el.style.top = el.offsetTop + "px";
-            el.style.left = el.offsetLeft + "px";
-        },
-        async filterDocuments(docs) {
-            for (let document of this.documents) {
-                if (this.$store.state.selectedTags[document.category.slug]["All"]) {
-                    document.hidden = false;
-                    continue; //All should be visible, continue
-                }
-                else {
-                    let filteredTags = this.$store.state.selectedTags[document.category.slug];
-                    for (let tag of Object.keys(filteredTags)) {
-                        let visible = filteredTags[tag];
-                        if (document.tagTable[tag] && visible) {
-                            document.hidden = false;
-                            break;
-                        }
-                        else {
-                            document.hidden = true;
-                        }
-                    }
-                }
-            }
-        },
-        tagselectionChange: async function (category, tag, ctrlclick) {
-            this.$store.commit("selectTag", {
-                category: category,
-                tag: tag,
-                deselect: !ctrlclick,
-            });
-            this.updateQuery();
-        },
-        toggleSelectedAll: function (category) {
-            this.$store.commit("selectAllTags", { category: category });
-            this.updateQuery();
-        },
-        updateQuery: function () {
-            let newquery = this.$store.getters["queryString"];
-            this.$router.replace({
-                path: this.$route.path,
-                query: newquery,
-            });
-        },
-        resizeTagContainer: function ({ width, height }) {
-            this.tagContainerHeight = height;
-        },
-        clickOnDoc: function (doc, el) {
-            this.$refs.portfolioContent.style.backgroundColor = doc.backgroundcolor;
-        },
-        scrollToSelection: function () {
-            if (this.$refs.docs) {
-                if (Array.isArray(this.$refs.docs)) {
-                    this.$refs.docs.forEach((el, i) => {
-                        if (el.doc && el.doc.selected) {
-                            el.$el.scrollIntoView({
-                                behavior: "smooth",
-                                block: "nearest",
-                                inline: "nearest",
-                            });
-                        }
-                    });
-                }
-                else if (this.$refs.docs.doc && this.$refs.docs.doc.selected) {
-                    this.$refs.docs.$el.scrollIntoView({
-                        behavior: "smooth",
-                        block: "nearest",
-                        inline: "nearest",
-                    });
-                }
-            }
-        },
+    createClone(el) {
+      const rect = el.getBoundingClientRect();
+      const clone = el.cloneNode(true);
+
+      clone.style.position = "fixed";
+      clone.style.top = rect.top + "px";
+      clone.style.left = rect.left + "px";
+      clone.style.width = rect.width + "px";
+      clone.style.height = rect.height + "px";
+      clone.style.margin = "0";
+      clone.style.pointerEvents = "none";
+      clone.style.transformOrigin = "center center";
+
+      clone.style.zIndex = "120";
+
+      document.body.appendChild(clone);
+
+      return { clone, rect };
     },
-    mounted() {
-        this.scrollToSelection();
-        if (this.$route.hash) {
-            if (document.querySelector(this.$route.hash)) {
-                document.querySelector(".portfolioList").scrollTo({ top: document.querySelector(this.$route.hash).offsetTop - 6, behavior: "smooth" });
-            }
-        }
+    closeModal() {
+      this.closingDocSlug = this.selectedDocument;
+      this.$router.push({ 
+        path: '/work/' + (this.selectedCategory ? this.selectedCategory + '/' : ''), 
+        query: this.$route.query 
+      });
     },
-    head() {
-        let title = "";
-        let description = "";
-        let image = {};
-        if (this.selectedCategory && this.$store.state.categories[this.selectedCategory]) {
-            title = this.$store.state.categories[this.selectedCategory].name;
-            description = this.$store.state.categories[this.selectedCategory].description;
-            image = {
-                hid: "og-image",
-                property: "og:image",
-                content: "https://piersdeseilligny.com" + this.$staticAsset(this.$config.strapiBaseUri + this.$store.state.categories[this.selectedCategory].thumbnailimage.formats.medium.url, true)
-            };
+
+    // --- Transition hooks (JS-driven, no CSS) ---
+    modalBeforeEnter(el) {
+      el.style.opacity = "1"; // important: don't fade the whole thing
+    },
+    modalEnter(el, done) {
+      const isInternal = this.$store.state.isInternalNavigation;
+      const clickedRect = this.$store.state.clickedDocRect;
+      const container = el.querySelector(".modal-container");
+
+      // If we're already in the modal and just navigating between docs,
+      // let the manual goToDoc animation handle things.
+      if (isInternal) {
+        gsap.set(el, { opacity: 1 });
+        this.$store.commit("setInternalNavigation", false);
+        done();
+        return;
+      }
+
+      if (!clickedRect || !container) {
+        gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.3, onComplete: done });
+        return;
+      }
+
+      gsap.set(el, { opacity: 1 });
+
+      this.$nextTick(() => {
+        requestAnimationFrame(() => {
+          const finalRect = container.getBoundingClientRect();
+
+          // --- calculate transform from thumbnail → modal ---
+          const scaleX = clickedRect.width / finalRect.width;
+          const scaleY = clickedRect.height / finalRect.height;
+
+          const startCX = clickedRect.left + clickedRect.width / 2;
+          const startCY = clickedRect.top + clickedRect.height / 2;
+
+          const endCX = finalRect.left + finalRect.width / 2;
+          const endCY = finalRect.top + finalRect.height / 2;
+
+          const dx = startCX - endCX;
+          const dy = startCY - endCY;
+
+          // set initial state
+          gsap.set(container, {
+            x: dx,
+            y: dy,
+            scaleX,
+            scaleY,
+            opacity: 0,
+            transformOrigin: "center center",
+          });
+
+          const tl = gsap.timeline({
+            onComplete: () => {
+              this.$store.commit("clearClickedDoc");
+              done();
+            }
+          });
+
+          // backdrop
+          tl.fromTo(el,
+            {
+              backgroundColor: "rgba(0,0,0,0)",
+              backdropFilter: "blur(0px)",
+              WebkitBackdropFilter: "blur(0px)",
+            },
+            {
+              backgroundColor: "rgba(0,0,0,0.7)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              duration: 0.35,
+              ease: "power2.out",
+            },
+            0
+          );
+
+          // modal motion
+          tl.to(container, {
+            x: 0,
+            y: 0,
+            scaleX: 1,
+            scaleY: 1,
+            opacity: 1,
+            duration: 0.4,
+            ease: "power3.inOut",
+          }, 0);
+        });
+      });
+    },
+    modalLeave(el, done) {
+      const docSlug = this.closingDocSlug;
+      const container = el.querySelector(".modal-container");
+
+      let targetEl = null;
+      // --- find + scroll target into view ---
+      for (const key of Object.keys(this.$refs)) {
+        if (key.startsWith("carousel-")) {
+          const carousel = Array.isArray(this.$refs[key])
+            ? this.$refs[key][0]
+            : this.$refs[key];
+
+          if (carousel && carousel.scrollDocIntoView) {
+            const found = carousel.scrollDocIntoView(docSlug, "auto");
+            if (found) {
+              targetEl = found;
+              break;
+            }
+          }
         }
-        if (!title) {
-            title = "All work";
-            description = "Some of the work I have done as director of photography, camera operator, software developper, graphic designer...";
-        }
-        return {
-            title: `${title} - Piers Deseilligny`,
-            meta: [
-                { hid: "og-title", property: "og:title", content: title },
-                {
-                    hid: "og-url",
-                    property: "og:url",
-                    content: "https://piersdeseilligny.com/work/" +
-                        (this.selectedCategory ? this.selectedCategory : ""),
-                },
-                {
-                    hid: "og-description",
-                    property: "og:description",
-                    content: description,
-                },
-                image,
-                { hid: "description", name: "description", content: description },
-            ],
+      }
+
+      if (!container || !targetEl) {
+        gsap.to(el, { opacity: 0, duration: 0.2, onComplete: done });
+        return;
+      }
+
+      // --- wait for scroll/layout to settle ---
+      this.$nextTick(() => {
+        requestAnimationFrame(() => {
+          const startRect = container.getBoundingClientRect();
+          const endRect = targetEl.getBoundingClientRect();
+
+          // --- SAME MATH as enter, but reversed direction ---
+          const scaleX = endRect.width / startRect.width;
+          const scaleY = endRect.height / startRect.height;
+
+          const startCX = startRect.left + startRect.width / 2;
+          const startCY = startRect.top + startRect.height / 2;
+
+          const endCX = endRect.left + endRect.width / 2;
+          const endCY = endRect.top + endRect.height / 2;
+
+          const dx = endCX - startCX;
+          const dy = endCY - startCY;
+          console.log({
+            startRect,
+            endRect,
+            dx,
+            dy,
+            scaleX,
+            scaleY
+          });
+
+          // ensure consistent baseline
+          gsap.set(container, {
+            transformOrigin: "center center",
+          });
+
+          const tl = gsap.timeline({
+            onComplete: done,
+          });
+
+          // --- backdrop (reverse of enter) ---
+          tl.to(
+            el,
+            {
+              backgroundColor: "rgba(0,0,0,0)",
+              backdropFilter: "blur(0px)",
+              WebkitBackdropFilter: "blur(0px)",
+              duration: 0.35,
+              ease: "power2.in",
+            },
+            0
+          );
+
+          // --- modal motion (reverse of enter) ---
+          tl.to(
+            container,
+            {
+              x: dx,
+              y: dy,
+              scaleX,
+              scaleY,
+              opacity: 0,
+              duration: 0.4,
+              ease: "power3.inOut",
+            },
+            0
+          );
+        });
+      });
+    },
+    modalAfterLeave() {
+      if (this.$refs.workPage) {
+        this.$refs.workPage.style.overflow = "";
+      }
+    }
+  },
+  mounted() {
+    this.selectedDocument = this.$route.params.document || "";
+    this.selectedCategory = this.$route.params.slug || "";
+
+    if (this.selectedDocument && this.$refs.workPage) {
+      this.$refs.workPage.style.overflow = "hidden";
+    }
+    if (this.$route.hash) {
+      const target = document.querySelector(this.$route.hash);
+      if (target) {
+        this.$refs.workPage.scrollTo({ top: target.offsetTop - 6, behavior: "smooth" });
+      }
+    }
+    this._onKeydown = (e) => {
+      if (!this.selectedDocument) return;
+      if (e.key === "ArrowLeft" && this.prevDoc) {
+        e.preventDefault();
+        this.goToDoc(this.prevDoc);
+      } else if (e.key === "ArrowRight" && this.nextDoc) {
+        e.preventDefault();
+        this.goToDoc(this.nextDoc);
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        this.closeModal();
+      }
+    };
+    window.addEventListener("keydown", this._onKeydown);
+  },
+  beforeDestroy() {
+    if (this._onKeydown) window.removeEventListener("keydown", this._onKeydown);
+  },
+  head() {
+    let title = "";
+    let description = "";
+    let image = {};
+    if (this.selectedCategory && this.$store.state.categories[this.selectedCategory]) {
+      title = this.$store.state.categories[this.selectedCategory].name;
+      description = this.$store.state.categories[this.selectedCategory].description;
+      if (this.$store.state.categories[this.selectedCategory].thumbnailimage) {
+        image = {
+          hid: "og-image",
+          property: "og:image",
+          content:
+            "https://piersdeseilligny.com" +
+            this.$staticAsset(
+              this.$config.strapiBaseUri +
+              this.$store.state.categories[this.selectedCategory].thumbnailimage.formats.medium.url,
+              true
+            ),
         };
-    },
+      }
+    }
+    if (!title) {
+      title = "All work";
+      description = "Some of the work I have done as director of photography, camera operator, software developer, graphic designer...";
+    }
+    return {
+      title: `${title} - Piers Deseilligny`,
+      meta: [
+        { hid: "og-title", property: "og:title", content: title },
+        {
+          hid: "og-url",
+          property: "og:url",
+          content: "https://piersdeseilligny.com/work/" + (this.selectedCategory || ""),
+        },
+        { hid: "og-description", property: "og:description", content: description },
+        image,
+        { hid: "description", name: "description", content: description },
+      ],
+    };
+  },
   async asyncData(context) {
-    const { params, store, $staticAPI, error, route } = context;
-    const selectedCategorySlug = params.slug;
+    const { params, store, $staticAPI, error, route, redirect } = context;
+    let selectedCategorySlug = params.slug;
     const selectedDocumentSlug = params.document;
 
-    // --- 1. Validation ---
-    // If a category is requested but doesn't exist in the store, 404 immediately.
+    // Handle context query param for opening modals from the generic "all work" view
+    if (route.query.context === 'all') {
+      selectedCategorySlug = "";
+    }
+
+    // Validate category
     const categoryExists = store.state.categories[selectedCategorySlug];
     if (selectedCategorySlug && !categoryExists) {
-      return error({ statusCode: 404, message: 'Category not found' });
+      return error({ statusCode: 404, message: "Category not found" });
     }
 
     try {
-      // --- 2. Build Query ---
-      // We conditionally create the filter strings here for readability
+      // Build query — filter by category if one is selected
       const docFilter = selectedCategorySlug
         ? `(sort:"order", where:{categories:{slug:"${selectedCategorySlug}"}})`
         : `(sort:"order")`;
@@ -618,7 +676,7 @@ export default {
 
       const query = `
         query {
-          categories { slug, order, tags { id } },
+          categories(sort:"order") { slug, order, name, description, title, tags { id, name, icon, title, order } },
           tags${tagFilter} { name, id, icon, title, order },
           documents${docFilter} {
             id, title, slug, date, order,
@@ -634,120 +692,90 @@ export default {
         }
       `;
 
-      // --- 3. Fetch Data ---
       const data = await $staticAPI({ query });
 
-      // Sort raw data immediately
-      data.documents.sort((a, b) => (a.category.order > b.category.order ? 1 : -1));
+      data.documents.sort((a, b) => (a.order > b.order ? -1 : 1));
       data.categories.sort((a, b) => (a.order > b.order ? 1 : -1));
 
-      // Update Store
-      store.commit("queryToSelection", route.query);
+      // Filter categories to only those that have documents
+      const relevantCatSlugs = selectedCategorySlug
+        ? [selectedCategorySlug]
+        : [...new Set(data.documents.map((d) => d.category.slug))];
 
-      // --- 4. Transformation (The "Matrix" Logic) ---
-      // We want a list of documents, but grouped by Category. 
-      // A document appears multiple times if it belongs to multiple categories.
-      
-      
-      // We iterate categories, finding documents that belong to them
-  // --- 4. Transformation (The "Matrix" Logic) ---
-      let processedDocuments = [];
+      const categoryGroups = [];
 
-      processedDocuments = data.categories.flatMap((cat) => {
-        const catTagIds = cat.tags.map((t) => t.id);
+      for (const catSlug of relevantCatSlugs) {
+        const catData = store.state.categories[catSlug] || data.categories.find((c) => c.slug === catSlug);
+        if (!catData) continue;
 
-        // A. Filter documents relevant to this category
-        let categoryDocs = data.documents.filter((doc) => {
-          if (selectedCategorySlug === cat.slug) {
-            return doc.categories.some((dc) => dc.slug === cat.slug);
+        // Get category object from the query (has tags with order)
+        const catFromQuery = data.categories.find((c) => c.slug === catSlug);
+        if (!catFromQuery) continue;
+
+        const catTagIds = catFromQuery.tags.map((t) => t.id);
+
+        // Get documents for this category
+        let catDocs = data.documents.filter((doc) => {
+          if (selectedCategorySlug === catSlug) {
+            return doc.categories.some((dc) => dc.slug === catSlug);
           }
-          const isPrimary = doc.category.slug === cat.slug;
-          const isSecondary = doc.categories.some((c) => c.slug === cat.slug);
+          const isPrimary = doc.category.slug === catSlug;
+          const isSecondary = doc.categories.some((c) => c.slug === catSlug);
           return isPrimary || isSecondary;
         });
 
-        // B. Pre-process: Attach "maintag" and clone the object
-        // We do this BEFORE sorting so we have the data we need to sort with.
-        categoryDocs = categoryDocs.map((doc) => {
+        // Assign maintag + clone
+        catDocs = catDocs.map((doc) => {
           const d = { ...doc };
-          
-          // Find the tag that matches the current category context
-          // If no tag matches (rare), provide a fallback object with high order so it goes to the bottom
-          d.maintag = d.tags.find((t) => catTagIds.includes(t.id)) || { id: 0, order: 9999 };
-          
+          d.maintag = d.tags.find((t) => catTagIds.includes(t.id)) || { id: 0, order: 9999, name: "Other" };
+          d.secondaryCategory = catSlug !== d.category.slug;
+          d.category = { ...catFromQuery };
+          d.key = `${catSlug}-${d.maintag.id}-${d.slug}`;
           return d;
         });
 
-        // C. Sort: Group by Tag Order, then ensure Grouping Stability
-        categoryDocs.sort((a, b) => {
-          // 1. Primary Sort: Tag Order (High numbers first)
-          // We use (b - a) to put the highest 'order' tags at the top
-          const tagOrderDiff = (b.maintag.order || 0) - (a.maintag.order || 0);
-          if (tagOrderDiff !== 0) return tagOrderDiff;
-
-          // 2. Secondary Sort: Tag ID (Guarantees grouping if orders are identical)
-          const idDiff = a.maintag.id - b.maintag.id;
-          if (idDiff !== 0) return idDiff;
-
-          // 3. Tertiary Sort: Document Order (High numbers first)
-          // We use (b - a) here too so documents with higher 'order' are at the top
-          return (b.order || 0) - (a.order || 0);
-        });
-
-        // D. Final Map: Apply Contextual Flags
-        return categoryDocs.map((d) => {
-          d.selected = d.slug === selectedDocumentSlug;
-          d.secondaryCategory = cat.slug !== d.category.slug;
-          
-          // Ensure the doc knows which category group it's currently sitting in
-          d.category = { ...cat }; 
-          d.key = `${cat.slug}-${d.maintag.id}-${d.slug}`;
-
-          return d;
-        });
-      });
-
-      // --- 5. Layout Calculation Pass ---
-      // Now that we have a flat list, we calculate visual relationship flags
-      // (headers, line breaks) based on the *previous* item in the list.
-      
-      let prevCatSlug = "";
-      let prevMainTagId = "";
-      let tagGroupCount = 0;
-
-      processedDocuments.forEach((d) => {
-        const currentMainTagId = d.category.slug + d.maintag.id;
-
-        // Is this the start of a new Category Section?
-        d.firstcat = (d.category.slug !== prevCatSlug);
-
-        // Is this the start of a new Tag Group?
-        d.firsttag = (currentMainTagId !== prevMainTagId);
-
-        // Logic: Force a line break if the PREVIOUS tag group had >= 3 items
-        if (d.firsttag) {
-          d.forceLineBreak = (tagGroupCount >= 3);
-          tagGroupCount = 1; // Reset counter for new group
-        } else {
-          tagGroupCount++;
+        // Group by maintag
+        const tagMap = {};
+        for (const doc of catDocs) {
+          const tagId = doc.maintag.id;
+          if (!tagMap[tagId]) {
+            tagMap[tagId] = { tag: doc.maintag, documents: [] };
+          }
+          tagMap[tagId].documents.push(doc);
         }
 
-        // Update trackers for next iteration
-        prevCatSlug = d.category.slug;
-        prevMainTagId = currentMainTagId;
-      });
+        // Sort tag groups by tag order (high first), and docs within each group
+        const tagGroups = Object.values(tagMap).sort(
+          (a, b) => (b.tag.order || 0) - (a.tag.order || 0)
+        );
+
+        for (const group of tagGroups) {
+          group.documents.sort((a, b) => (b.order || 0) - (a.order || 0));
+        }
+
+        if (tagGroups.length > 0) {
+          categoryGroups.push({
+            slug: catSlug,
+            name: catData.name || catFromQuery.name,
+            title: catData.title || catFromQuery.title,
+            description: catData.description || catFromQuery.description,
+            tagGroups,
+          });
+        }
+      }
+
+      // Preserve original category ordering
+      const orderedSlugs = data.categories.map((c) => c.slug);
+      categoryGroups.sort((a, b) => orderedSlugs.indexOf(a.slug) - orderedSlugs.indexOf(b.slug));
 
       return {
-        tags: data.tags,
-        documents: processedDocuments,
-        selectedCategory: selectedCategorySlug,
-        selectedDocument: selectedDocumentSlug,
+        categoryGroups,
+        selectedCategory: selectedCategorySlug || "",
+        selectedDocument: selectedDocumentSlug || "",
       };
-
     } catch (err) {
       return error({ statusCode: 404, message: err.message });
     }
   },
-    components: { DocumentNP }
 };
 </script>
