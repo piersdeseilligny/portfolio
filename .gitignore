@@ -20,8 +20,8 @@ strapi-v3-backup/
 .env
 .env.*
 
-# Build outputs & caches
+# Caches
 .cache/
 **/.cache/
-dist/
 .nuxt/
+
