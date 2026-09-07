@@ -1,0 +1,24 @@
+{
+  "kind": "singleType",
+  "collectionName": "contact_images",
+  "info": {
+    "singularName": "contact-image",
+    "pluralName": "contact-images",
+    "displayName": "Contact Image",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    }
+  }
+}

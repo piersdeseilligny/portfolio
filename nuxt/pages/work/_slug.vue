@@ -1,31 +1,33 @@
 <template>
   <div class="work-page" ref="workPage">
-    <!-- Back to all work -->
-    <nuxt-link v-if="selectedCategory" class="work-goback" :to="{ path: '/work/', query: $route.query }">
-      <svg>
-        <polygon points="13.1,5.8 2.2,5.8 7.3,1.2 6.7,0.5 0.2,6.3 6.7,12 7.3,11.3 2.2,6.8 13.1,6.8" />
-      </svg>
-      View all work
-    </nuxt-link>
-
-    <!-- Category sections with tag carousels -->
-    <template v-for="cat in categoryGroups">
-      <div :key="cat.slug" class="work-category-section">
-        <h2 class="work-category-heading lined" :class="{ hideline: selectedCategory }">
-          <nuxt-link :id="cat.slug" class="animatelink" :title="cat.title"
-            :to="{ path: '/work/' + cat.slug + '/', query: $route.query }"><span>{{ cat.name }}</span></nuxt-link>
+        <div class="work-content">
+    <!-- Category sections with carousels -->
+    <template v-for="(cat, index) in categoryGroups">
+      <hr
+        v-if="isSoftwareCategory(cat) && index > 0"
+        :key="'divider-' + cat.slug"
+        class="work-category-divider"
+      />
+      <div :key="cat.slug" :id="cat.slug" class="work-category-section">
+        <h2 class="work-category-heading">
+          <span>{{ cat.name }}</span>
         </h2>
         <div class="work-category-desc fancy" v-if="cat.description" v-html="$md.render(cat.description)"></div>
-        <Carousel v-for="tagGroup in cat.tagGroups" :key="cat.slug + '-' + tagGroup.tag.id" :title="tagGroup.tag.name"
-          :icon="tagGroup.tag.icon" :description="tagGroup.tag.title" :documents="tagGroup.documents"
-          :ref="'carousel-' + cat.slug + '-' + tagGroup.tag.id" @docClick="onDocClick" />
+        <Carousel
+          :documents="cat.documents"
+          :ref="'carousel-' + cat.slug"
+          :transparent="true"
+          :splitAnchor="isSplitAnchorCategory(cat)"
+          @docClick="onDocClick"
+        />
       </div>
     </template>
+    </div>
 
     <!-- Document modal overlay -->
     <transition name="modal" @before-enter="modalBeforeEnter" @enter="modalEnter" @leave="modalLeave"
       @after-leave="modalAfterLeave" :css="false">
-      <div v-if="$route.params.document" class="modal-backdrop" ref="modalBackdrop" @click.self="closeModal">
+      <div v-if="selectedDocument" class="modal-backdrop" ref="modalBackdrop" @click.self="closeModal">
         <button v-if="prevDoc" class="modal-nav modal-nav-prev" @click="goToDoc(prevDoc)" title="Previous document">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
@@ -33,7 +35,7 @@
           </svg>
         </button>
         <div class="modal-container" ref="modalContainer">
-          <DocumentContent v-if="selectedDocument" :key="selectedDocument" :categorySlug="selectedCategory"
+          <DocumentContent v-if="selectedDocument" :key="selectedDocument"
             :documentSlug="selectedDocument" @close="closeModal" />
         </div>
         <button v-if="nextDoc" class="modal-nav modal-nav-next" @click="goToDoc(nextDoc)" title="Next document">
@@ -55,11 +57,18 @@
   top: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-top: calc(var(--headerheight) + 16px);
-  padding-bottom: 48px;
   box-sizing: border-box;
   background: var(--backgroundpaper);
   background-attachment: local;
+    display: flex;
+  flex-direction: column;
+  padding-top: var(--headerheight);
+}
+.work-content {
+  margin: auto 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px 0 32px;
 }
 
 .work-goback {
@@ -87,9 +96,23 @@
 .work-category-section {
   margin-bottom: 24px;
 }
+.work-category-section:last-child {
+  margin-bottom: 0;
+}
+
+.work-category-divider {
+  border: none;
+  height: 1px;
+  background: var(--foregroundsubtle);
+  margin: 32px 32px 40px 32px;
+}
 
 .work-category-heading {
-  margin: 0 32px 0 32px;
+    margin: 0 32px 0px 32px;
+    color: var(--foregroundhigh);
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .work-category-desc {
@@ -155,6 +178,7 @@
   height: 88vh;
   overflow: hidden;
   border-radius: 6px;
+  border: solid 1px rgba(255, 255, 255, 0.1);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
   position: relative;
   z-index: 210;
@@ -204,6 +228,9 @@
 }
 
 @media (max-width: 600px) {
+    .work-content {
+    padding: 16px 0 24px;
+  }
   .work-goback {
     padding: 0 12px;
   }
@@ -215,6 +242,10 @@
 
   .work-category-desc {
     padding: 0 12px;
+  }
+
+  .work-category-divider {
+    margin: 20px 12px 28px 12px;
   }
 
   .modal-backdrop {
@@ -261,13 +292,14 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import DocumentContent from "~/components/DocumentContent.vue";
 
+let cachedWorkData = null;
+
 export default {
   components: { DocumentContent },
   data() {
     return {
       closingDocSlug: null,
       categoryGroups: [],
-      selectedCategory: "",
       selectedDocument: "",
     };
   },
@@ -276,11 +308,9 @@ export default {
     flatDocList() {
       const docs = [];
       for (const cat of this.categoryGroups) {
-        for (const tagGroup of cat.tagGroups) {
-          for (const doc of tagGroup.documents) {
-            if (!doc.nopage && !docs.find((d) => d.slug === doc.slug)) {
-              docs.push({ slug: doc.slug, category: doc.category });
-            }
+        for (const doc of cat.documents) {
+          if (!doc.nopage && !docs.find((d) => d.slug === doc.slug)) {
+            docs.push({ slug: doc.slug, title: doc.title });
           }
         }
       }
@@ -301,36 +331,63 @@ export default {
     },
   },
   watch: {
-    "$route.params": {
-      handler(params, oldParams) {
-        if (oldParams && oldParams.document && !params.document) {
-          this.closingDocSlug = oldParams.document;
-        }
-        this.selectedCategory = params.slug || "";
-        this.selectedDocument = params.document || null;
-        if (params.document) {
-          if (this.$refs.workPage) this.$refs.workPage.style.overflow = "hidden";
-        } else {
-          if (this.$refs.workPage) this.$refs.workPage.style.overflow = "";
-        }
-      },
-      immediate: true
+    $route(to, from) {
+      this.handleRouteUpdate(to, from);
     }
   },
   methods: {
-    onDocClick(doc, rect) {
-      // rect is already stored in Vuex by Carousel's onDocClick
+    isSplitAnchorCategory(cat) {
+      if (!cat) return false;
+      const s = (cat.slug || "").toLowerCase();
+      const n = (cat.name || "").toLowerCase();
+      return (
+        s.includes("commercial") ||
+        s.includes("narrative") ||
+        n.includes("commercial") ||
+        n.includes("narrative")
+      );
+    },
+    isSoftwareCategory(cat) {
+      if (!cat) return false;
+      const s = (cat.slug || "").toLowerCase();
+      const n = (cat.name || "").toLowerCase();
+      return s.includes("software") || n.includes("software");
+    },
+    handleRouteUpdate(to, from) {
+      const slug = to.params.slug || "";
+      const oldSlug = from ? (from.params.slug || "") : "";
+      const isCat = this.categoryGroups.some((c) => c.slug === slug || slug === 'camera');
+      if (oldSlug && !slug) {
+        this.closingDocSlug = oldSlug;
+      }
+      this.selectedDocument = (!isCat && slug) ? slug : null;
+      if (this.selectedDocument) {
+        if (this.$refs.workPage) this.$refs.workPage.style.overflow = "hidden";
+      } else {
+        if (this.$refs.workPage) this.$refs.workPage.style.overflow = "";
+      }
+      if (to.hash) {
+        this.$nextTick(() => {
+          const target = document.querySelector(to.hash);
+          if (target && this.$refs.workPage) {
+            this.$refs.workPage.scrollTo({ top: target.offsetTop - 6, behavior: "smooth" });
+          }
+        });
+      }
+    },
+    onDocClick(doc, el) {
+      this.selectedDocument = doc.slug;
+      if (this.$refs.workPage) this.$refs.workPage.style.overflow = "hidden";
     },
     goToDoc(doc) {
       if (!doc) return;
       const targetIndex = this.flatDocList.findIndex((d) => d.slug === doc.slug);
       const direction = targetIndex > this.currentDocIndex ? 1 : -1;
       const container = this.$refs.modalContainer;
-      const newPath = "/work/" + doc.category.slug + "/" + doc.slug + "/";
+      const newPath = "/work/" + doc.slug + "/";
       
       if (!container) {
         this.selectedDocument = doc.slug;
-        this.selectedCategory = doc.category.slug;
         window.history.replaceState({}, '', newPath);
         return;
       }
@@ -345,6 +402,7 @@ export default {
           
           // Set flag to avoid double animation and match new category
           this.$store.commit("setInternalNavigation", true);
+          this.selectedDocument = doc.slug;
           
           this.$router.replace({ path: newPath, query: this.$route.query }).catch(e => {
             if (e.name !== 'NavigationDuplicated') throw e;
@@ -383,10 +441,15 @@ export default {
     },
     closeModal() {
       this.closingDocSlug = this.selectedDocument;
-      this.$router.push({ 
-        path: '/work/' + (this.selectedCategory ? this.selectedCategory + '/' : ''), 
-        query: this.$route.query 
-      });
+      this.selectedDocument = null;
+      if (this.$route.query.context === 'home') {
+        this.$router.push('/');
+      } else {
+        this.$router.push({ 
+          path: '/work/', 
+          query: this.$route.query 
+        });
+      }
     },
 
     // --- Transition hooks (JS-driven, no CSS) ---
@@ -578,18 +641,7 @@ export default {
     }
   },
   mounted() {
-    this.selectedDocument = this.$route.params.document || "";
-    this.selectedCategory = this.$route.params.slug || "";
-
-    if (this.selectedDocument && this.$refs.workPage) {
-      this.$refs.workPage.style.overflow = "hidden";
-    }
-    if (this.$route.hash) {
-      const target = document.querySelector(this.$route.hash);
-      if (target) {
-        this.$refs.workPage.scrollTo({ top: target.offsetTop - 6, behavior: "smooth" });
-      }
-    }
+    this.handleRouteUpdate(this.$route, null);
     this._onKeydown = (e) => {
       if (!this.selectedDocument) return;
       if (e.key === "ArrowLeft" && this.prevDoc) {
@@ -609,169 +661,118 @@ export default {
     if (this._onKeydown) window.removeEventListener("keydown", this._onKeydown);
   },
   head() {
-    let title = "";
-    let description = "";
-    let image = {};
-    if (this.selectedCategory && this.$store.state.categories[this.selectedCategory]) {
-      title = this.$store.state.categories[this.selectedCategory].name;
-      description = this.$store.state.categories[this.selectedCategory].description;
-      if (this.$store.state.categories[this.selectedCategory].thumbnailimage) {
-        image = {
-          hid: "og-image",
-          property: "og:image",
-          content:
-            "https://piersdeseilligny.com" +
-            this.$staticAsset(
-              this.$config.strapiBaseUri +
-              this.$store.state.categories[this.selectedCategory].thumbnailimage.formats.medium.url,
-              true
-            ),
-        };
+    let title = "Cinematography Portfolio | Piers Deseilligny - DoP Scotland";
+    let description = "Commercial and short narrative cinematography portfolio of Piers Deseilligny, Director of Photography based in Scotland.";
+    const currentPath = "https://piersdeseilligny.com/work/" + (this.selectedDocument ? this.selectedDocument + '/' : '');
+
+    if (this.selectedDocument) {
+      const doc = this.flatDocList.find((d) => d.slug === this.selectedDocument);
+      if (doc && doc.title) {
+        title = `${doc.title} | Piers Deseilligny - Cinematographer Scotland`;
+        description = `${doc.title} - Cinematography and camera work by Director of Photography Piers Deseilligny.`;
       }
     }
-    if (!title) {
-      title = "All work";
-      description = "Some of the work I have done as director of photography, camera operator, software developer, graphic designer...";
-    }
     return {
-      title: `${title} - Piers Deseilligny`,
+      title,
       meta: [
-        { hid: "og-title", property: "og:title", content: title },
-        {
-          hid: "og-url",
-          property: "og:url",
-          content: "https://piersdeseilligny.com/work/" + (this.selectedCategory || ""),
-        },
-        { hid: "og-description", property: "og:description", content: description },
-        image,
         { hid: "description", name: "description", content: description },
+        { hid: "og:title", property: "og:title", content: title },
+        { hid: "og:site_name", property: "og:site_name", content: "Piers Deseilligny" },
+        { hid: "og:url", property: "og:url", content: currentPath },
+        { hid: "og:description", property: "og:description", content: description },
+        { hid: "og:type", property: "og:type", content: "website" },
+        { hid: "twitter:card", name: "twitter:card", content: "summary_large_image" },
+        { hid: "twitter:title", name: "twitter:title", content: title },
+        { hid: "twitter:description", name: "twitter:description", content: description },
       ],
+      link: [
+        { rel: "canonical", href: currentPath }
+      ]
     };
   },
   async asyncData(context) {
     const { params, store, $staticAPI, error, route, redirect } = context;
-    let selectedCategorySlug = params.slug;
-    const selectedDocumentSlug = params.document;
-
-    // Handle context query param for opening modals from the generic "all work" view
-    if (route.query.context === 'all') {
-      selectedCategorySlug = "";
-    }
-
-    // Validate category
-    const categoryExists = store.state.categories[selectedCategorySlug];
-    if (selectedCategorySlug && !categoryExists) {
-      return error({ statusCode: 404, message: "Category not found" });
-    }
+    const slug = params.slug;
 
     try {
-      // Build query — filter by category if one is selected
-      const docFilter = selectedCategorySlug
-        ? `(sort:"order", where:{categories:{slug:"${selectedCategorySlug}"}})`
-        : `(sort:"order")`;
+      // Handle redirect for old /work/camera
+      if (slug === 'camera') {
+        return redirect(301, '/work/', route.query);
+      }
 
-      const tagFilter = selectedCategorySlug
-        ? `(where:{categories:{slug:"${selectedCategorySlug}"}})`
-        : ``;
-
-      const query = `
-        query {
-          categories(sort:"order") { slug, order, name, description, title, tags { id, name, icon, title, order } },
-          tags${tagFilter} { name, id, icon, title, order },
-          documents${docFilter} {
-            id, title, slug, date, order,
-            np_link, backgroundcolor, foregroundcolor, foregroundcolor2,
-            nopage,
-            category { slug },
-            categories { slug },
-            tags { name, id, icon, title, order },
-            images { formats },
-            poster { formats },
-            moreinfo { link, header, subheader, outlink { svg, tooltip, name } }
+      let data = cachedWorkData;
+      if (!data) {
+        const query = `
+          query {
+            categories(sort:"order:asc") {
+              slug, order, name, description, title,
+              documents {
+                id: documentId, title, slug, date, order,
+                np_link, backgroundcolor, foregroundcolor, foregroundcolor2,
+                nopage,
+                category { slug },
+                categories { slug },
+                tags { name, id: documentId, icon, title, order },
+                images { formats },
+                poster { formats },
+                moreinfo { link, header, subheader, outlink { svg, tooltip, name } }
+              }
+            }
           }
+        `;
+
+        data = await $staticAPI({ query });
+        cachedWorkData = data;
+      }
+
+      // Filter out 'camera'
+      const activeCategories = data.categories.filter((c) => c.slug !== 'camera');
+      activeCategories.sort((a, b) => (a.order > b.order ? 1 : -1));
+
+      // If slug matches a category, redirect to /work/#category
+      if (slug && activeCategories.some((c) => c.slug === slug)) {
+        return redirect(301, `/work/#${slug}`, route.query);
+      }
+
+      // Collect all documents across active categories
+      const allDocs = activeCategories.flatMap((c) => c.documents || []);
+
+      // If slug is provided, check if it exists as a document
+      let selectedDocument = "";
+      if (slug) {
+        const docExists = allDocs.some((d) => d.slug === slug);
+        if (!docExists) {
+          return error({ statusCode: 404, message: "Page not found" });
         }
-      `;
-
-      const data = await $staticAPI({ query });
-
-      data.documents.sort((a, b) => (a.order > b.order ? -1 : 1));
-      data.categories.sort((a, b) => (a.order > b.order ? 1 : -1));
-
-      // Filter categories to only those that have documents
-      const relevantCatSlugs = selectedCategorySlug
-        ? [selectedCategorySlug]
-        : [...new Set(data.documents.map((d) => d.category.slug))];
+        selectedDocument = slug;
+      }
 
       const categoryGroups = [];
 
-      for (const catSlug of relevantCatSlugs) {
-        const catData = store.state.categories[catSlug] || data.categories.find((c) => c.slug === catSlug);
-        if (!catData) continue;
+      for (const cat of activeCategories) {
+        const catDocs = (cat.documents || []).filter((doc) => !doc.nopage);
 
-        // Get category object from the query (has tags with order)
-        const catFromQuery = data.categories.find((c) => c.slug === catSlug);
-        if (!catFromQuery) continue;
+        if (catDocs.length > 0) {
+          const docs = catDocs.map((doc) => {
+            const d = { ...doc };
+            d.category = { slug: cat.slug, name: cat.name };
+            d.key = `${cat.slug}-${d.slug}`;
+            return d;
+          });
 
-        const catTagIds = catFromQuery.tags.map((t) => t.id);
-
-        // Get documents for this category
-        let catDocs = data.documents.filter((doc) => {
-          if (selectedCategorySlug === catSlug) {
-            return doc.categories.some((dc) => dc.slug === catSlug);
-          }
-          const isPrimary = doc.category.slug === catSlug;
-          const isSecondary = doc.categories.some((c) => c.slug === catSlug);
-          return isPrimary || isSecondary;
-        });
-
-        // Assign maintag + clone
-        catDocs = catDocs.map((doc) => {
-          const d = { ...doc };
-          d.maintag = d.tags.find((t) => catTagIds.includes(t.id)) || { id: 0, order: 9999, name: "Other" };
-          d.secondaryCategory = catSlug !== d.category.slug;
-          d.category = { ...catFromQuery };
-          d.key = `${catSlug}-${d.maintag.id}-${d.slug}`;
-          return d;
-        });
-
-        // Group by maintag
-        const tagMap = {};
-        for (const doc of catDocs) {
-          const tagId = doc.maintag.id;
-          if (!tagMap[tagId]) {
-            tagMap[tagId] = { tag: doc.maintag, documents: [] };
-          }
-          tagMap[tagId].documents.push(doc);
-        }
-
-        // Sort tag groups by tag order (high first), and docs within each group
-        const tagGroups = Object.values(tagMap).sort(
-          (a, b) => (b.tag.order || 0) - (a.tag.order || 0)
-        );
-
-        for (const group of tagGroups) {
-          group.documents.sort((a, b) => (b.order || 0) - (a.order || 0));
-        }
-
-        if (tagGroups.length > 0) {
           categoryGroups.push({
-            slug: catSlug,
-            name: catData.name || catFromQuery.name,
-            title: catData.title || catFromQuery.title,
-            description: catData.description || catFromQuery.description,
-            tagGroups,
+            slug: cat.slug,
+            name: cat.name,
+            title: cat.title,
+            description: cat.description,
+            documents: docs,
           });
         }
       }
 
-      // Preserve original category ordering
-      const orderedSlugs = data.categories.map((c) => c.slug);
-      categoryGroups.sort((a, b) => orderedSlugs.indexOf(a.slug) - orderedSlugs.indexOf(b.slug));
-
       return {
         categoryGroups,
-        selectedCategory: selectedCategorySlug || "",
-        selectedDocument: selectedDocumentSlug || "",
+        selectedDocument,
       };
     } catch (err) {
       return error({ statusCode: 404, message: err.message });

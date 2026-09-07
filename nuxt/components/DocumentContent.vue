@@ -29,7 +29,7 @@
           100
           }% - 64px);`"></div>
       <div class="doccont-content" ref="doccontContent">
-        <div class="doccont-content-col1" ref="doccontContentCol1" v-if="document.poster && document.moreinfo">
+        <div class="doccont-content-col1" ref="doccontContentCol1" v-if="document.poster">
           <div v-if="document.poster"
             :class="{ 'doccont-content-postercontainer-root': true, 'noshadow': document.nopostershadow }">
             <div class="doccont-content-postercontainer" :style="`padding-top:calc(${(document.poster.height /
@@ -60,9 +60,50 @@
           <h1 class="doccont-content-title fgcolor" ref="doccontContentTitle">
             {{ document.title }}
           </h1>
+          <div
+            v-if="laurelImages.length"
+            class="doccont-laurels-wrap"
+            :class="{
+              'fade-left': laurelsCanScrollLeft,
+              'fade-right': laurelsCanScrollRight
+            }"
+          >
+            <div
+              class="doccont-laurels-track"
+              ref="laurelsTrack"
+              @scroll="checkLaurelsScroll"
+            >
+              <img
+                v-for="(laurel, idx) in laurelImages"
+                :key="laurel.id || idx"
+                class="doccont-laurel-item"
+                :src="getLaurelSrc(laurel)"
+                :alt="laurel.alternativeText || laurel.caption || laurel.name || 'Festival Laurel'"
+                :title="laurel.alternativeText || laurel.caption || laurel.name || ''"
+                @load="checkLaurelsScroll"
+              />
+            </div>
+          </div>
           <div class="doccont-content-description fgcolor2">
-            <div class="content-tags"><span v-for="tag in document.tags" :key="tag.id"><i v-html="tag.icon"></i>{{
-              tag.name }}&nbsp;&nbsp;&nbsp;</span></div>
+            <!-- Tags hidden for now -->
+            <!-- <div class="content-tags"><span v-for="tag in document.tags" :key="tag.id"><i v-html="tag.icon"></i>{{
+              tag.name }}&nbsp;&nbsp;&nbsp;</span></div> -->
+
+            <div class="moreinfo-container moreinfo-container-horizontal" v-if="!document.poster && document.moreinfo">
+            <div class="moreinfo" v-for="info in document.moreinfo" :key="info.id">
+              <div class="moreinfo-header fgcolor2" v-if="info.header">
+                {{ info.header }}
+              </div>
+              <div class="moreinfo-subheader fgcolor2" v-if="info.subheader">
+                <a v-if="info.link" :href="info.link">{{ info.subheader }}</a>
+                <span v-else>{{ info.subheader }}</span>
+              </div>
+              <a class="outlink" v-if="info.link && info.outlink" target="_blank" :href="info.link" rel="noopener">
+                <i class="icon" v-if="info.outlink.svg" v-html="info.outlink.svg" />
+                <span>{{ info.outlink.name }}</span>
+              </a>
+            </div>
+          </div>
             <div class="doccont-content-descriptiontext" v-html="document.description"></div>
           </div>
           <div class="doccont-contentblocks">
@@ -181,9 +222,17 @@
   margin-top: 6px;
   margin-left: 2px;
 }
-
 .moreinfo-container:first-child {
   margin-top: 96px;
+}
+.moreinfo-container.moreinfo-container-horizontal{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 32px;
+    overflow-x: auto;
+    margin-top: -6px;
+    padding-bottom: 24px;
+    align-content: flex-start;
 }
 
 .moreinfo {
@@ -347,6 +396,53 @@
   font-weight: 500;
 }
 
+.doccont-laurels-wrap {
+  position: relative;
+  width: 100%;
+  margin: 14px 0 16px;
+  overflow: hidden;
+}
+
+.doccont-laurels-wrap.fade-left {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 40px, #000 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 40px, #000 100%);
+}
+
+.doccont-laurels-wrap.fade-right {
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 40px), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0%, #000 calc(100% - 40px), transparent 100%);
+}
+
+.doccont-laurels-wrap.fade-left.fade-right {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 40px, #000 calc(100% - 40px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 40px, #000 calc(100% - 40px), transparent 100%);
+}
+
+.doccont-laurels-track {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0;
+}
+
+.doccont-laurels-track::-webkit-scrollbar {
+  display: none;
+}
+
+.doccont-laurel-item {
+  height: 56px;
+  max-height: 56px;
+  width: auto;
+  flex-shrink: 0;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: auto;
+}
+
 .doccont-content-description {
   margin-top: 0px;
   z-index: 1;
@@ -457,6 +553,18 @@
     order: 2;
   }
 
+  /* Laurels: full width below the poster+info block, before description */
+  .doccont-content:has(> .doccont-content-col1) .doccont-laurels-wrap {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    margin: 12px 0 6px;
+  }
+
+  .doccont-laurel-item {
+    height: 46px;
+    max-height: 46px;
+  }
+
   /* Description text + content blocks: full width below the poster+info block */
   .doccont-content:has(> .doccont-content-col1) .doccont-content-descriptiontext {
     grid-column: 1 / -1;
@@ -498,14 +606,25 @@ export default {
       lightboxindex: null,
       lightboxitems: [],
       lightboxindexAlt: null,
-      lightboxitemsAlt: []
+      lightboxitemsAlt: [],
+      laurelsCanScrollLeft: false,
+      laurelsCanScrollRight: false
     };
+  },
+  computed: {
+    laurelImages() {
+      if (!this.document || !this.document.laurels) return [];
+      const laurels = this.document.laurels;
+      const list = Array.isArray(laurels) ? laurels : [laurels];
+      return list.filter(item => item && (item.url || (item.formats && item.formats.small && item.formats.small.url)));
+    }
   },
   watch: {
     '$fetchState.pending': function (newVal) {
       if (!newVal && !this.$fetchState.error) {
         this.$nextTick(() => {
           this.initScrollHooks();
+          this.checkLaurelsScroll();
         });
       }
     },
@@ -521,6 +640,9 @@ export default {
           this.document = newVal;
           this.lightboxitems = this.prefetchedLightbox || [];
           this.lightboxitemsAlt = this.prefetchedLightboxAlt || [];
+          this.$nextTick(() => {
+            this.checkLaurelsScroll();
+          });
         }
       },
       immediate: true
@@ -541,7 +663,7 @@ export default {
 
     let q = `
 		  query {
-			documents(where:{categories:{slug:"${this.categorySlug}"}, slug:"${this.documentSlug}"}){
+			documents(filters:{slug:{eq:"${this.documentSlug}"}}){
         title,
         typeoverride,
         nopostershadow,
@@ -586,7 +708,7 @@ export default {
 				subheader
 			  },
 			  date,
-			  id,
+			  id: documentId,
 			  slug,
 			  backgroundcolor,
 			  foregroundcolor,
@@ -602,9 +724,19 @@ export default {
           url
 			  },
 			  tags{
-				  id,
+				  id: documentId,
 				  name,
 				  icon
+			  },
+			  laurels{
+				  id: documentId,
+				  formats,
+				  url
+				  caption,
+				  alternativeText,
+				  name,
+				  width,
+				  height
 			  }
 			}
 		  }
@@ -651,6 +783,9 @@ export default {
       this.document = data.documents[0];
       this.lightboxitems = images;
       this.lightboxitemsAlt = imagesAlt;
+      this.$nextTick(() => {
+        this.checkLaurelsScroll();
+      });
     } else {
       if (this.$nuxt) this.$nuxt.error({ message: "Page not found", statusCode: 404 });
     }
@@ -718,15 +853,39 @@ export default {
       else if (img.formats.small) return img.formats.small;
       else if (img.formats.thumbnail) return img.formats.thumbnail;
       else return { url: "" };
+    },
+    checkLaurelsScroll() {
+      const el = this.$refs.laurelsTrack;
+      if (!el) {
+        this.laurelsCanScrollLeft = false;
+        this.laurelsCanScrollRight = false;
+        return;
+      }
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      this.laurelsCanScrollLeft = el.scrollLeft > 2;
+      this.laurelsCanScrollRight = maxScroll > 2 && el.scrollLeft < maxScroll - 2;
+    },
+    getLaurelSrc(laurel) {
+      if (!laurel) return "";
+      let url = laurel.url;
+      if (!url && laurel.formats) {
+        if (laurel.formats.small && laurel.formats.small.url) url = laurel.formats.small.url;
+        else if (laurel.formats.thumbnail && laurel.formats.thumbnail.url) url = laurel.formats.thumbnail.url;
+      }
+      if (!url) return "";
+      return this.$staticAsset(this.$config.strapiBaseUri + url);
     }
   },
   mounted: function () {
     if (!this.$fetchState || !this.$fetchState.pending) {
       this.initScrollHooks();
+      this.checkLaurelsScroll();
     }
+    window.addEventListener("resize", this.checkLaurelsScroll);
   },
   beforeDestroy: function () {
     ScrollTrigger.getAll().forEach((t) => t.kill());
+    window.removeEventListener("resize", this.checkLaurelsScroll);
   }
 };
 </script>

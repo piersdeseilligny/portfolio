@@ -1,6 +1,7 @@
 <template>
 
   <div class="home">
+    <h1 class="sr-only">Piers Deseilligny — Director of Photography Scotland</h1>
     <div class="showreel-container">
       <video-embed src="https://vimeo.com/866827389"></video-embed>
     </div>
@@ -41,15 +42,10 @@
         </h2>
         <hr />
         <p class="fancy" v-html="hero.caption"></p>
-        <div class="content-tags" style="--fgcolor:var(--foreground);margin-top:0px;margin-bottom:0;"
-          v-if="hero.document">
-          <span v-for="tag in hero.document.tags" :key="tag.id"><i v-html="tag.icon"></i>{{ tag.name
-            }}&nbsp;&nbsp;&nbsp;</span>
-        </div>
       </div>
       <div
         :style="`position:relative;padding-top:${(hero.image.height / hero.image.width) * 100}%;transition: padding-top 0.2s;`">
-        <img id="randomimage" alt="" @load="loadimage" style="position:absolute;top:0;left:0;right:0;width:100%;"
+        <img id="randomimage" :alt="hero && hero.document && hero.document.title ? `${hero.document.title} - Cinematography by Piers Deseilligny` : 'Director of Photography Scotland - Piers Deseilligny'" @load="loadimage" style="position:absolute;top:0;left:0;right:0;width:100%;"
           :src="hero.image.url">
       </div>
     </div>
@@ -88,6 +84,18 @@
 
 </template>
 <style>
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 hr {
   border: none;
   height: 1px;
@@ -514,13 +522,16 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    if (to.query.context === 'home' && to.params.document && to.params.slug) {
-      this.selectedDocument = to.params.document;
-      this.selectedCategory = to.params.slug;
+    const docSlug = to.params.slug || to.params.document;
+    if (to.query.context === 'home' && docSlug) {
+      this.selectedDocument = docSlug;
+      this.selectedCategory = "";
 
-      // Update the URL manually, keeping us on the current vue-router route conceptually
-      window.history.pushState({}, '', to.fullPath);
-      next(false); // abort vue-router navigation
+      // Abort vue-router navigation, and update the URL after vue-router has finished handling next(false)
+      next(false);
+      setTimeout(() => {
+        window.history.pushState({}, '', to.fullPath);
+      }, 0);
     } else {
       next(); // proceed normally
     }
@@ -550,11 +561,11 @@ export default {
       const direction = targetIndex > this.currentDocIndex ? 1 : -1;
       const container = this.$refs.modalContainer;
 
-      const newPath = "/work/" + doc.category.slug + "/" + doc.slug + "/?context=home";
+      const newPath = "/work/" + doc.slug + "/?context=home";
 
       if (!container) {
         this.selectedDocument = doc.slug;
-        this.selectedCategory = doc.category.slug;
+        this.selectedCategory = (doc.category && doc.category.slug) ? doc.category.slug : "";
         window.history.replaceState({}, '', newPath);
         return;
       }
@@ -568,7 +579,7 @@ export default {
           gsap.set(container, { opacity: 0, x: direction * 30 });
           
           this.selectedDocument = doc.slug;
-          this.selectedCategory = doc.category.slug;
+          this.selectedCategory = (doc.category && doc.category.slug) ? doc.category.slug : "";
           window.history.replaceState({}, '', newPath);
 
           this.$nextTick(() => {
@@ -594,6 +605,11 @@ export default {
         this.closingDocSlug = this.selectedDocument;
         this.selectedDocument = null;
         this.selectedCategory = null;
+      } else if (!this.selectedDocument && location.pathname.startsWith('/work/')) {
+        const match = location.pathname.match(/^\/work\/([^/?#]+)/);
+        if (match && match[1]) {
+          this.selectedDocument = match[1];
+        }
       }
     },
     // --- Transition hooks (JS-driven, no CSS) ---
@@ -756,17 +772,89 @@ export default {
     if (this._onKeydown) window.removeEventListener("keydown", this._onKeydown);
   },
   head() {
-    return {
-      title: "Piers Deseilligny - Director of Photography",
-      description: this.home.metadescription,
-      meta: [
-        { hid: 'description', name: 'description', content: this.home.metadescription },
-        { hid: 'og-description', property: 'og:description', content: this.home.subtitle },
-        { hid: 'og-image', property: 'og:image', content: "https://piersdeseilligny.com" + this.home.metaimage.url },
-        { hid: 'og-type', property: 'og:type', content: "website" },
-        { hid: 'og-url', property: 'og:url', content: "https://piersdeseilligny.com/" }
+    const title = "Piers Deseilligny | Director of Photography Scotland";
+    const description = this.home.metadescription || "Edinburgh-based Director of Photography and camera operator working across Scotland and the UK. Commercials, short films, and branded content.";
+    const imageUrl = this.home.metaimage && this.home.metaimage.url ? "https://piersdeseilligny.com" + this.home.metaimage.url : "";
+
+    const schemaData = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": ["Person", "ProfessionalService"],
+          "@id": "https://piersdeseilligny.com/#person",
+          "name": "Piers Deseilligny",
+          "jobTitle": "Director of Photography",
+          "url": "https://piersdeseilligny.com/",
+          ...(imageUrl ? { "image": imageUrl } : {}),
+          "description": description,
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Edinburgh",
+            "addressRegion": "Scotland",
+            "addressCountry": "GB"
+          },
+          "areaServed": [
+            {
+              "@type": "AdministrativeArea",
+              "name": "Scotland"
+            },
+            {
+              "@type": "Country",
+              "name": "United Kingdom"
+            }
+          ],
+          "sameAs": [
+            "https://www.imdb.com/name/nm11052334",
+            "https://www.instagram.com/piersdeseilligny",
+            "https://www.linkedin.com/in/piers-deseilligny/",
+            "https://github.com/piersdeseilligny"
+          ],
+          "knowsAbout": [
+            "Cinematography",
+            "Commercial Cinematography",
+            "Narrative Film",
+            "Camera Operating",
+            "Colour Grading"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://piersdeseilligny.com/#website",
+          "url": "https://piersdeseilligny.com/",
+          "name": "Piers Deseilligny | Director of Photography Scotland",
+          "publisher": {
+            "@id": "https://piersdeseilligny.com/#person"
+          }
+        }
       ]
-    }
+    };
+
+    return {
+      title,
+      meta: [
+        { hid: 'description', name: 'description', content: description },
+        { hid: 'og:title', property: 'og:title', content: title },
+        { hid: 'og:site_name', property: 'og:site_name', content: 'Piers Deseilligny' },
+        { hid: 'og:description', property: 'og:description', content: this.home.subtitle || description },
+        { hid: 'og:image', property: 'og:image', content: imageUrl },
+        { hid: 'og:type', property: 'og:type', content: "website" },
+        { hid: 'og:url', property: 'og:url', content: "https://piersdeseilligny.com/" },
+        { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+        { hid: 'twitter:title', name: 'twitter:title', content: title },
+        { hid: 'twitter:description', name: 'twitter:description', content: this.home.subtitle || description },
+        { hid: 'twitter:image', name: 'twitter:image', content: imageUrl }
+      ],
+      link: [
+        { rel: 'canonical', href: 'https://piersdeseilligny.com/' }
+      ],
+      script: [
+        {
+          hid: 'schema-ldjson',
+          type: 'application/ld+json',
+          json: schemaData
+        }
+      ]
+    };
   },
   async asyncData(context) {
     console.log(context);
@@ -796,14 +884,14 @@ export default {
                   },
                   caption
                 },
-                featured(sort:"order"){
+                featured{
                     order,
                     title,
                     tags{
                       name
                     },
                     date,
-                    id,
+                    id: documentId,
                     backgroundcolor,
                     foregroundcolor,
                     foregroundcolor2,
@@ -812,16 +900,17 @@ export default {
                     }
                     slug,
                     category{
-                      slug
+                      slug,
+                      order
                     },
                     categories{
                       slug
                     }
                 }
               },
-              categories(sort:"order"){
+              categories(sort:"order:asc"){
                 name,
-                id,
+                id: documentId,
                 slug,
                 thumbnailimage{
                   formats
@@ -833,9 +922,6 @@ export default {
               }
           }
           `
-      });
-      data.home.featured.sort((a, b) => {
-        return a.category.order > b.category.order ? 1 : -1;
       });
       data.home.description = context.$md.render(data.home.description);
 

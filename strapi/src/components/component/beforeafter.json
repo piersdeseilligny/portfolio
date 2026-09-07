@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_component_beforeafters",
+  "info": {
+    "name": "beforeafter",
+    "icon": "images",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "before": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    },
+    "after": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    },
+    "caption": {
+      "type": "string"
+    },
+    "offset": {
+      "type": "float",
+      "default": 0.5
+    }
+  }
+}

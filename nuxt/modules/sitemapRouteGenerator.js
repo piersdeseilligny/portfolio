@@ -1,6 +1,6 @@
 export default function () {
     this.nuxt.hook('generate:done', (context) => {
-      const routesToExclude = [] // Add any route you don't want in your sitemap. Potentially get this from an .env file.
+      const routesToExclude = ['/404', '/404/']
       const allRoutes = Array.from(context.generatedRoutes)
       let routes = allRoutes.filter(route => !routesToExclude.includes(route))
 
@@ -11,6 +11,6 @@ export default function () {
         else return val;
       });
   
-      this.nuxt.options.sitemap.routes = [...routes]
+      this.nuxt.options.sitemap.routes = Array.from(new Set(routes)).filter(route => !routesToExclude.includes(route))
     })
   }

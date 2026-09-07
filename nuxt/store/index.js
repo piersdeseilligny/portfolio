@@ -18,21 +18,18 @@ export const actions = {
     const data = await context.$staticAPI({
       query: `
           query {
-              categories(sort:"order"){
+              categories(sort:"order:asc"){
                 name,
-                id,
+                id: documentId,
                 slug,
                 description,
-                tags{
-                  name
-                },
                 thumbnailimage{
                   formats
                 },
                 title
               },
               tags{
-                id,
+                id: documentId,
                 name,
                 icon,
                 title
@@ -58,8 +55,10 @@ export const mutations = {
       selectedTags[p.categories[i].slug] = {
         "All": true
       };
-      for (let j = 0; j < p.categories[i].tags.length; j++) {
-        selectedTags[p.categories[i].slug][p.categories[i].tags[j].name] = false;
+      if (p.categories[i].tags) {
+        for (let j = 0; j < p.categories[i].tags.length; j++) {
+          selectedTags[p.categories[i].slug][p.categories[i].tags[j].name] = false;
+        }
       }
     }
     state.categories = obj1;
@@ -135,9 +134,11 @@ export const getters = {
   clickedDocId: (state) => state.clickedDocId,
   tagsForCategory: (state) => (slug) => {
     let tags = [];
-    for (let i = 0; i < state.categories[slug].tags.length; i++) {
-      const tag = state.categories[slug].tags[i];
-      tags.push(state.tags[tag.name]);
+    if (state.categories[slug] && state.categories[slug].tags) {
+      for (let i = 0; i < state.categories[slug].tags.length; i++) {
+        const tag = state.categories[slug].tags[i];
+        tags.push(state.tags[tag.name]);
+      }
     }
     return tags;
   },

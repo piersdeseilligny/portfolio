@@ -62,7 +62,11 @@
 
 figure{
   margin:0;
+  margin-bottom:12px;
   font-size:12px;
+}
+.squarestills figure{
+  margin-bottom:0;
 }
 figcaption{
   margin-top:2px;

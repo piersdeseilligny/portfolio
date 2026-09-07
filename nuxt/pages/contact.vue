@@ -64,14 +64,27 @@ export default {
         }
     },
   head() {
+    const title = "Contact | Piers Deseilligny - Director of Photography Scotland";
+    const description = "Get in touch with Director of Photography Piers Deseilligny for cinematography, camera operating, and collaborations across Scotland, the UK, and internationally.";
+    const imageUrl = this.backgroundImage ? this.$staticAsset(this.$config.strapiBaseUri + this.backgroundImage.url) : '';
+
     return {
-      title: "Contact - Piers Deseilligny",
+      title,
       meta:[
-        { hid:'og-title', property:'og:title', content:"Contact"},
-        { hid:'og-url', property:'og:url', content:"https://piersdeseilligny.com/contact/"},
-        { hid:'og-image', property:'og:image', content: (this.backgroundImage ?  this.$staticAsset(this.$config.strapiBaseUri + this.backgroundImage.url) : '') },
-        { hid:'og-description', property:'og:description', content:"If you would like to get in touch to discuss my work or a potential collaboration, please reach out to me at contact@piersdeseilligny.com"},
-        { hid:'description', name:'description', content:"If you would like to get in touch to discuss my work or a potential collaboration, please reach out to me at contact@piersdeseilligny.com"},
+        { hid:'description', name:'description', content: description },
+        { hid:'og:title', property:'og:title', content: title },
+        { hid:'og:site_name', property:'og:site_name', content: 'Piers Deseilligny' },
+        { hid:'og:url', property:'og:url', content: "https://piersdeseilligny.com/contact/" },
+        { hid:'og:image', property:'og:image', content: imageUrl },
+        { hid:'og:description', property:'og:description', content: description },
+        { hid:'og:type', property:'og:type', content: "website" },
+        { hid:'twitter:card', name:'twitter:card', content: 'summary_large_image' },
+        { hid:'twitter:title', name:'twitter:title', content: title },
+        { hid:'twitter:description', name:'twitter:description', content: description },
+        { hid:'twitter:image', name:'twitter:image', content: imageUrl },
+      ],
+      link: [
+        { rel: 'canonical', href: 'https://piersdeseilligny.com/contact/' }
       ]
     }
   },

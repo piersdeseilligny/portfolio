@@ -1,6 +1,6 @@
 <template>
 <div class="portfolioParent">
-    <nuxt-child :key="$route.query.context || $route.params.slug || 'all'"/>
+    <nuxt-child key="work-root"/>
 </div>
 </template>
 <style>
@@ -11,17 +11,5 @@
         top: 0;
     }
 </style>
-<script>
-  export default {
-    async asyncData (context) {
-      try{
-        let categories = context.store.categoriesArray;
-        return{ categories }
-      }
-      catch(err){
-        return {}
-      }
-    },
-  }
-</script>
+
 

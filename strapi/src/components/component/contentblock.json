@@ -1,0 +1,46 @@
+{
+  "collectionName": "components_component_contentblocks",
+  "info": {
+    "name": "contentblock",
+    "icon": "cube",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "tag": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tag.tag"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "beforeafters": {
+      "type": "component",
+      "repeatable": true,
+      "component": "component.beforeafter"
+    },
+    "stills": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "videoembed": {
+      "type": "string"
+    },
+    "videoembedaspect": {
+      "type": "float"
+    },
+    "squarestills": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

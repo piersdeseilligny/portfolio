@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_component_random_images",
+  "info": {
+    "name": "random-image",
+    "icon": "image",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "document": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::document.document"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    },
+    "caption": {
+      "type": "richtext"
+    }
+  }
+}

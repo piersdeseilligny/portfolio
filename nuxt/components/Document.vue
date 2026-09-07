@@ -1,8 +1,8 @@
 <template>
-    <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true}" :title="doc.tags.map(c=> c.name).join(', ')" :to="link" v-on:click.native.capture="$emit('clickOnDoc', doc, $el);">
-    <div class="document-container" :style="`background-color:${doc.backgroundcolor};z-index:0;`" v-tilt>
-        <img ref="docbg" class="document-bg" alt="" @load="loadimg" v-if="doc.images && doc.images[0]" 
-        :src="doc.secondaryCategory ? $staticAsset($config.strapiBaseUri+doc.images[1].formats.medium.url) : $staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url)"/>
+    <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true, 'is-hero':hero, 'permanent-text': isPermanentText}" :title="doc.tags ? doc.tags.map(c => c.name).join(', ') : ''" :to="link" v-on:click.native.capture="$emit('clickOnDoc', doc, $el);">
+    <div class="document-container" :style="`background-color:${doc.backgroundcolor};z-index:0;`">
+        <img ref="docbg" class="document-bg" :alt="doc.title ? `${doc.title} - Cinematography by Piers Deseilligny` : 'Cinematography by Piers Deseilligny'" @load="loadimg" v-if="doc.images && doc.images[0]" 
+        :src="doc.secondaryCategory ? $staticAsset($config.strapiBaseUri+doc.images[1].formats.medium.url) : (hero && doc.images[0].formats && doc.images[0].formats.large ? $staticAsset($config.strapiBaseUri+doc.images[0].formats.large.url) : $staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url))"/>
         <div class="document-overlay" @touchstart="hoverShow" @touchend="hoverHide" @mouseenter="hoverShow" @mouseleave="hoverHide">
             <div ref="docoverlay" class="document-gradient"
                 :style="`background: linear-gradient(transparent,${doc.backgroundcolor});`"></div>
@@ -33,6 +33,7 @@
         transition: all 0.2s;
         scroll-margin: 24px;
         scroll-snap-margin: 24px;
+        border-radius:4px;
     }
     .withinportfolio .document{
       width:287px;
@@ -51,7 +52,8 @@
       height:100%;
       content:' ';
       box-sizing: border-box;
-      border: solid 1px rgba(255,255,255,0.25);
+      border: solid 1px rgba(255,255,255,0.1);
+      border-radius:4px;
       pointer-events: none;
       transition: border 0.3s;
     }
@@ -79,6 +81,7 @@
     right: 0;
     left: 0;
     overflow:hidden;
+    border-radius:4px;
 }
 
     .document-bg{
@@ -86,6 +89,7 @@
         width:100%;
         height:100%;
         object-fit: cover;
+        border-radius:4px;
         z-index: -1;
         opacity:0;
     }
@@ -131,6 +135,7 @@
         fill:var(--foregroundcolor);
         margin-right:6px;
         margin-top:6px;
+        width:16px;
     }
     .document-year{
       margin-bottom:2px;
@@ -161,7 +166,35 @@
     .selectIndicator.selected path{
         d: path("M 1 0 L 1 44 L 12 76 L 1 108 L 1 152") !important;
     }
-    @media screen and (max-width:800px) {
+
+    /* Hero variant: double size, inherits regular typography */
+    .document.is-hero {
+        width: 480px;
+        height: 252px;
+        margin: 0 !important;
+        flex-shrink: 0;
+    }
+
+    /* Permanent text mode (toggleable) */
+    .document.permanent-text .document-title {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+    .document.permanent-text .document-year {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+    .document.permanent-text .document-tags {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+    .document.permanent-text .document-gradient {
+        opacity: 1 !important;
+        height: 50%;
+    bottom: 0;
+    }
+
+    @media screen and (max-width: 800px) {
         .selectIndicator{
             position:absolute;
             fill:transparent;
@@ -186,8 +219,15 @@
         .document-title{
           font-size:20px;
         }
-        .document-tags{
-          display:none;
+        .document.is-hero {
+            width: 375px;
+            height: 210px;
+        }
+    }
+    @media screen and (max-width: 600px) {
+        .document.is-hero {
+            width: 320px;
+            height: 180px;
         }
     }
     @media (hover: none) {
@@ -211,9 +251,20 @@
 <script>
 import { gsap } from "gsap";
 export default {
-    props:["doc","link"],
+    props: {
+        doc: { type: Object, required: true },
+        link: { type: [Object, String], required: true },
+        hero: { type: Boolean, default: false },
+        permanentText: { type: Boolean, default: false },
+    },
+    computed: {
+        isPermanentText() {
+            return this.permanentText;
+        }
+    },
     methods:{
         hoverAnimation(end){
+            if (this.isPermanentText) return gsap.timeline();
             let tl = gsap.timeline({defaults:{ease:"power4"+end, duration:0.3}});
             tl.fromTo(this.$refs.docyear, {y:12, opacity:0}, {opacity:1, y:0},0);
             tl.fromTo(this.$refs.doctitle, {y:24, opacity:0}, {opacity:1, y:0},0);
@@ -223,9 +274,11 @@ export default {
             return tl;
         },
         hoverShow(){
+            if (this.isPermanentText) return;
             this.hoverAnimation(".out").play();
         },
         hoverHide(){
+            if (this.isPermanentText) return;
             this.hoverAnimation(".in").reverse(0);
         },
         loadimg(){

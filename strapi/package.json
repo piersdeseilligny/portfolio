@@ -1,39 +1,44 @@
 {
-  "name": "my-project",
-  "private": true,
+  "name": "strapi",
   "version": "0.1.0",
+  "private": true,
   "description": "A Strapi application",
   "scripts": {
+    "build": "strapi build",
+    "console": "strapi console",
+    "deploy": "strapi deploy",
+    "dev": "strapi develop",
     "develop": "strapi develop",
     "start": "strapi start",
-    "build": "strapi build",
     "strapi": "strapi",
-    "update:packages": "node wipe-dependencies.js && rm -rf node_modules && npm update --save-dev && npm update --save"
+    "upgrade": "npx @strapi/upgrade latest",
+    "upgrade:dry": "npx @strapi/upgrade latest --dry"
   },
   "dependencies": {
-    "knex": "^0.95.6",
-    "slugify": "^1.5.3",
-    "sqlite3": "^5.0.2",
-    "strapi": "^3.6.11",
-    "strapi-admin": "*",
-    "strapi-connector-bookshelf": "^3.6.2",
-    "strapi-plugin-content-manager": "^3.6.2",
-    "strapi-plugin-content-type-builder": "^3.6.2",
-    "strapi-plugin-email": "^3.6.2",
-    "strapi-plugin-graphql": "*",
-    "strapi-plugin-upload": "^3.6.2",
-    "strapi-plugin-users-permissions": "^3.6.2",
-    "strapi-utils": "^3.6.2"
+    "@strapi/database": "5.52.3",
+    "@strapi/plugin-cloud": "5.52.3",
+    "@strapi/plugin-graphql": "^5.52.3",
+    "@strapi/plugin-users-permissions": "5.52.3",
+    "@strapi/strapi": "5.52.3",
+    "better-sqlite3": "12.8.0",
+    "form-data": "^4.0.6",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.30.3",
+    "styled-components": "^6.0.0"
   },
-  "author": {
-    "name": "A Strapi developer"
-  },
-  "strapi": {
-    "uuid": "1a154920-fc8e-4319-9649-646f478eed8a"
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
   },
   "engines": {
-    "node": ">=10.0.0",
+    "node": ">=20.0.0 <=26.x.x",
     "npm": ">=6.0.0"
   },
-  "license": "MIT"
+  "strapi": {
+    "uuid": "43942e14-996b-4dea-b123-13a25417669b",
+    "installId": "649fdb5773ee6a8797c8b4b904e3e83788f28e3b4e14b9cf9d167621810da359"
+  }
 }

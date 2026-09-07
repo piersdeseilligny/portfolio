@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_component_moreinfos",
+  "info": {
+    "name": "moreinfo",
+    "icon": "info",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "header": {
+      "type": "string"
+    },
+    "subheader": {
+      "type": "string"
+    },
+    "outlink": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::outlink.outlink"
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}

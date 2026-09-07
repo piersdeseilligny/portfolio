@@ -3,7 +3,7 @@
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'Piers Deseilligny',
+    title: 'Piers Deseilligny | Director of Photography Scotland',
     htmlAttrs: {
       lang:'en'
     },
@@ -12,10 +12,13 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'msapplication-TileColor', content:"#da532c" },
       { name: 'theme-color', content:"#ffffff" },
-      { hid: 'description', name: 'description', content: '' },
-      { hid: 'og:title', property: 'og:title', content: 'Piers Deseilligny - Director of Photography' },
-      { hid: 'og:sitename', property: 'og:sitename', content: 'Piers Deseilligny - Director of Photography' },
-      { hid:'og:type', property:'og:type', content:"website"},
+      { hid: 'description', name: 'description', content: 'Director of Photography and camera operator based in Scotland. Specialising in commercials, short narrative films, and branded content.' },
+      { hid: 'og:title', property: 'og:title', content: 'Piers Deseilligny | Director of Photography Scotland' },
+      { hid: 'og:site_name', property: 'og:site_name', content: 'Piers Deseilligny' },
+      { hid: 'og:type', property: 'og:type', content: "website" },
+      { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+      { hid: 'twitter:title', name: 'twitter:title', content: 'Piers Deseilligny | Director of Photography Scotland' },
+      { hid: 'twitter:description', name: 'twitter:description', content: 'Director of Photography and camera operator based in Scotland. Specialising in commercials, short narrative films, and branded content.' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -87,16 +90,27 @@ export default {
   },
 
   sitemap:{
-    hostname:'https://piersdeseilligny.com'
+    hostname:'https://piersdeseilligny.com',
+    exclude: ['/404', '/404/'],
+    trailingSlash: true
   },
 
   strapi: {
     entities: ['documents', 'categories'],
     url: process.env.API_URL || "http://localhost:3001"
   },
+  router: {
+    extendRoutes(routes) {
+      routes.push({
+        path: '/work/:category/:document',
+        redirect: to => `/work/${to.params.document}/`
+      });
+    }
+  },
+
   generate: {
     routes: ['404']
-    },
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {

@@ -4,7 +4,7 @@
   <p>{{ description }}</p>
   </div>
 </template>
-<style>
+<style scoped>
 p{
   color:rgba(215, 237, 255, 0.5);
 }
