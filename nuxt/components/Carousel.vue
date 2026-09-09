@@ -86,11 +86,12 @@
 
       <!-- STANDARD SINGLE-ROW TRACK (Home page & single-row categories) -->
       <div v-else class="carousel-track" ref="scrollTrack" @scroll="checkScroll()">
-        <template v-for="doc in documents">
+        <template v-for="(doc, index) in documents">
           <Document
             v-if="!doc.nopage"
             :key="doc.key || doc.id + 'doc'"
             ref="docs"
+            :priority="index === 0"
             :link="{
               path: '/work/' + doc.slug + '/',
               query: ($route.path === '/') ? { ...$route.query, context: 'home' } : $route.query,

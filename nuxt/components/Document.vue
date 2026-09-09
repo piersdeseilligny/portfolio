@@ -1,12 +1,12 @@
 <template>
-    <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true, 'is-hero':hero, 'permanent-text': isPermanentText}" :title="doc.tags ? doc.tags.map(c => c.name).join(', ') : ''" :to="link" v-on:click.native.capture="$emit('clickOnDoc', doc, $el);">
+    <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true, 'is-hero':hero, 'is-priority': priority, 'permanent-text': isPermanentText}" :title="doc.tags ? doc.tags.map(c => c.name).join(', ') : ''" :to="link" v-on:click.native.capture="$emit('clickOnDoc', doc, $el);">
     <div class="document-container" :style="`background-color:${doc.backgroundcolor};z-index:0;`">
         <img ref="docbg" class="document-bg" :alt="doc.title ? `${doc.title} - Cinematography by Piers Deseilligny` : 'Cinematography by Piers Deseilligny'" @load="loadimg" v-if="docImage" 
           :src="responsiveDocImage.src"
           :srcset="responsiveDocImage.srcset"
           :sizes="imageSizes"
-          :loading="hero ? 'eager' : 'lazy'"
-          :fetchpriority="hero ? 'high' : undefined"
+          :loading="hero || priority ? 'eager' : 'lazy'"
+          :fetchpriority="hero || priority ? 'high' : undefined"
           decoding="async"/>
         <div class="document-overlay" @touchstart="hoverShow" @touchend="hoverHide" @mouseenter="hoverShow" @mouseleave="hoverHide">
             <div ref="docoverlay" class="document-gradient"
@@ -98,7 +98,8 @@
         z-index: -1;
         opacity:0;
     }
-    .document.is-hero .document-bg{
+    .document.is-hero .document-bg,
+    .document.is-priority .document-bg{
         opacity:1;
     }
     .document.selected .document-bg{
@@ -263,6 +264,7 @@ export default {
         doc: { type: Object, required: true },
         link: { type: [Object, String], required: true },
         hero: { type: Boolean, default: false },
+        priority: { type: Boolean, default: false },
         permanentText: { type: Boolean, default: false },
     },
     computed: {

@@ -281,6 +281,14 @@
       \************************************************************************************************************************************************************************************/
 
 
+/* @license
+Papa Parse
+v5.5.3
+https://github.com/mholt/PapaParse
+License: MIT
+*/
+
+
 /*!
  * CSSPlugin 3.14.1
  * https://gsap.com
@@ -321,14 +329,6 @@
 /*! MIT License © Sindre Sorhus */
 
 /*! https://mths.be/punycode v1.4.1 by @mathias */
-
-
-/* @license
-Papa Parse
-v5.5.3
-https://github.com/mholt/PapaParse
-License: MIT
-*/
 
 
 /*! *****************************************************************************
