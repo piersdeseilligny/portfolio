@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/tools/offshoot-report-generator", {data:[{}],fetch:{},mutations:[]});

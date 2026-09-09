@@ -233,23 +233,7 @@
         */
 
 
-/*!
-   * Observer 3.14.1
-   * https://gsap.com
-   *
-   * @license Copyright 2008-2025, GreenSock. All rights reserved.
-   * Subject to the terms at https://gsap.com/standard-license
-   * @author: Jack Doyle, jack@greensock.com
-  */
-
-/*!
-   * ScrollTrigger 3.14.1
-   * https://gsap.com
-   *
-   * @license Copyright 2008-2025, GreenSock. All rights reserved.
-   * Subject to the terms at https://gsap.com/standard-license
-   * @author: Jack Doyle, jack@greensock.com
-  */
+/*! @license DOMPurify 3.3.1 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.3.1/LICENSE */
 
 
 /*! -!../node_modules/babel-loader/lib!../node_modules/vue-loader/lib??vue-loader-options!./embed.vue?vue&type=script&lang=js& */
@@ -339,22 +323,11 @@
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 
 
-/*!
- * Flip 3.14.1
- * https://gsap.com
- *
- * @license Copyright 2008-2025, GreenSock. All rights reserved.
- * Subject to the terms at https://gsap.com/standard-license
- * @author: Jack Doyle, jack@greensock.com
-*/
-
-/*!
- * matrix 3.14.1
- * https://gsap.com
- *
- * Copyright 2008-2025, GreenSock. All rights reserved.
- * Subject to the terms at https://gsap.com/standard-license
- * @author: Jack Doyle, jack@greensock.com
+/* @license
+Papa Parse
+v5.5.3
+https://github.com/mholt/PapaParse
+License: MIT
 */
 
 
@@ -374,17 +347,6 @@ PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
 
-/* @license
-Papa Parse
-v5.5.3
-https://github.com/mholt/PapaParse
-License: MIT
-*/
-
-
-/*! @license DOMPurify 3.3.1 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.3.1/LICENSE */
-
-
 /*!
  * Vue.js v2.7.16
  * (c) 2014-2023 Evan You
@@ -396,3 +358,41 @@ License: MIT
  * (c) 2021 Evan You
  * @license MIT
  */
+
+
+/*!
+ * Flip 3.14.1
+ * https://gsap.com
+ *
+ * @license Copyright 2008-2025, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/*!
+ * matrix 3.14.1
+ * https://gsap.com
+ *
+ * Copyright 2008-2025, GreenSock. All rights reserved.
+ * Subject to the terms at https://gsap.com/standard-license
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+
+/*!
+   * Observer 3.14.1
+   * https://gsap.com
+   *
+   * @license Copyright 2008-2025, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license
+   * @author: Jack Doyle, jack@greensock.com
+  */
+
+/*!
+   * ScrollTrigger 3.14.1
+   * https://gsap.com
+   *
+   * @license Copyright 2008-2025, GreenSock. All rights reserved.
+   * Subject to the terms at https://gsap.com/standard-license
+   * @author: Jack Doyle, jack@greensock.com
+  */

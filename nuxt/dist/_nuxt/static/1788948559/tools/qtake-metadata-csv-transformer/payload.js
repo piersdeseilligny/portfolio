@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/tools/qtake-metadata-csv-transformer", {data:[{}],fetch:{},mutations:[]});

@@ -1,0 +1,7 @@
+# Target Baseline / modern browsers supporting ES2020+, native ES modules, and async/await
+Chrome >= 105
+Edge >= 105
+Firefox >= 105
+Safari >= 15.4
+iOS >= 15.4
+not dead

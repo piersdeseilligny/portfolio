@@ -43,9 +43,10 @@ export default {
     port:3000,
     host:"0.0.0.0"
   },
-  //target: "static",
+  target: 'static',
+  modern: 'client',
 
-    loading: {
+  loading: {
       color: 'white',
       height: '2px'
     },
@@ -115,10 +116,15 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    transpile:['jspdf','fast-png','iobuffer'],
+    transpile: ['jspdf', 'fast-png', 'iobuffer'],
+    babel: {
+      presets({ isServer }, [ preset, options ]) {
+        options.corejs = { version: 3 };
+      }
+    },
     extend(config, ctx) {
       if (ctx.isDev) {
-        config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+        config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map';
       }
     }
   },
