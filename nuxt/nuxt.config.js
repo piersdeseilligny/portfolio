@@ -28,7 +28,7 @@ export default {
       { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#447b82', type:'image/svg+xml' },
       { rel: 'preload', href: '/fonts/outfit-variable-latin.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous' },
       { rel: 'preload', href: '/fonts/oswald-variable-latin.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous' },
-      { rel: 'preload', href: '/noisetexture.png', as: 'image', fetchpriority: 'high' }
+      { rel: 'preload', href: '/noisetexture.webp', as: 'image', fetchpriority: 'high' }
     ]
   },
 

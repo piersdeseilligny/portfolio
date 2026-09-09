@@ -107,7 +107,7 @@ export default {
   z-index: 3;
   position: relative;
   width: 100%;
-  background:url(/noisetexture.png), var(--backgroundforblur);
+  background:url(/noisetexture.webp), var(--backgroundforblur);
   backdrop-filter: saturate(150%) blur(16px);
 }
 

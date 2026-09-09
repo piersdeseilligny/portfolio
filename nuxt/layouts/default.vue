@@ -65,7 +65,7 @@ body {
   --backgroundforblur: hsla(220, 10%, 10%, 0.75);
   --backgroundbase: hsl(220, 10%, 6%);
   --backgroundhigh: hsl(220, 10%, 10%);
-  --backgroundpaper: url(/noisetexture.png), var(--backgroundhigh);
+  --backgroundpaper: url(/noisetexture.webp), var(--backgroundhigh);
 
   --foreground: hsla(207, 100%, 92%, 0.5);
   --foregroundsubtle: hsla(207, 100%, 92%, 0.35);

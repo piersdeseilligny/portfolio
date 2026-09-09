@@ -302,7 +302,7 @@
   overflow-x: hidden;
   position: relative;
   z-index: 2;
-  background: url("/noisetexture.png");
+  background: url("/noisetexture.webp");
   background-attachment: fixed;
 }
 
