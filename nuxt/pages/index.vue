@@ -44,12 +44,13 @@
         <p class="fancy" v-html="hero.caption"></p>
       </div>
       <div
-        :style="`position:relative;padding-top:${(hero.image.height / hero.image.width) * 100}%;transition: padding-top 0.2s;`">
+        :style="`position:relative;padding-top:${hero.image && hero.image.height && hero.image.width ? (hero.image.height / hero.image.width) * 100 : 56.25}%;transition: padding-top 0.2s;`">
         <img id="randomimage" :alt="hero && hero.document && hero.document.title ? `${hero.document.title} - Cinematography by Piers Deseilligny` : 'Director of Photography Scotland - Piers Deseilligny'" @load="loadimage" style="position:absolute;top:0;left:0;right:0;width:100%;"
           :src="$responsiveAsset(hero.image).src || hero.image.url"
           :srcset="$responsiveAsset(hero.image).srcset"
           sizes="(max-width: 800px) 100vw, 80vw"
-          loading="lazy"
+          loading="eager"
+          fetchpriority="high"
           decoding="async">
       </div>
     </div>
@@ -752,7 +753,14 @@ export default {
       return array;
     }
     this.home.images = shuffleArray(this.home.images);
-    this.randomImage();
+    if (this.hero && this.hero.image && this.hero.image.url) {
+      const idx = this.home.images.findIndex(img => img.image && img.image.url === this.hero.image.url);
+      if (idx !== -1) {
+        this.imageindex = (idx + 1) % this.home.images.length;
+      }
+    } else {
+      this.randomImage();
+    }
 
     window.addEventListener('popstate', this.onPopState);
 
@@ -949,10 +957,12 @@ export default {
         data.home.metaimage = { url: "" };
       }
 
-      console.log(data.home.images)
       const home = data.home;
       const categories = data.categories;
-      return { categories, home }
+      const hero = home.images && home.images.length > 0
+        ? home.images[0]
+        : { document: { tags: [] }, image: { url: "" }, caption: "" };
+      return { categories, home, hero };
     }
     catch (err) {
       context.error({ message: err.message, statusCode: 404 });

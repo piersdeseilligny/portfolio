@@ -5,7 +5,7 @@
   >
     <div ref="slidecontainer" class="story-slidecontainer">
       <img
-        class="story-slide"
+        :class="['story-slide', { visibleslide: slideindex === 0 }]"
         v-for="(slide, slideindex) in slides"
         :key="slide.id"
         :src="slideindex == 0 ? $responsiveAsset(slide).src : undefined"
@@ -14,6 +14,9 @@
         :data-slideindex="slideindex"
         :ref="'slide' + slideindex"
         alt=""
+        :loading="slideindex === 0 ? 'eager' : 'lazy'"
+        :fetchpriority="slideindex === 0 ? 'high' : 'low'"
+        decoding="async"
         @load="loadSlide(slideindex + 1)"
         @error="loadSlide(slideindex + 1, true)"
       />

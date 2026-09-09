@@ -55,6 +55,8 @@
           <!-- Mobile navigation buttons scoped to rail carousel -->
           <button
             @click="scroll('left')"
+            :disabled="!canScrollLeft"
+            aria-label="Scroll left"
             :class="[
               'carousel-btn carousel-btn-prev carousel-split-mobile-btn',
               { cantScroll: !canScrollLeft }
@@ -67,6 +69,8 @@
           </button>
           <button
             @click="scroll('right')"
+            aria-label="Scroll right"
+            :disabled="!canScrollRight"
             :class="[
               'carousel-btn carousel-btn-next carousel-split-mobile-btn',
               { cantScroll: !canScrollRight }
@@ -101,6 +105,8 @@
       <!-- Navigation buttons (desktop for split-track, and standard carousel) -->
       <button
         @click="scroll('left')"
+        aria-label="Scroll left"
+        :disabled="!canScrollLeft"
         :class="[
           'carousel-btn carousel-btn-prev',
           { 'carousel-split-desktop-btn': isSplitAnchor, cantScroll: !canScrollLeft }
@@ -113,6 +119,8 @@
       </button>
       <button
         @click="scroll('right')"
+        aria-label="Scroll right"
+        :disabled="!canScrollRight"
         :class="[
           'carousel-btn carousel-btn-next',
           { 'carousel-split-desktop-btn': isSplitAnchor, cantScroll: !canScrollRight }

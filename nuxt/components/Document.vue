@@ -5,7 +5,8 @@
           :src="responsiveDocImage.src"
           :srcset="responsiveDocImage.srcset"
           :sizes="imageSizes"
-          loading="lazy"
+          :loading="hero ? 'eager' : 'lazy'"
+          :fetchpriority="hero ? 'high' : undefined"
           decoding="async"/>
         <div class="document-overlay" @touchstart="hoverShow" @touchend="hoverHide" @mouseenter="hoverShow" @mouseleave="hoverHide">
             <div ref="docoverlay" class="document-gradient"
@@ -96,6 +97,9 @@
         border-radius:4px;
         z-index: -1;
         opacity:0;
+    }
+    .document.is-hero .document-bg{
+        opacity:1;
     }
     .document.selected .document-bg{
       transform:translateX(1px);
