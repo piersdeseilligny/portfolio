@@ -22,7 +22,7 @@
       </div>
 
       <div class="navcontainer navcontainer-right show-on-mobile">
-        <button class="menu-btn clickable" @click="toggleMenu" :class="{ active: menuOpen }">
+        <button aria-label="Dropdown menu" class="menu-btn clickable" @click="toggleMenu" :class="{ active: menuOpen }">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
             <circle cx="12" cy="5" r="2" />
             <circle cx="12" cy="12" r="2" />

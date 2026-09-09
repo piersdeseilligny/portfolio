@@ -132,8 +132,6 @@
   </div>
 </template>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Pridi&display=swap");
-
 .doccont-loading {
   position: absolute;
   top: 0;

@@ -26,8 +26,8 @@ export default {
       { rel: 'icon', type: 'image/png', sizes:'16x16', href: '/favicon-16x16.png' },
       { rel: 'manifest', href: '/site.webmanifest', type:'application/manifest+json' },
       { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#447b82', type:'image/svg+xml' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Outfit:wght@100..900&display=swap', rel:'stylesheet', type:'text/css' }
+      { rel: 'preload', href: '/fonts/outfit-variable-latin.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous' },
+      { rel: 'preload', href: '/fonts/oswald-variable-latin.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }
     ]
   },
 
@@ -37,7 +37,7 @@ export default {
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [],
+  css: ['~/assets/fonts.css'],
 
   server:{
     port:3000,

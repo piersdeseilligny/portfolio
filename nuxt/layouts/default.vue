@@ -72,8 +72,8 @@ body {
   --foregroundlink: hsla(207, 100%, 92%, 0.75);
   --foregroundhigh: hsla(207, 100%, 92%, 0.85);
 
-  --font-primary: 'Outfit', sans-serif;
-  --font-secondary: 'Oswald', sans-serif;
+  --font-primary: 'Outfit', 'Outfit-Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-secondary: 'Oswald', 'Oswald-Fallback', 'Arial Narrow', 'Impact', sans-serif;
 
   --headerheight: 54px;
   --subheaderheight: 45px;
@@ -84,6 +84,7 @@ body {
   background-color: var(--backgroundbase);
   color: white;
   font-family: var(--font-primary);
+  font-size-adjust: from-font;
   margin: 0;
   padding: 0;
 }
