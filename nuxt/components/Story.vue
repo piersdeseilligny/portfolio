@@ -8,7 +8,9 @@
         class="story-slide"
         v-for="(slide, slideindex) in slides"
         :key="slide.id"
-        :src="slideindex == 0 ? $staticAsset($config.strapiBaseUri + slide.url) : undefined"
+        :src="slideindex == 0 ? $responsiveAsset(slide).src : undefined"
+        :srcset="slideindex == 0 ? $responsiveAsset(slide).srcset : undefined"
+        sizes="100vw"
         :data-slideindex="slideindex"
         :ref="'slide' + slideindex"
         alt=""
@@ -104,10 +106,12 @@ export default {
         );
       let slidetoLoad = this.$refs["slide" + slideindex];
       if (slidetoLoad && slidetoLoad[0] && this.slides[slideindex]) {
-        slidetoLoad[0].setAttribute(
-          "src",
-          this.$staticAsset(this.$config.strapiBaseUri + this.slides[slideindex].url)
-        );
+        const resp = this.$responsiveAsset(this.slides[slideindex]);
+        if (resp.srcset) {
+          slidetoLoad[0].setAttribute("srcset", resp.srcset);
+          slidetoLoad[0].setAttribute("sizes", "100vw");
+        }
+        slidetoLoad[0].setAttribute("src", resp.src);
       } else {
         console.info("Slide " + slideindex + " doesn't exist!!");
       }
@@ -195,8 +199,8 @@ export default {
   },
   fetch: function(){
     if(process.server){
-      this.slides.forEach((slide, index) => {
-         this.$staticAsset(this.$config.strapiBaseUri + slide.url);
+      this.slides.forEach((slide) => {
+         this.$responsiveAsset(slide);
       });
     }
   }

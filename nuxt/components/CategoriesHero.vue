@@ -7,7 +7,12 @@
              :title="category.title"
             :to="{path:'/work/', hash: category.slug}">
             <div class="mask"></div>
-            <img v-if="category.thumbnailimage" alt="" :class="{'thumbnail': true, 'novideo':!category.thumbnailvideo}" :src="$staticAsset($config.strapiBaseUri + category.thumbnailimage.formats.small.url)">
+            <img v-if="category.thumbnailimage" alt="" :class="{'thumbnail': true, 'novideo':!category.thumbnailvideo}" 
+              :src="$responsiveAsset(category.thumbnailimage).src"
+              :srcset="$responsiveAsset(category.thumbnailimage).srcset"
+              sizes="(max-width: 600px) 100vw, 33vw"
+              loading="lazy"
+              decoding="async">
             <video ref="vid" alt="" loop muted autoplay v-if="category.thumbnailvideo" :src="$staticAsset($config.strapiBaseUri + category.thumbnailvideo.url)"></video>
             <span>{{ category.name }}</span></nuxt-link>
 

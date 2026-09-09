@@ -46,7 +46,11 @@
       <div
         :style="`position:relative;padding-top:${(hero.image.height / hero.image.width) * 100}%;transition: padding-top 0.2s;`">
         <img id="randomimage" :alt="hero && hero.document && hero.document.title ? `${hero.document.title} - Cinematography by Piers Deseilligny` : 'Director of Photography Scotland - Piers Deseilligny'" @load="loadimage" style="position:absolute;top:0;left:0;right:0;width:100%;"
-          :src="hero.image.url">
+          :src="$responsiveAsset(hero.image).src || hero.image.url"
+          :srcset="$responsiveAsset(hero.image).srcset"
+          sizes="(max-width: 800px) 100vw, 80vw"
+          loading="lazy"
+          decoding="async">
       </div>
     </div>
     <div>
@@ -880,7 +884,8 @@ export default {
                   image{
                     url,
                     width,
-                    height
+                    height,
+                    formats
                   },
                   caption
                 },
@@ -896,7 +901,10 @@ export default {
                     foregroundcolor,
                     foregroundcolor2,
                     images{
-                      formats
+                      formats,
+                      url,
+                      width,
+                      height
                     }
                     slug,
                     category{
@@ -913,7 +921,10 @@ export default {
                 id: documentId,
                 slug,
                 thumbnailimage{
-                  formats
+                  formats,
+                  url,
+                  width,
+                  height
                 },
                 thumbnailvideo{
                   url
@@ -926,7 +937,8 @@ export default {
       data.home.description = context.$md.render(data.home.description);
 
       for (let image of data.home.images) {
-        //Download all images
+        // Pre-register all responsive sizes and download
+        context.$responsiveAsset(image.image);
         image.image.url = context.$staticAsset(context.$config.strapiBaseUri + image.image.url);
         if (image.caption) image.caption = context.$md.render(image.caption);
       }

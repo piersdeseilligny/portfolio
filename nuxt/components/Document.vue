@@ -1,8 +1,12 @@
 <template>
     <nuxt-link v-bind:class="{selected:doc.selected, 'document':true, 'fx-hovershadow':true, 'is-hero':hero, 'permanent-text': isPermanentText}" :title="doc.tags ? doc.tags.map(c => c.name).join(', ') : ''" :to="link" v-on:click.native.capture="$emit('clickOnDoc', doc, $el);">
     <div class="document-container" :style="`background-color:${doc.backgroundcolor};z-index:0;`">
-        <img ref="docbg" class="document-bg" :alt="doc.title ? `${doc.title} - Cinematography by Piers Deseilligny` : 'Cinematography by Piers Deseilligny'" @load="loadimg" v-if="doc.images && doc.images[0]" 
-        :src="doc.secondaryCategory ? $staticAsset($config.strapiBaseUri+doc.images[1].formats.medium.url) : (hero && doc.images[0].formats && doc.images[0].formats.large ? $staticAsset($config.strapiBaseUri+doc.images[0].formats.large.url) : $staticAsset($config.strapiBaseUri+doc.images[0].formats.medium.url))"/>
+        <img ref="docbg" class="document-bg" :alt="doc.title ? `${doc.title} - Cinematography by Piers Deseilligny` : 'Cinematography by Piers Deseilligny'" @load="loadimg" v-if="docImage" 
+          :src="responsiveDocImage.src"
+          :srcset="responsiveDocImage.srcset"
+          :sizes="imageSizes"
+          loading="lazy"
+          decoding="async"/>
         <div class="document-overlay" @touchstart="hoverShow" @touchend="hoverHide" @mouseenter="hoverShow" @mouseleave="hoverHide">
             <div ref="docoverlay" class="document-gradient"
                 :style="`background: linear-gradient(transparent,${doc.backgroundcolor});`"></div>
@@ -260,6 +264,19 @@ export default {
     computed: {
         isPermanentText() {
             return this.permanentText;
+        },
+        docImage() {
+            if (!this.doc.images || !this.doc.images[0]) return null;
+            return this.doc.secondaryCategory && this.doc.images[1] ? this.doc.images[1] : this.doc.images[0];
+        },
+        responsiveDocImage() {
+            if (!this.docImage) return { src: '', srcset: '' };
+            return this.$responsiveAsset(this.docImage);
+        },
+        imageSizes() {
+            return this.hero
+                ? '(max-width: 600px) 320px, (max-width: 800px) 375px, 480px'
+                : '(max-width: 800px) 213px, 287px';
         }
     },
     methods:{

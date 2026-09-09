@@ -95,7 +95,10 @@ export default {
           query{
             contactImage{
               image{
-                url
+                url,
+                width,
+                height,
+                formats
               }
             }
           }
@@ -104,6 +107,7 @@ export default {
 
       const images = data.contactImage?.image || [];
       for (const image of images) {
+        context.$responsiveAsset(image);
         context.$staticAsset(image.url);
       }
 

@@ -37,7 +37,11 @@
               100
               }%);`">
               <img class="doccont-content-poster" alt="Poster"
-                :src="$staticAsset($config.strapiBaseUri + bestImageFromLarge(document.poster).url)" />
+                :src="$responsiveAsset(document.poster).src"
+                :srcset="$responsiveAsset(document.poster).srcset"
+                sizes="(max-width: 600px) 128px, 128px"
+                loading="lazy"
+                decoding="async" />
             </div>
           </div>
           <div class="moreinfo-container" v-if="document.moreinfo">
@@ -749,12 +753,17 @@ export default {
       let images = [];
       if (data.documents[0].images) {
         for (let img of data.documents[0].images) {
+          this.$responsiveAsset(img);
+          const thumbUrl = (img.formats && img.formats.thumbnail) ? img.formats.thumbnail.url : img.url;
           images.push({
             src: this.$staticAsset(this.$config.strapiBaseUri + img.url),
             description: img.caption,
-            thumb: this.$staticAsset(this.$config.strapiBaseUri + img.formats.thumbnail.url)
+            thumb: this.$staticAsset(this.$config.strapiBaseUri + thumbUrl)
           });
         }
+      }
+      if (data.documents[0].poster) {
+        this.$responsiveAsset(data.documents[0].poster);
       }
       let imagesAlt = [];
       if (data.documents[0].contentblocks) {
@@ -764,13 +773,23 @@ export default {
           }
           if (block.stills) {
             for (let i in block.stills) {
+              this.$responsiveAsset(block.stills[i]);
               block.stills[i].index = imagesAlt.length;
-              block.stills[i].childshadow = (block.stills[i].name && block.stills[i].name.endsWith('_ns.PNG'));
+              block.stills[i].childshadow = Boolean(block.stills[i].name && /_ns\.(png|webp)$/i.test(block.stills[i].name));
+              const stillThumbUrl = (block.stills[i].formats && block.stills[i].formats.thumbnail)
+                ? block.stills[i].formats.thumbnail.url
+                : block.stills[i].url;
               imagesAlt.push({
                 src: this.$staticAsset(this.$config.strapiBaseUri + block.stills[i].url),
                 description: block.stills[i].caption,
-                thumb: this.$staticAsset(this.$config.strapiBaseUri + block.stills[i].formats.thumbnail.url)
+                thumb: this.$staticAsset(this.$config.strapiBaseUri + stillThumbUrl)
               });
+            }
+          }
+          if (block.beforeafters) {
+            for (let ba of block.beforeafters) {
+              if (ba.before) this.$responsiveAsset(ba.before);
+              if (ba.after) this.$responsiveAsset(ba.after);
             }
           }
         }

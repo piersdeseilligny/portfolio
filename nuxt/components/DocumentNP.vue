@@ -2,9 +2,12 @@
   <div class="docnp-container">
     <div class="docnp-poster">
       <img
-              alt="Poster"
-              :src="$staticAsset($config.strapiBaseUri + doc.poster.formats.thumbnail.url)"
-            />
+        v-if="doc.poster"
+        alt="Poster"
+        :src="$staticAsset($config.strapiBaseUri + ((doc.poster.formats && doc.poster.formats.thumbnail) ? doc.poster.formats.thumbnail.url : doc.poster.url))"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
     <div class="docnp-details">
     <a class="docnp-title fancy" target="_blank" :href="doc.np_link">

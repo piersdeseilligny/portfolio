@@ -7,7 +7,8 @@ The website is deployed statically, for simplicity, speed, cost, and security re
 
 * With the Strapi server running, execute `npm run generate` in `/nuxt`.
 * This will statically generate the project in `/nuxt/dist`
-    * During generation, the custom `staticAsset` plugin will copy every asset requested from the strapi server to `dist/assets`
+    * Strapi automatically converts media uploads to WebP (Sharp quality 85) and generates WebP responsive breakpoints (`thumbnail`, `small`, `medium`, `large`).
+    * During generation, the custom `$responsiveAsset` helper and `staticAsset` plugin discover and copy all referenced responsive WebP media variants directly into `dist/assets`
     * The custom `staticAPI` plugin will save every request made to strapi API as a JSON file in `/dist/api`
     * Any request to the strapi API or Assets will therefore become part of the static Nuxt.JS application: for example a request to `http://localhost:1337/graphql` in development becomes `https://piersdeseilligny.com/api/4ac931e11a8ce8fa09b793f6b5acf6141eff2eb4.json` in production (the filename is a hash of the original GraphQL query made to the strapi server).
 * This dist folder can then be uploaded to the website through the `nuxt/updatewebsite.js` script, which simply connects to the web server through SSH and performs a git pull

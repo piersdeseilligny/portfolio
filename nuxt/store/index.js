@@ -24,7 +24,10 @@ export const actions = {
                 slug,
                 description,
                 thumbnailimage{
-                  formats
+                  formats,
+                  url,
+                  width,
+                  height
                 },
                 title
               },

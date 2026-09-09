@@ -34,6 +34,11 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
   },
   upload: {
     config: {
+      breakpoints: {
+        large: 1500,
+        medium: 750,
+        small: 500,
+      },
       security: {
         allowedTypes: allowedMediaTypes,
         deniedTypes,

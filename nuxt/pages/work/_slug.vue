@@ -713,8 +713,8 @@ export default {
                 category { slug },
                 categories { slug },
                 tags { name, id: documentId, icon, title, order },
-                images { formats },
-                poster { formats },
+                images { formats, url, width, height },
+                poster { formats, url, width, height },
                 moreinfo { link, header, subheader, outlink { svg, tooltip, name } }
               }
             }

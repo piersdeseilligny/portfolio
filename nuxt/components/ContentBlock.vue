@@ -10,20 +10,27 @@
     <TwentyTwenty
      v-for="ba in block.beforeafters"
      :key="ba.id"
-     :aspectRatio="ba.before.formats.large.height/ba.before.formats.large.width"
-      :before="$staticAsset($config.strapiBaseUri+ba.before.url)"
+     :aspectRatio="ba.before.formats && ba.before.formats.large ? ba.before.formats.large.height/ba.before.formats.large.width : (ba.before.height / ba.before.width || 0.5625)"
+      :before="$staticAsset($config.strapiBaseUri+(ba.before.formats && ba.before.formats.large ? ba.before.formats.large.url : ba.before.url))"
       beforeLabel="Before"
       afterLabel="After"
       :offset="ba.offset"
-      :after="$staticAsset($config.strapiBaseUri+ba.after.url)"
+      :after="$staticAsset($config.strapiBaseUri+(ba.after.formats && ba.after.formats.large ? ba.after.formats.large.url : ba.after.url))"
     />
     <div class="embed-container" :style="`padding-bottom: ${(1/(block.videoembedaspect ? block.videoembedaspect : 1.77))*100}%`" v-if="block.videoembed">
       <video-embed :src="block.videoembed"></video-embed>
     </div>
     <div :class="{'squarestills':block.squarestills}">
       <figure v-for="still in block.stills" :key="still.url">
-        <a :class="{'still':true, 'fx-hovershadow':true, 'childshadow':still.childshadow}" :data-index="still.index" @click.prevent="$emit('openimage', still.index)" :style="`padding-top:${(1/(still.formats.medium.width/still.formats.medium.height) * 100)}%`" :href="$staticAsset($config.strapiBaseUri+still.url)">
-          <img :src="$staticAsset($config.strapiBaseUri+still.formats.medium.url)">
+        <a :class="{'still':true, 'fx-hovershadow':true, 'childshadow':still.childshadow}" :data-index="still.index" @click.prevent="$emit('openimage', still.index)" :style="`padding-top:${(1/((still.formats && still.formats.medium ? still.formats.medium.width/still.formats.medium.height : (still.width / still.height || 1.77)))) * 100}%`" :href="$staticAsset($config.strapiBaseUri+still.url)">
+          <img
+            :src="$responsiveAsset(still).src"
+            :srcset="$responsiveAsset(still).srcset"
+            sizes="(max-width: 600px) 100vw, 50vw"
+            loading="lazy"
+            decoding="async"
+            :alt="still.caption || 'Still image'"
+          >
         </a>
         <figcaption>{{still.caption}}</figcaption>
       </figure>
