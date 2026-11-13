@@ -8,7 +8,7 @@ export default (context, inject) => {
   inject('staticAsset', function (url, fullurl = false) {
     if (!url) return '';
 
-    if (context.isStatic) {
+    if (context.isStatic && !context.isDev) {
       // The current target is static, so download/copy any image into dist and return that path
       const filename = url.substring(url.lastIndexOf('/') + 1);
       const distDir = path.resolve('./dist/assets');

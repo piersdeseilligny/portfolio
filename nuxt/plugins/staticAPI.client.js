@@ -4,7 +4,7 @@ export default(context, inject) =>
 {
   //Inject $staticAsset
   inject('staticAPI', async function(args){
-    if(context.isStatic){
+    if(context.isStatic && !context.isDev){
       let data = await fetch('/api/'+hash.sha1(args)+'.json?v='+context.$config.clientVersion);
       let json = await data.json();
       return json;

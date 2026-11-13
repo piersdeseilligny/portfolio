@@ -3,7 +3,7 @@ export default (context, inject) => {
   inject('staticAsset', function (url, fullurl = false) {
     if (!url) return '';
 
-    if (context.isStatic) {
+    if (context.isStatic && !context.isDev) {
       // The current target is static, so return the static version from /assets
       const filename = url.substring(url.lastIndexOf('/') + 1);
       const urlprefix = fullurl ? 'https://piersdeseilligny.com' : '';

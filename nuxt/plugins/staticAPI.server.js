@@ -9,7 +9,7 @@ export default(context, inject) =>
 {
   //Inject $staticAsset
   inject('staticAPI', async function(args){
-    if(context.isStatic){
+    if(context.isStatic && !context.isDev){
       mkdirp.sync('./dist/api');
       let data = await context.$strapi.graphql(args);
       fs.writeFileSync('./dist/api/'+hash.sha1(args)+'.json', JSON.stringify(data));
