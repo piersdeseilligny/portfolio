@@ -707,10 +707,9 @@ export default {
             categories(sort:"order:asc") {
               slug, order, name, description, title,
               documents {
-                id: documentId, title, slug, date, order,
+                id: documentId, title, slug, date,
                 np_link, backgroundcolor, foregroundcolor, foregroundcolor2,
                 nopage,
-                category { slug },
                 categories { slug },
                 tags { name, id: documentId, icon, title, order },
                 images { formats, url, width, height },

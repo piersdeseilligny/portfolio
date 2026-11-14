@@ -10,6 +10,7 @@
   "options": {
     "draftAndPublish": false
   },
+  "pluginOptions": {},
   "attributes": {
     "title": {
       "type": "string",
@@ -62,51 +63,25 @@
     },
     "contentblocks": {
       "type": "component",
-      "repeatable": true,
-      "component": "component.contentblock"
+      "component": "component.contentblock",
+      "repeatable": true
     },
     "foregroundcolor2": {
       "type": "string"
     },
     "moreinfo": {
       "type": "component",
-      "repeatable": true,
-      "component": "component.moreinfo"
-    },
-    "video": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": [
-        "videos"
-      ]
-    },
-    "category": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::category.category"
-    },
-    "typeoverride": {
-      "type": "string"
-    },
-    "order": {
-      "type": "integer"
+      "component": "component.moreinfo",
+      "repeatable": true
     },
     "nopostershadow": {
       "type": "boolean"
-    },
-    "shortdescription": {
-      "type": "text",
-      "maxLength": 200
     },
     "nopage": {
       "type": "boolean"
     },
     "np_link": {
       "type": "string"
-    },
-    "hero": {
-      "type": "boolean",
-      "default": false
     },
     "laurels": {
       "type": "media",

@@ -3,7 +3,9 @@
   <div class="home">
     <h1 class="sr-only">Piers Deseilligny — Director of Photography Scotland</h1>
     <div class="showreel-container">
-      <video-embed src="https://vimeo.com/866827389"></video-embed>
+      <client-only>
+        <video-embed src="https://vimeo.com/866827389"></video-embed>
+      </client-only>
     </div>
     <div class="padder">
       <div class="indexcontainer">
@@ -28,7 +30,7 @@
         View all
       </a>
     </h2>
-    <Carousel :documents="home.featured" />
+    <Carousel ref="featuredCarousel" :documents="home.featured" />
     <div class="randomsample">
       <div class="padder">
         <h2 class="alth2" style="margin-top:24px"><span style="margin-right:12px;">Random sample</span>
@@ -570,7 +572,7 @@ export default {
 
       if (!container) {
         this.selectedDocument = doc.slug;
-        this.selectedCategory = (doc.category && doc.category.slug) ? doc.category.slug : "";
+        this.selectedCategory = (doc.categories && doc.categories.length) ? doc.categories[0].slug : "";
         window.history.replaceState({}, '', newPath);
         return;
       }
@@ -584,7 +586,7 @@ export default {
           gsap.set(container, { opacity: 0, x: direction * 30 });
           
           this.selectedDocument = doc.slug;
-          this.selectedCategory = (doc.category && doc.category.slug) ? doc.category.slug : "";
+          this.selectedCategory = (doc.categories && doc.categories.length) ? doc.categories[0].slug : "";
           window.history.replaceState({}, '', newPath);
 
           this.$nextTick(() => {
@@ -679,14 +681,18 @@ export default {
       const container = el.querySelector(".modal-container");
 
       let targetEl = null;
-      // We can use the carousel reference to find the thumbnail
-      const carousels = this.$children.filter(c => c.$options._componentTag === 'Carousel' || c.scrollDocIntoView);
-      for (const carousel of carousels) {
-        if (carousel.scrollDocIntoView) {
-          const found = carousel.scrollDocIntoView(docSlug, "auto");
-          if (found) {
-            targetEl = found;
-            break;
+      const featuredCarousel = this.$refs.featuredCarousel;
+      if (featuredCarousel && featuredCarousel.scrollDocIntoView) {
+        targetEl = featuredCarousel.scrollDocIntoView(docSlug, "auto");
+      } else {
+        const carousels = this.$children.filter(c => c.$options._componentTag === 'Carousel' || c.scrollDocIntoView);
+        for (const carousel of carousels) {
+          if (carousel.scrollDocIntoView) {
+            const found = carousel.scrollDocIntoView(docSlug, "auto");
+            if (found) {
+              targetEl = found;
+              break;
+            }
           }
         }
       }
@@ -700,6 +706,11 @@ export default {
         requestAnimationFrame(() => {
           const startRect = container.getBoundingClientRect();
           const endRect = targetEl.getBoundingClientRect();
+
+          if (!endRect || endRect.width === 0 || endRect.height === 0) {
+            gsap.to(el, { opacity: 0, duration: 0.2, onComplete: done });
+            return;
+          }
 
           const scaleX = endRect.width / startRect.width;
           const scaleY = endRect.height / startRect.height;
@@ -898,7 +909,6 @@ export default {
                   caption
                 },
                 featured{
-                    order,
                     title,
                     tags{
                       name
@@ -915,10 +925,6 @@ export default {
                       height
                     }
                     slug,
-                    category{
-                      slug,
-                      order
-                    },
                     categories{
                       slug
                     }

@@ -530,7 +530,6 @@ export interface ApiDocumentDocument extends Struct.CollectionTypeSchema {
       'manyToMany',
       'api::category.category'
     >;
-    category: Schema.Attribute.Relation<'oneToOne', 'api::category.category'>;
     contentblocks: Schema.Attribute.Component<'component.contentblock', true>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -539,7 +538,6 @@ export interface ApiDocumentDocument extends Struct.CollectionTypeSchema {
     description: Schema.Attribute.RichText;
     foregroundcolor: Schema.Attribute.String;
     foregroundcolor2: Schema.Attribute.String;
-    hero: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     images: Schema.Attribute.Media<'images' | 'files' | 'videos', true>;
     laurels: Schema.Attribute.Media<'images', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -552,21 +550,14 @@ export interface ApiDocumentDocument extends Struct.CollectionTypeSchema {
     nopage: Schema.Attribute.Boolean;
     nopostershadow: Schema.Attribute.Boolean;
     np_link: Schema.Attribute.String;
-    order: Schema.Attribute.Integer;
     poster: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
     publishedAt: Schema.Attribute.DateTime;
-    shortdescription: Schema.Attribute.Text &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 200;
-      }>;
     slug: Schema.Attribute.String;
     tags: Schema.Attribute.Relation<'manyToMany', 'api::tag.tag'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
-    typeoverride: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    video: Schema.Attribute.Media<'videos'>;
   };
 }
 

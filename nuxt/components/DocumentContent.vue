@@ -650,6 +650,9 @@ export default {
       immediate: true
     }
   },
+  fetchKey(getCounter) {
+    return this.documentSlug ? `doc-${this.documentSlug}` : `doc-empty:${getCounter('doc-empty')}`;
+  },
   async fetch() {
     if (this.prefetchedDocument && this.prefetchedDocument.slug) {
       this.document = this.prefetchedDocument;
@@ -667,10 +670,8 @@ export default {
 		  query {
 			documents(filters:{slug:{eq:"${this.documentSlug}"}}){
         title,
-        typeoverride,
         nopostershadow,
 			  description,
-        shortdescription,
 			  contentblocks{
 				tag{
 				  name,
